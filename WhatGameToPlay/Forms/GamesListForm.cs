@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.IO;
 
 namespace WhatGameToPlay
 {
@@ -111,12 +111,12 @@ namespace WhatGameToPlay
             SwitchButtonsEnables();
             if (!_mainForm.SaveDeletedGamesData)
             {
-                DirectoryInfo di = new DirectoryInfo("Players");
-                FileInfo[] smFiles = di.GetFiles("*.txt");
-                foreach (FileInfo fi in smFiles)
+                DirectoryInfo directory = new DirectoryInfo("Players");
+                FileInfo[] files = directory.GetFiles("*.txt");
+                foreach (FileInfo fileInfo in files)
                 {
-                    File.WriteAllLines(fi.FullName,
-                        File.ReadLines(fi.FullName).Where(l => l != textBoxGameName.Text).ToList());
+                    File.WriteAllLines(fileInfo.FullName,
+                        File.ReadLines(fileInfo.FullName).Where(l => l != textBoxGameName.Text).ToList());
                 }
                 string path = "Restrictions\\" + textBoxGameName.Text + ".txt";
                 if (File.Exists(path)) File.Delete(path);
@@ -193,17 +193,17 @@ namespace WhatGameToPlay
 
         private void CheckBoxPeopleNumberLimit_Click(object sender, EventArgs e)
         {
-            DirectoryInfo di = new DirectoryInfo("Restrictions");
-            FileInfo[] smFiles = di.GetFiles("*.txt");
-            foreach (FileInfo fi in smFiles)
+            DirectoryInfo directory = new DirectoryInfo("Restrictions");
+            FileInfo[] files = directory.GetFiles("*.txt");
+            foreach (FileInfo fileInfo in files)
             {
-                if (textBoxGameName.Text == Path.GetFileNameWithoutExtension(fi.Name) &&
+                if (textBoxGameName.Text == Path.GetFileNameWithoutExtension(fileInfo.Name) &&
                     !checkBoxPeopleNumberLimit.Checked && _mainForm.ShowConfirmingMessages)
                 {
                     DialogResult dialogResult =
                         _mainForm.MyMessageBox.Show("Are you sure you want to delete "
                         + textBoxGameName.Text + "?", "Confirmation", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes) File.Delete(fi.FullName);
+                    if (dialogResult == DialogResult.Yes) File.Delete(fileInfo.FullName);
                     else checkBoxPeopleNumberLimit.Checked = true;
                 }
             }
