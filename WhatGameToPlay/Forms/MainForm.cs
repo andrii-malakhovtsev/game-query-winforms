@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
-using System.IO;
 
 namespace WhatGameToPlay
 {
     public partial class MainForm : Form
     {
         private int _checkedPeopleCount = 0;
-        private string[] _fileRead;
         private ToolStripMenuItem[] _optionToolStrips;
+        private readonly MessageController _messageController;
         private readonly ThemeController _theme;
         private readonly List<CheckBox> _checkBoxes = new List<CheckBox>();
         private readonly List<CheckBox> _checkBoxesCopy = new List<CheckBox>();
@@ -18,7 +16,7 @@ namespace WhatGameToPlay
         public MyMessageBox MyMessageBox { get; set; }
         public List<string> Games { get; set; } = new List<string>();
         public List<string> GamesCopy { get; set; } = new List<string>();
-        public List<Player> People { get; set; } = new List<Player>();
+        public List<Player> Players { get; set; } = new List<Player>();
         public bool ShowConfirmingMessages { get; set; }
         public bool ShowMessages { get; set; } = true;
         public bool SaveDeletedGamesData { get; set; } = false;
@@ -27,8 +25,8 @@ namespace WhatGameToPlay
         {
             InitializeComponent();
             _theme = new ThemeController();
-            _fileRead = File.ReadAllLines("GamesList.txt");
-            foreach (string game in _fileRead) Games.Add(game);
+            _messageController = new MessageController(this);
+            Games = FilesController.GetGamesListFromFile();
             GamesCopy = Games;
             _colorThemeItems.AddRange(new List<ToolStripMenuItem> {
                 whiteToolStripMenuItem,
@@ -67,16 +65,14 @@ namespace WhatGameToPlay
 
         private void SetSavedColors()
         {
-            _fileRead = File.ReadAllLines("Theme.txt");
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
-                if (_fileRead[0] == colorTheme.Text) colorTheme.Checked = true;
+                if (FilesController.GetCurrentTheme() == colorTheme.Text) 
+                    colorTheme.Checked = true;
         }
 
         private void SetSavedOptions()
         {
-            _fileRead = File.ReadAllLines("Options.txt");
-            _optionToolStrips = new ToolStripMenuItem[] 
-            {
+            _optionToolStrips = new ToolStripMenuItem[] {
                 showMessagesToolStripMenuItem,
                 showConfirmationMessagesToolStripMenuItem,
                 takeIntoAccountPeopleNumberToolStripMenuItem,
@@ -84,8 +80,9 @@ namespace WhatGameToPlay
                 TurnOffGameCelebrationToolStripMenuItem,
                 SaveDeletedGamesDataToolStripMenuItem
             };
-            for (int i = 0; i < _fileRead.Length; i++)
-                _optionToolStrips[i].Checked = Convert.ToBoolean(_fileRead[i]);
+            string[] currentOptions = FilesController.GetOptionsFromFile();
+            for (int i = 0; i < currentOptions.Length; i++)
+                _optionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
             ShowMessages = showMessagesToolStripMenuItem.Checked;
             ShowConfirmingMessages = showConfirmationMessagesToolStripMenuItem.Checked;
             SaveDeletedGamesData = SaveDeletedGamesDataToolStripMenuItem.Checked;
@@ -93,42 +90,33 @@ namespace WhatGameToPlay
 
         private void RefreshOptionsToFiles()
         {
-            string[] stringOptionsList = new string[_optionToolStrips.Length];
+            string[] options = new string[_optionToolStrips.Length];
             for (int i = 0; i < _optionToolStrips.Length; i++)
-                stringOptionsList[i] = Convert.ToString(_optionToolStrips[i].Checked);
-            File.WriteAllLines("Options.txt", stringOptionsList);
+                options[i] = Convert.ToString(_optionToolStrips[i].Checked);
+            FilesController.AddOptionsToFile(options);
         }
 
         private void RefreshThemeToFile()
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
-                if (colorTheme.Checked) File.WriteAllText("Theme.txt", colorTheme.Text);
+                if (colorTheme.Checked) FilesController.AddThemeToFile(colorTheme.Text);
         }
 
         public void RefreshGamesList()
         {
             GamesCopy.Clear();
-            _fileRead = File.ReadAllLines("GamesList.txt");
-            foreach (string line in _fileRead) GamesCopy.Add(line);
+            foreach (string game in FilesController.GetGamesFromFile()) 
+                GamesCopy.Add(game);
         }
 
         public void RefreshPeopleList()
         {
-            People.Clear();
-            DirectoryInfo directory = new DirectoryInfo("Players");
-            FileInfo[] files = directory.GetFiles("*.txt");
+            Players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
-            foreach (FileInfo fileInfo in files)
-            {
-                List<string> gamesNotPlaying = new List<string>();
-                _fileRead = File.ReadAllLines(fileInfo.FullName);
-                foreach (string gameDoesntPlay in _fileRead)
-                    gamesNotPlaying.Add(gameDoesntPlay);
-                People.Add(new Player(Path.GetFileNameWithoutExtension(fileInfo.Name), gamesNotPlaying));
-            }
+            Players = FilesController.GetPlayersListFromDirectory();
             _checkBoxesCopy.Clear();
-            foreach (Player person in People)
-                AddPlayerCheckBox(person);
+            foreach (Player player in Players)
+                AddPlayerCheckBox(player);
             _checkBoxes.AddRange(_checkBoxesCopy);
             pictureBoxFireworks.SendToBack();
             RefreshColors();
@@ -137,10 +125,6 @@ namespace WhatGameToPlay
         private void MainForm_Load(object sender, EventArgs e)
         {
             MyMessageBox = new MyMessageBox(_theme);
-            pictureBoxSmile.Hide();
-            pictureBoxFireworks.Hide();
-            textBox.ReadOnly = true;
-            textBox.BackColor = SystemColors.Window;
             RefreshColors();
         }
 
@@ -174,36 +158,22 @@ namespace WhatGameToPlay
             listBoxAvailableGames.Items.Clear();
             Games.Clear();
             foreach (string game in GamesCopy) Games.Add(game);
-            foreach (Player person in People)
-            {
+            foreach (Player person in Players)
                 if (person.CheckBox.Checked)
-                {
                     for (int i = 0; i < Games.Count; i++)
-                    {
                         foreach (string gameNotPlaying in person.GamesNotPlaying)
                             if (Games[i] == gameNotPlaying) Games[i] = null;
-                    }
-                }
-            }
             if (takeIntoAccountPeopleNumberToolStripMenuItem.Checked)
-            {
-                DirectoryInfo directory = new DirectoryInfo("Restrictions");
-                FileInfo[] files = directory.GetFiles("*.txt");
-                foreach (FileInfo fileInfo in files)
-                {
-                    string[] lines = File.ReadAllLines(fileInfo.FullName);
-                    if (_checkedPeopleCount < Convert.ToInt32(lines[0]))
-                        MakeGameFromListNull(Path.GetFileNameWithoutExtension(fileInfo.Name));
-                    if (_checkedPeopleCount > Convert.ToInt32(lines[1]))
-                        MakeGameFromListNull(Path.GetFileNameWithoutExtension(fileInfo.Name));
-                }
-            }
+                foreach (string gameToMakeNull in
+                    FilesController.GetUnrestrictedGamesFromDirectory(_checkedPeopleCount))
+                        MakeGameFromListNull(gameToMakeNull);
             foreach (string game in Games)
-                if (game != null) listBoxAvailableGames.Items.Add(game);
+                if (game != null) 
+                    listBoxAvailableGames.Items.Add(game);
             int uncheckedPeopleCount = 0;
-            foreach (Player person in People)
+            foreach (Player person in Players)
                 if (!person.CheckBox.Checked) uncheckedPeopleCount++;
-            if (uncheckedPeopleCount == People.Count) listBoxAvailableGames.Items.Clear();
+            if (uncheckedPeopleCount == Players.Count) listBoxAvailableGames.Items.Clear();
         }
 
         private void MakeGameFromListNull(string game)
@@ -214,15 +184,13 @@ namespace WhatGameToPlay
 
         private void ButtonRandomAvailableGame_Click(object sender, EventArgs e)
         {
-            Color defaultButtonForeColor = Color.Black;
-              int defaultTimerInterval = 10;
-
+            int defaultTimerInterval = 10;
             if (listBoxAvailableGames.Items.Count > 0)
             {
                 if (rouletteInsteadProgressbarToolStripMenuItem.Checked) 
                     progressBar.Visible = true;
                 progressBar.Value = 0;
-                textBox.ForeColor = defaultButtonForeColor;
+                _theme.SetTextBoxForeColor(textBox, win: false);
                 pictureBoxSmile.Hide();
                 pictureBoxFireworks.Hide();
                 timer.Interval = defaultTimerInterval;
@@ -233,7 +201,7 @@ namespace WhatGameToPlay
             }
             else if (ShowMessages)
             {
-               MyMessageBox.Show("You don't have games to play (Bad ending)");
+                _messageController.ShowNoGamesToPlayMessage();
             }
         }
 
@@ -265,11 +233,10 @@ namespace WhatGameToPlay
                     pictureBoxSmile.Show();
                     pictureBoxFireworks.Show(); pictureBoxFireworks.SendToBack();
                 }
-                textBox.ForeColor = Color.Green;
+                _theme.SetTextBoxForeColor(textBox, win: true);
                 foreach (CheckBox checkBox in _checkBoxes) checkBox.Enabled = true;
                 progressBar.Visible = false;
-                string messageBoxToShow = "Let's go play " + textBox.Text + "!";
-                MyMessageBox.Show(messageBoxToShow);
+                _messageController.ShowGameToPlayMessage(gameToPlay: textBox.Text);
             }
         }
 
@@ -289,10 +256,9 @@ namespace WhatGameToPlay
             {
                 if (showConfirmationMessagesToolStripMenuItem.Checked)
                 {
-                    DialogResult dialogResult = MyMessageBox.Show("Are you sure you want to delete "
-                        + listBoxAvailableGames.SelectedItem.ToString()
-                        + " from available games list?", "Confirmation", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes) DeleteGameFromListBox();
+                    if (_messageController.ShowDeleteAvailableGameDialog
+                        (listBoxAvailableGames.SelectedItem.ToString()))
+                            DeleteGameFromListBox();
                 }
                 else DeleteGameFromListBox();
             }
@@ -308,7 +274,7 @@ namespace WhatGameToPlay
         {
             if (showMessagesToolStripMenuItem.Checked)
             {
-                MyMessageBox.Show("You can't turn confirmation messages off while (all) messages are on");
+                _messageController.ShowTurnConfirmationMessagesError();
             }
             else
             {

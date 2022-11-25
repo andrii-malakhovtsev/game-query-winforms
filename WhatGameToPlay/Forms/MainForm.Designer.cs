@@ -110,6 +110,7 @@
             // 
             this.textBox.Location = new System.Drawing.Point(166, 369);
             this.textBox.Name = "textBox";
+            this.textBox.ReadOnly = true;
             this.textBox.Size = new System.Drawing.Size(168, 20);
             this.textBox.TabIndex = 13;
             this.textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -123,6 +124,7 @@
             this.pictureBoxSmile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxSmile.TabIndex = 14;
             this.pictureBoxSmile.TabStop = false;
+            this.pictureBoxSmile.Visible = false;
             // 
             // pictureBoxFireworks
             // 
@@ -133,6 +135,7 @@
             this.pictureBoxFireworks.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxFireworks.TabIndex = 15;
             this.pictureBoxFireworks.TabStop = false;
+            this.pictureBoxFireworks.Visible = false;
             // 
             // menuStrip
             // 
@@ -246,31 +249,31 @@
             // whiteToolStripMenuItem
             // 
             this.whiteToolStripMenuItem.Name = "whiteToolStripMenuItem";
-            this.whiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.whiteToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.whiteToolStripMenuItem.Text = "White";
             // 
             // darkToolStripMenuItem
             // 
             this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
-            this.darkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.darkToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.darkToolStripMenuItem.Text = "Dark";
             // 
             // telegramToolStripMenuItem
             // 
             this.telegramToolStripMenuItem.Name = "telegramToolStripMenuItem";
-            this.telegramToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.telegramToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.telegramToolStripMenuItem.Text = "Telegram";
             // 
             // discordToolStripMenuItem
             // 
             this.discordToolStripMenuItem.Name = "discordToolStripMenuItem";
-            this.discordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.discordToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.discordToolStripMenuItem.Text = "Discord";
             // 
             // youtubeToolStripMenuItem
             // 
             this.youtubeToolStripMenuItem.Name = "youtubeToolStripMenuItem";
-            this.youtubeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.youtubeToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.youtubeToolStripMenuItem.Text = "YouTube";
             // 
             // exitToolStripMenuItem

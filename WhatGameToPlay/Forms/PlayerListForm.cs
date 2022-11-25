@@ -21,7 +21,7 @@ namespace WhatGameToPlay
 
         private void FormPlayerList_Load(object sender, EventArgs e)
         {
-            foreach (Player player in _mainForm.People)
+            foreach (Player player in _mainForm.Players)
                 listBoxPlayers.Items.Add(player.Name);
             RefreshColors();
         }
@@ -86,7 +86,7 @@ namespace WhatGameToPlay
             FilesController.CreatePersonFile(textBoxSelectedPlayer.Text);
             _mainForm.RefreshPeopleList();
             listBoxPlayers.Items.Clear();
-            foreach (Player person in _mainForm.People)
+            foreach (Player person in _mainForm.Players)
                 listBoxPlayers.Items.Add(person.Name);
             SelectPerson();
             _messageController.ShowPersonAddedToListMessage();
@@ -107,18 +107,18 @@ namespace WhatGameToPlay
 
         private void DeletePersonFromPeopleList()
         {
-            foreach (Player person in _mainForm.People)
+            foreach (Player person in _mainForm.Players)
             {
                 if (person.Name == textBoxSelectedPlayer.Text)
                 {
-                    _mainForm.People.Remove(person);
+                    _mainForm.Players.Remove(person);
                     break;
                 }
             }
-            FilesController.DeleteFile("Players\\" + textBoxSelectedPlayer.Text + ".txt");
+            FilesController.DeleteSelectedPlayerFile(selectedPlayer: textBoxSelectedPlayer.Text);
             listBoxPlayers.Items.Clear();
             _mainForm.RefreshPeopleList();
-            foreach (Player person in _mainForm.People)
+            foreach (Player person in _mainForm.Players)
                 listBoxPlayers.Items.Add(person.Name);
             checkedListBoxGamesPlaying.Items.Clear();
             SetPlayerButtonsEnables(enable: true);

@@ -161,7 +161,7 @@ namespace WhatGameToPlay
         {
             if (numericUpDownMax.Value > numericUpDownMin.Value)
             {
-                FilesController.RestrictionsToFile(textBoxGameName.Text ,numericUpDownMin.Value, 
+                FilesController.AddRestrictionsToFile(textBoxGameName.Text ,numericUpDownMin.Value, 
                     numericUpDownMax.Value);
                 _messageController.ShowRestrictionsMessage();
             }

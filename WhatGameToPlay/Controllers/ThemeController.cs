@@ -21,6 +21,11 @@ namespace WhatGameToPlay
             _buttonsColor = buttonsColor;
         }
 
+        public void SetTextBoxForeColor(TextBox textbox, bool win)
+        {
+            textbox.ForeColor = win ? Color.Green : Color.Black;
+        }
+
         private void RefreshCurrentThemeFromFile()
         {
             _currentTheme = FilesController.GetCurrentTheme();
