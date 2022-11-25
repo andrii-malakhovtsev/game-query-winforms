@@ -1,82 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
     public partial class GamesListForm : Form
     {
-        public MainForm _mainForm = new MainForm();
-        private readonly Color _colorWhite;
-        private readonly Color _colorBlack;
-        private readonly Color _colorBlackLighter;
-        private readonly Color _buttonColor;
+        private readonly MainForm _mainForm;
+        private readonly ThemeController _theme;
+        private readonly MessageController _messageController;
 
-        public GamesListForm(MainForm MainForm)
+        public GamesListForm(MainForm mainForm, ThemeController theme)
         {
-            _mainForm = MainForm;
-            _colorBlack = _mainForm._colorTexts;
-            _colorBlackLighter = MainForm._colorTextsLighter;
-            _colorWhite = _mainForm._colorBackgrounds;
-            _buttonColor = _mainForm._buttonColor;
+            _mainForm = mainForm;
+            _messageController = new MessageController(_mainForm);
+            _theme = theme;
             InitializeComponent();
-            foreach (string game in MainForm.GamesListCopy)
+            foreach (string game in mainForm.GamesCopy)
                 listBoxGames.Items.Add(game);
         }
 
-        public void RefreshColors()
+        private string GetSelectedGameName()
         {
-            BackColor = _colorBlackLighter;
-            List<Label> labels = new List<Label>()
-            {
-                labelGamesList,
-                labelEnterGameName,
-                labelMin,
-                labelMax
-            };
-            foreach (Label label in labels)
-                label.ForeColor = _colorWhite;
-            checkBoxPeopleNumberLimit.ForeColor = _colorWhite;
-            List<Button> buttons = new List<Button>()
-            {
-                buttonAddGame,
-                buttonDeleteGame,
-                buttonSet
-            };
-            foreach (Button button in buttons)
-            {
-                button.ForeColor = _colorWhite;
-                button.BackColor = _buttonColor;
-            }
-            listBoxGames.BackColor = _colorBlack;
-            listBoxGames.ForeColor = _colorWhite;
-            textBoxGameName.BackColor = _colorBlack;
-            textBoxGameName.ForeColor = _colorWhite;
-            numericUpDownMax.BackColor = _colorBlack;
-            numericUpDownMax.ForeColor = _colorWhite;
-            numericUpDownMin.BackColor = _colorBlack;
-            numericUpDownMin.ForeColor = _colorWhite;
+            return textBoxGameName.Text;
         }
 
         private void ButtonAddGame_Click(object sender, EventArgs e)
         {
-            File.AppendAllText("GamesList.txt", textBoxGameName.Text + Environment.NewLine);
+            FilesController.AddGameToGameListFile(GetSelectedGameName());
             _mainForm.RefreshGamesList();
             listBoxGames.Items.Clear();
-            foreach (string game in _mainForm.GamesListCopy)
+            foreach (string game in _mainForm.GamesCopy)
                 listBoxGames.Items.Add(game);
-            DirectoryInfo directory = new DirectoryInfo("Players");
-            FileInfo[] files = directory.GetFiles("*.txt");
-            foreach (FileInfo file in files)
-                File.AppendAllText(file.FullName, textBoxGameName.Text + "\n");
-            _mainForm.RefreshListOfPeople();
-            if (_mainForm.ShowMessages)
-                _mainForm.MyMessageBox.Show("Game " + textBoxGameName.Text + " is successfully added!");
-            //SwitchButtonsEnables();
+            FilesController.AppendGameToPlayerFile(GetSelectedGameName());
+            _mainForm.RefreshPeopleList();
+            _messageController.ShowGameAddedMessage(GetSelectedGameName());
+            SwitchButtonsEnables();
             SetGameButtonsEnables(enable: false);
             checkBoxPeopleNumberLimit.Enabled = true;
         }
@@ -84,46 +42,35 @@ namespace WhatGameToPlay
         private void ButtonDeleteGame_Click(object sender, EventArgs e)
         {
             if (_mainForm.ShowConfirmingMessages)
-            {
-                DialogResult dialogResult = _mainForm.MyMessageBox.Show("Are you sure you want to delete "
-                    + textBoxGameName.Text + " from games list?", "Confirmation", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes) DeleteGameFromGameList();
-            }
+                if (_messageController.ShowDeleteGameDialog(GetSelectedGameName())) 
+                    DeleteGameFromGameList();
             else DeleteGameFromGameList();
         }
 
         private void DeleteGameFromGameList()
         {
-            foreach (string game in _mainForm.GamesListCopy)
+            foreach (string game in _mainForm.GamesCopy)
             {
                 if (game == textBoxGameName.Text)
                 {
-                    _mainForm.GamesListCopy.Remove(textBoxGameName.Text);
+                    _mainForm.GamesCopy.Remove(textBoxGameName.Text);
                     break;
                 }
             }
-            _mainForm.RefreshListOfPeople();
-            File.WriteAllLines("GamesList.txt", _mainForm.GamesListCopy);
+            _mainForm.RefreshPeopleList();
+            //File.WriteAllLines("GamesList.txt", _mainForm.GamesCopy);
             listBoxGames.Items.Clear();
-            foreach (string game in _mainForm.GamesListCopy)
+            foreach (string game in _mainForm.GamesCopy)
+            {
                 listBoxGames.Items.Add(game);
+                FilesController.AddGameToGameListFile(game);
+            }
 
             SwitchButtonsEnables();
             if (!_mainForm.SaveDeletedGamesData)
-            {
-                DirectoryInfo directory = new DirectoryInfo("Players");
-                FileInfo[] files = directory.GetFiles("*.txt");
-                foreach (FileInfo fileInfo in files)
-                {
-                    File.WriteAllLines(fileInfo.FullName,
-                        File.ReadLines(fileInfo.FullName).Where(l => l != textBoxGameName.Text).ToList());
-                }
-                string path = "Restrictions\\" + textBoxGameName.Text + ".txt";
-                if (File.Exists(path)) File.Delete(path);
-            }
+                FilesController.DeleteGameFromFile(GetSelectedGameName());
             textBoxGameName.Clear();
-            numericUpDownMin.Value = 1;
-            numericUpDownMax.Value = 100;
+            SetNumericUpDownsStandartValues();
         }
 
         private void ListBoxGames_DoubleClick(object sender, EventArgs e)
@@ -134,7 +81,7 @@ namespace WhatGameToPlay
 
         public bool CheckGameInGamesList(string gameToCheck)
         {
-            foreach (string game in _mainForm.GamesListCopy) 
+            foreach (string game in _mainForm.GamesCopy) 
                 if (gameToCheck == game) return true;
             return false;
         }
@@ -144,32 +91,38 @@ namespace WhatGameToPlay
             if (CheckGameInGamesList(textBoxGameName.Text))
             {
                 checkBoxPeopleNumberLimit.Enabled = true;
-                checkBoxPeopleNumberLimit.Checked = false;
-                numericUpDownMin.Value = 1;
-                numericUpDownMax.Value = 100;
+                SetNumericUpDownsStandartValues();
                 SetGameButtonsEnables(enable: false);
-                DirectoryInfo directory = new DirectoryInfo("Restrictions");
-                FileInfo[] files = directory.GetFiles("*.txt");
-                foreach (FileInfo file in files)
+                int restrictionsCount = 2;
+                decimal[] restrictions = new decimal[restrictionsCount];
+                bool restrictionsExist = FilesController.GetRestrictionsFromGameFile(GetSelectedGameName(),
+                    ref restrictions);
+                if (restrictionsExist)
                 {
-                    if (textBoxGameName.Text == Path.GetFileNameWithoutExtension(file.Name))
-                    {
-                        string[] lines = File.ReadAllLines(file.FullName);
-                        checkBoxPeopleNumberLimit.Checked = true;
-                        numericUpDownMin.Value = Convert.ToDecimal(lines[0]);
-                        numericUpDownMax.Value = Convert.ToDecimal(lines[1]);
-                    }
+                    numericUpDownMin.Value = restrictions[0];
+                    numericUpDownMax.Value = restrictions[1];
                 }
             }
             else
             {
                 buttonSet.Enabled = false;
-                numericUpDownMax.Enabled = false;
-                numericUpDownMin.Enabled = false;
+                SetNumericUpDownsEnables(enable: false);
                 checkBoxPeopleNumberLimit.Enabled = false;
-                checkBoxPeopleNumberLimit.Checked = false;
                 SetGameButtonsEnables(enable: true);
             }
+            checkBoxPeopleNumberLimit.Checked = false;
+        }
+
+        private void SetNumericUpDownsEnables(bool enable)
+        {
+            numericUpDownMax.Enabled = enable;
+            numericUpDownMin.Enabled = enable;
+        }
+
+        private void SetNumericUpDownsStandartValues()
+        {
+            numericUpDownMin.Value = numericUpDownMin.Minimum;
+            numericUpDownMax.Value = numericUpDownMax.Maximum;
         }
 
         private void SetGameButtonsEnables(bool enable)
@@ -186,24 +139,19 @@ namespace WhatGameToPlay
 
         private void CheckBoxPeopleNumberLimit_CheckedChanged(object sender, EventArgs e)
         {
-            numericUpDownMin.Enabled = checkBoxPeopleNumberLimit.Checked;
-            numericUpDownMax.Enabled = checkBoxPeopleNumberLimit.Checked;
+            SetNumericUpDownsEnables(enable: checkBoxPeopleNumberLimit.Checked);
             buttonSet.Enabled = checkBoxPeopleNumberLimit.Checked;
         }
 
         private void CheckBoxPeopleNumberLimit_Click(object sender, EventArgs e)
         {
-            DirectoryInfo directory = new DirectoryInfo("Restrictions");
-            FileInfo[] files = directory.GetFiles("*.txt");
-            foreach (FileInfo fileInfo in files)
+            if (!checkBoxPeopleNumberLimit.Checked && _mainForm.ShowConfirmingMessages)
             {
-                if (textBoxGameName.Text == Path.GetFileNameWithoutExtension(fileInfo.Name) &&
-                    !checkBoxPeopleNumberLimit.Checked && _mainForm.ShowConfirmingMessages)
+                string gameFullName = "";
+                if (FilesController.RestrictionExist(GetSelectedGameName(), ref gameFullName))
                 {
-                    DialogResult dialogResult =
-                        _mainForm.MyMessageBox.Show("Are you sure you want to delete "
-                        + textBoxGameName.Text + "?", "Confirmation", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes) File.Delete(fileInfo.FullName);
+                    if (_messageController.ShowDeleteGameFileDialog(GetSelectedGameName()))
+                        FilesController.DeleteFile(gameFullName);
                     else checkBoxPeopleNumberLimit.Checked = true;
                 }
             }
@@ -213,38 +161,48 @@ namespace WhatGameToPlay
         {
             if (numericUpDownMax.Value > numericUpDownMin.Value)
             {
-                string path = "Restrictions\\" + textBoxGameName.Text + ".txt";
-
-                if (!File.Exists(path))
-                {
-                    File.Create(path).Dispose();
-                    using (TextWriter tw = new StreamWriter(path))
-                    {
-                        tw.WriteLine(Convert.ToString(numericUpDownMin.Value));
-                        tw.WriteLine(Convert.ToString(numericUpDownMax.Value));
-                    }
-                }
-                //else if (File.Exists(path))
-                else
-                {
-                    using (TextWriter tw = new StreamWriter(path))
-                    {
-                        tw.WriteLine(Convert.ToString(numericUpDownMin.Value));
-                        tw.WriteLine(Convert.ToString(numericUpDownMax.Value));
-                    }
-                }
-                if (_mainForm.ShowMessages) _mainForm.MyMessageBox.Show("Restriction Set!");
-                _mainForm.ClearAvailableGamesListBox();
+                FilesController.RestrictionsToFile(textBoxGameName.Text ,numericUpDownMin.Value, 
+                    numericUpDownMax.Value);
+                _messageController.ShowRestrictionsMessage();
             }
             else if (_mainForm.ShowMessages)
             {
-                _mainForm.MyMessageBox.Show("The Min value must not exceed the Max value");
+                _messageController.ShowRestrictionsErrorMessage();
             }
         }
 
         private void FormGamesList_Load(object sender, EventArgs e)
         {
             RefreshColors();
+        }
+
+        private void RefreshColors()
+        {
+            _theme.SetFormBackgroundColor(this);
+            Control[] foreColorControls = {
+                checkBoxPeopleNumberLimit,
+                labelGamesList,
+                labelEnterGameName,
+                labelMin,
+                labelMax,
+                buttonAddGame,
+                buttonDeleteGame,
+                buttonSet,
+            };
+            _theme.SetControlsForeColor(foreColorControls);
+            Control[] fullColorControls = {
+                listBoxGames,
+                textBoxGameName,
+                numericUpDownMax,
+                numericUpDownMin
+            };
+            _theme.SetControlsFullColor(fullColorControls);
+            Button[] buttons = {
+                buttonAddGame,
+                buttonDeleteGame,
+                buttonSet
+            };
+            _theme.SetButtonsColor(buttons);
         }
     }
 }

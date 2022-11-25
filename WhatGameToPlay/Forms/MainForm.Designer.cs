@@ -155,22 +155,20 @@
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.DropDownClosed += new System.EventHandler(this.добавитьToolStripMenuItem_DropDownClosed);
-            this.editToolStripMenuItem.DropDownOpening += new System.EventHandler(this.добавитьToolStripMenuItem_DropDownOpening);
             // 
             // peopleListToolStripMenuItem
             // 
             this.peopleListToolStripMenuItem.Name = "peopleListToolStripMenuItem";
             this.peopleListToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.peopleListToolStripMenuItem.Text = "People List";
-            this.peopleListToolStripMenuItem.Click += new System.EventHandler(this.человекаToolStripMenuItem_Click);
+            this.peopleListToolStripMenuItem.Click += new System.EventHandler(this.PeopleListToolStripMenuItem_Click);
             // 
             // gameListToolStripMenuItem
             // 
             this.gameListToolStripMenuItem.Name = "gameListToolStripMenuItem";
             this.gameListToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.gameListToolStripMenuItem.Text = "Games List";
-            this.gameListToolStripMenuItem.Click += new System.EventHandler(this.игруToolStripMenuItem_Click);
+            this.gameListToolStripMenuItem.Click += new System.EventHandler(this.GamesListToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
@@ -184,8 +182,6 @@
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
-            this.optionsToolStripMenuItem.DropDownClosed += new System.EventHandler(this.опцииToolStripMenuItem_DropDownClosed);
-            this.optionsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.опцииToolStripMenuItem_DropDownOpening);
             // 
             // showMessagesToolStripMenuItem
             // 
@@ -194,7 +190,7 @@
             this.showMessagesToolStripMenuItem.Name = "showMessagesToolStripMenuItem";
             this.showMessagesToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.showMessagesToolStripMenuItem.Text = "Show messages";
-            this.showMessagesToolStripMenuItem.Click += new System.EventHandler(this.отображатьСообщенияToolStripMenuItem_Click);
+            this.showMessagesToolStripMenuItem.Click += new System.EventHandler(this.ShowMessagesToolStripMenuItem_Click);
             // 
             // showConfirmationMessagesToolStripMenuItem
             // 
@@ -203,7 +199,7 @@
             this.showConfirmationMessagesToolStripMenuItem.Name = "showConfirmationMessagesToolStripMenuItem";
             this.showConfirmationMessagesToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.showConfirmationMessagesToolStripMenuItem.Text = "Show confirmation messages";
-            this.showConfirmationMessagesToolStripMenuItem.Click += new System.EventHandler(this.отображатьСообщенияПодтвержденияToolStripMenuItem_Click);
+            this.showConfirmationMessagesToolStripMenuItem.Click += new System.EventHandler(this.ShowConfirmationMessagesToolStripMenuItem_Click);
             // 
             // takeIntoAccountPeopleNumberToolStripMenuItem
             // 
@@ -219,21 +215,21 @@
             this.rouletteInsteadProgressbarToolStripMenuItem.Name = "rouletteInsteadProgressbarToolStripMenuItem";
             this.rouletteInsteadProgressbarToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.rouletteInsteadProgressbarToolStripMenuItem.Text = "Use progressbar instead of roulette";
-            this.rouletteInsteadProgressbarToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.rouletteInsteadProgressbarToolStripMenuItem.Click += new System.EventHandler(this.RouletteInsteadProgressbarToolStripMenuItem_Click);
             // 
             // TurnOffGameCelebrationToolStripMenuItem
             // 
             this.TurnOffGameCelebrationToolStripMenuItem.Name = "TurnOffGameCelebrationToolStripMenuItem";
             this.TurnOffGameCelebrationToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.TurnOffGameCelebrationToolStripMenuItem.Text = "Turn off Game Celebration";
-            this.TurnOffGameCelebrationToolStripMenuItem.Click += new System.EventHandler(this.выключитьПразднованиеИгрыToolStripMenuItem_Click);
+            this.TurnOffGameCelebrationToolStripMenuItem.Click += new System.EventHandler(this.TurnOffGameCelebrationToolStripMenuItem_Click);
             // 
             // SaveDeletedGamesDataToolStripMenuItem
             // 
             this.SaveDeletedGamesDataToolStripMenuItem.Name = "SaveDeletedGamesDataToolStripMenuItem";
             this.SaveDeletedGamesDataToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.SaveDeletedGamesDataToolStripMenuItem.Text = "Save deleted games data";
-            this.SaveDeletedGamesDataToolStripMenuItem.Click += new System.EventHandler(this.сохранятьДанныеОбУдалённыхИграхToolStripMenuItem_Click);
+            this.SaveDeletedGamesDataToolStripMenuItem.Click += new System.EventHandler(this.SaveDeletedGamesDataToolStripMenuItem_Click);
             // 
             // themeToolStripMenuItem
             // 
@@ -246,43 +242,36 @@
             this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
             this.themeToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.themeToolStripMenuItem.Text = "Theme";
-            this.themeToolStripMenuItem.DropDownClosed += new System.EventHandler(this.темаToolStripMenuItem_DropDownClosed);
-            this.themeToolStripMenuItem.DropDownOpening += new System.EventHandler(this.темаToolStripMenuItem_DropDownOpening);
             // 
             // whiteToolStripMenuItem
             // 
             this.whiteToolStripMenuItem.Name = "whiteToolStripMenuItem";
             this.whiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.whiteToolStripMenuItem.Text = "White";
-            this.whiteToolStripMenuItem.Click += new System.EventHandler(this.WhiteThemeToolStripMenuItem_Click);
             // 
             // darkToolStripMenuItem
             // 
             this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
             this.darkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.darkToolStripMenuItem.Text = "Dark";
-            this.darkToolStripMenuItem.Click += new System.EventHandler(this.тёмнаяToolStripMenuItem_Click);
             // 
             // telegramToolStripMenuItem
             // 
             this.telegramToolStripMenuItem.Name = "telegramToolStripMenuItem";
             this.telegramToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.telegramToolStripMenuItem.Text = "Telegram";
-            this.telegramToolStripMenuItem.Click += new System.EventHandler(this.telegramцветаToolStripMenuItem_Click);
             // 
             // discordToolStripMenuItem
             // 
             this.discordToolStripMenuItem.Name = "discordToolStripMenuItem";
             this.discordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.discordToolStripMenuItem.Text = "Discord";
-            this.discordToolStripMenuItem.Click += new System.EventHandler(this.discordцветаToolStripMenuItem_Click);
             // 
             // youtubeToolStripMenuItem
             // 
             this.youtubeToolStripMenuItem.Name = "youtubeToolStripMenuItem";
             this.youtubeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.youtubeToolStripMenuItem.Text = "YouTube";
-            this.youtubeToolStripMenuItem.Click += new System.EventHandler(this.youtubeцветаToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 

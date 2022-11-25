@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -6,11 +7,11 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
 [assembly: AssemblyTitle("WhatGameToPlay")]
-[assembly: AssemblyDescription("Не знаешь во что поиграть? Ну и катись нахуй)))")]
+[assembly: AssemblyDescription("Having different friends playing some different games and some same? Now you can know what game you can go to.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zend Corporation Corporative Innovation Detection Injection")]
+[assembly: AssemblyCompany("malandrii")]
 [assembly: AssemblyProduct("WhatGameToPlay")]
-[assembly: AssemblyCopyright("Copyright © Zend Corporation Corporative Innovation Detection Injection")]
+[assembly: AssemblyCopyright("Copyright © malandrii")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +33,6 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.5.0")]
-[assembly: AssemblyFileVersion("1.0.5.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguage("en-US")]
