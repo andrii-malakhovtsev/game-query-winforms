@@ -45,7 +45,7 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showConfirmationMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.takeIntoAccountPeopleNumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ConsiderGamePlayersLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rouletteInsteadProgressbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CelebrateRandomGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveDeletedGamesDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,7 +74,7 @@
             // labelPresentPeople
             // 
             this.labelPresentPeople.AutoSize = true;
-            this.labelPresentPeople.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPresentPeople.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             this.labelPresentPeople.Location = new System.Drawing.Point(12, 35);
             this.labelPresentPeople.Name = "labelPresentPeople";
             this.labelPresentPeople.Size = new System.Drawing.Size(160, 24);
@@ -84,7 +84,7 @@
             // labelAvailableGames
             // 
             this.labelAvailableGames.AutoSize = true;
-            this.labelAvailableGames.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAvailableGames.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             this.labelAvailableGames.Location = new System.Drawing.Point(275, 35);
             this.labelAvailableGames.Name = "labelAvailableGames";
             this.labelAvailableGames.Size = new System.Drawing.Size(169, 24);
@@ -178,7 +178,7 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showMessagesToolStripMenuItem,
             this.showConfirmationMessagesToolStripMenuItem,
-            this.takeIntoAccountPeopleNumberToolStripMenuItem,
+            this.ConsiderGamePlayersLimitsToolStripMenuItem,
             this.rouletteInsteadProgressbarToolStripMenuItem,
             this.CelebrateRandomGameToolStripMenuItem,
             this.SaveDeletedGamesDataToolStripMenuItem});
@@ -191,7 +191,7 @@
             this.showMessagesToolStripMenuItem.Checked = true;
             this.showMessagesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showMessagesToolStripMenuItem.Name = "showMessagesToolStripMenuItem";
-            this.showMessagesToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.showMessagesToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.showMessagesToolStripMenuItem.Text = "Show messages";
             this.showMessagesToolStripMenuItem.Click += new System.EventHandler(this.ShowMessagesToolStripMenuItem_Click);
             // 
@@ -200,37 +200,37 @@
             this.showConfirmationMessagesToolStripMenuItem.Checked = true;
             this.showConfirmationMessagesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showConfirmationMessagesToolStripMenuItem.Name = "showConfirmationMessagesToolStripMenuItem";
-            this.showConfirmationMessagesToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.showConfirmationMessagesToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.showConfirmationMessagesToolStripMenuItem.Text = "Show confirmation messages";
             this.showConfirmationMessagesToolStripMenuItem.Click += new System.EventHandler(this.ShowConfirmationMessagesToolStripMenuItem_Click);
             // 
-            // takeIntoAccountPeopleNumberToolStripMenuItem
+            // ConsiderGamePlayersLimitsToolStripMenuItem
             // 
-            this.takeIntoAccountPeopleNumberToolStripMenuItem.Checked = true;
-            this.takeIntoAccountPeopleNumberToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.takeIntoAccountPeopleNumberToolStripMenuItem.Name = "takeIntoAccountPeopleNumberToolStripMenuItem";
-            this.takeIntoAccountPeopleNumberToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.takeIntoAccountPeopleNumberToolStripMenuItem.Text = "Take into account number of people";
-            this.takeIntoAccountPeopleNumberToolStripMenuItem.Click += new System.EventHandler(this.TakeIntoAccountPeopleNumberToolStripMenuItem_Click);
+            this.ConsiderGamePlayersLimitsToolStripMenuItem.Checked = true;
+            this.ConsiderGamePlayersLimitsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ConsiderGamePlayersLimitsToolStripMenuItem.Name = "ConsiderGamePlayersLimitsToolStripMenuItem";
+            this.ConsiderGamePlayersLimitsToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.ConsiderGamePlayersLimitsToolStripMenuItem.Text = "Consider players limits on games";
+            this.ConsiderGamePlayersLimitsToolStripMenuItem.Click += new System.EventHandler(this.TakeIntoAccountPeopleNumberToolStripMenuItem_Click);
             // 
             // rouletteInsteadProgressbarToolStripMenuItem
             // 
             this.rouletteInsteadProgressbarToolStripMenuItem.Name = "rouletteInsteadProgressbarToolStripMenuItem";
-            this.rouletteInsteadProgressbarToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.rouletteInsteadProgressbarToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.rouletteInsteadProgressbarToolStripMenuItem.Text = "Use progressbar instead of roulette";
             this.rouletteInsteadProgressbarToolStripMenuItem.Click += new System.EventHandler(this.RouletteInsteadProgressbarToolStripMenuItem_Click);
             // 
             // CelebrateRandomGameToolStripMenuItem
             // 
             this.CelebrateRandomGameToolStripMenuItem.Name = "CelebrateRandomGameToolStripMenuItem";
-            this.CelebrateRandomGameToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.CelebrateRandomGameToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.CelebrateRandomGameToolStripMenuItem.Text = "Celebrate random game";
             this.CelebrateRandomGameToolStripMenuItem.Click += new System.EventHandler(this.CelebrateRandomGameToolStripMenuItem_Click);
             // 
             // SaveDeletedGamesDataToolStripMenuItem
             // 
             this.SaveDeletedGamesDataToolStripMenuItem.Name = "SaveDeletedGamesDataToolStripMenuItem";
-            this.SaveDeletedGamesDataToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.SaveDeletedGamesDataToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.SaveDeletedGamesDataToolStripMenuItem.Text = "Save deleted games data";
             this.SaveDeletedGamesDataToolStripMenuItem.Click += new System.EventHandler(this.SaveDeletedGamesDataToolStripMenuItem_Click);
             // 
@@ -335,7 +335,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showConfirmationMessagesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem takeIntoAccountPeopleNumberToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ConsiderGamePlayersLimitsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playerListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gameListToolStripMenuItem;

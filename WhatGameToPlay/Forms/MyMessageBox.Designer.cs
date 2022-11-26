@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyMessageBox));
             this.labelMessage = new System.Windows.Forms.Label();
             this.panel = new System.Windows.Forms.Panel();
             this.buttonNo = new System.Windows.Forms.Button();
@@ -97,9 +98,10 @@
             this.Controls.Add(this.panel);
             this.Controls.Add(this.labelMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MyMessageBox";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Load += new System.EventHandler(this.MyMessageBox_Load);
             this.panel.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -42,6 +42,10 @@ namespace WhatGameToPlay
                 menuToolStripItem.DropDownOpening += new EventHandler(MenuToolStripItem_DropDownOpening);
                 menuToolStripItem.DropDownClosed += new EventHandler(MenuToolStripItem_DropDownClosed);
             }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
             if (!FilesController.StandartFilesExist())
             {
                 if (MessageController.ShowFirstMeetDialog())
@@ -52,6 +56,8 @@ namespace WhatGameToPlay
             SetSavedOptions();
             SetSavedColors();
             _theme.SetChosenThemeColors();
+            MyMessageBox = new MyMessageBox(_theme);
+            RefreshColors();
         }
 
         private void MenuToolStripItem_DropDownOpening(object sender, EventArgs e)
@@ -76,7 +82,7 @@ namespace WhatGameToPlay
             _optionToolStrips = new ToolStripMenuItem[] {
                 showMessagesToolStripMenuItem,
                 showConfirmationMessagesToolStripMenuItem,
-                takeIntoAccountPeopleNumberToolStripMenuItem,
+                ConsiderGamePlayersLimitsToolStripMenuItem,
                 rouletteInsteadProgressbarToolStripMenuItem,
                 CelebrateRandomGameToolStripMenuItem,
                 SaveDeletedGamesDataToolStripMenuItem
@@ -116,12 +122,6 @@ namespace WhatGameToPlay
             RefreshColors();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            MyMessageBox = new MyMessageBox(_theme);
-            RefreshColors();
-        }
-
         public void AddPlayerCheckBox(Player player)
         {
             int topMeasure = 70, leftMeasure = 25;
@@ -156,7 +156,7 @@ namespace WhatGameToPlay
                     for (int i = 0; i < currentGames.Count; i++)
                         foreach (string gameNotPlaying in player.GamesNotPlaying)
                             DeleteGameFromList(gameNotPlaying, currentGames);
-            if (takeIntoAccountPeopleNumberToolStripMenuItem.Checked)
+            if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
                 foreach (string restrictedGame in
                     FilesController.GetRestrictedGamesFromDirectory(checkedPeopleCount))
                         DeleteGameFromList(restrictedGame, currentGames);
@@ -186,6 +186,7 @@ namespace WhatGameToPlay
                 pictureBoxSmile.Hide();
                 pictureBoxFireworks.Hide();
                 buttonRandomAvailableGame.Enabled = false;
+                SetToolStripItemsEnables(enable: false);
                 timer.Interval = defaultTimerInterval;
                 timer.Enabled = true;
                 foreach (CheckBox checkBox in _checkBoxes) 
@@ -195,6 +196,12 @@ namespace WhatGameToPlay
             {
                 _messageController.ShowNoGamesToPlayMessage();
             }
+        }
+
+        private void SetToolStripItemsEnables(bool enable)
+        {
+            editToolStripMenuItem.Enabled = enable;
+            optionsToolStripMenuItem.Enabled = enable;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -217,6 +224,7 @@ namespace WhatGameToPlay
                 textBox.Text = Convert.ToString(listBoxAvailableGames.Items[randomAvailableGame]);
             if (timer.Interval == maximumTimerInterval)
             {
+                SetToolStripItemsEnables(enable: true);
                 buttonRandomAvailableGame.Enabled = true;
                 timer.Enabled = false;
                 if (CelebrateRandomGameToolStripMenuItem.Checked)
@@ -240,6 +248,7 @@ namespace WhatGameToPlay
         {
             RefreshPeopleList();
             listBoxAvailableGames.Items.Clear();
+            textBox.Clear();
         }
 
         private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)
@@ -279,8 +288,8 @@ namespace WhatGameToPlay
 
         private void TakeIntoAccountPeopleNumberToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            takeIntoAccountPeopleNumberToolStripMenuItem.Checked =
-                !takeIntoAccountPeopleNumberToolStripMenuItem.Checked;
+            ConsiderGamePlayersLimitsToolStripMenuItem.Checked =
+                !ConsiderGamePlayersLimitsToolStripMenuItem.Checked;
             PlayerCheckBoxCheckedChange();
             RefreshOptionsToFiles();
         }
@@ -365,7 +374,7 @@ namespace WhatGameToPlay
                 gameListToolStripMenuItem,
                 showMessagesToolStripMenuItem,
                 showConfirmationMessagesToolStripMenuItem,
-                takeIntoAccountPeopleNumberToolStripMenuItem,
+                ConsiderGamePlayersLimitsToolStripMenuItem,
                 rouletteInsteadProgressbarToolStripMenuItem,
                 CelebrateRandomGameToolStripMenuItem,
                 SaveDeletedGamesDataToolStripMenuItem,

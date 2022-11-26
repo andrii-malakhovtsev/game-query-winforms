@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GamesListForm));
             this.listBoxGames = new System.Windows.Forms.ListBox();
             this.buttonAddGame = new System.Windows.Forms.Button();
             this.labelGamesList = new System.Windows.Forms.Label();
@@ -49,14 +50,14 @@
             this.listBoxGames.FormattingEnabled = true;
             this.listBoxGames.Location = new System.Drawing.Point(12, 41);
             this.listBoxGames.Name = "listBoxGames";
-            this.listBoxGames.Size = new System.Drawing.Size(312, 212);
+            this.listBoxGames.Size = new System.Drawing.Size(244, 212);
             this.listBoxGames.TabIndex = 7;
             this.listBoxGames.DoubleClick += new System.EventHandler(this.ListBoxGames_DoubleClick);
             // 
             // buttonAddGame
             // 
             this.buttonAddGame.Enabled = false;
-            this.buttonAddGame.Location = new System.Drawing.Point(361, 100);
+            this.buttonAddGame.Location = new System.Drawing.Point(277, 100);
             this.buttonAddGame.Name = "buttonAddGame";
             this.buttonAddGame.Size = new System.Drawing.Size(84, 24);
             this.buttonAddGame.TabIndex = 8;
@@ -67,8 +68,8 @@
             // labelGamesList
             // 
             this.labelGamesList.AutoSize = true;
-            this.labelGamesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelGamesList.Location = new System.Drawing.Point(105, 9);
+            this.labelGamesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
+            this.labelGamesList.Location = new System.Drawing.Point(72, 9);
             this.labelGamesList.Name = "labelGamesList";
             this.labelGamesList.Size = new System.Drawing.Size(112, 24);
             this.labelGamesList.TabIndex = 9;
@@ -77,8 +78,8 @@
             // labelEnterGameName
             // 
             this.labelEnterGameName.AutoSize = true;
-            this.labelEnterGameName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelEnterGameName.Location = new System.Drawing.Point(380, 41);
+            this.labelEnterGameName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.labelEnterGameName.Location = new System.Drawing.Point(296, 41);
             this.labelEnterGameName.Name = "labelEnterGameName";
             this.labelEnterGameName.Size = new System.Drawing.Size(151, 20);
             this.labelEnterGameName.TabIndex = 10;
@@ -86,7 +87,7 @@
             // 
             // textBoxGameName
             // 
-            this.textBoxGameName.Location = new System.Drawing.Point(361, 74);
+            this.textBoxGameName.Location = new System.Drawing.Point(277, 74);
             this.textBoxGameName.Name = "textBoxGameName";
             this.textBoxGameName.Size = new System.Drawing.Size(184, 20);
             this.textBoxGameName.TabIndex = 14;
@@ -96,7 +97,7 @@
             // buttonDeleteGame
             // 
             this.buttonDeleteGame.Enabled = false;
-            this.buttonDeleteGame.Location = new System.Drawing.Point(461, 100);
+            this.buttonDeleteGame.Location = new System.Drawing.Point(377, 100);
             this.buttonDeleteGame.Name = "buttonDeleteGame";
             this.buttonDeleteGame.Size = new System.Drawing.Size(84, 24);
             this.buttonDeleteGame.TabIndex = 15;
@@ -108,8 +109,8 @@
             // 
             this.labelMin.AutoSize = true;
             this.labelMin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMin.Location = new System.Drawing.Point(397, 182);
+            this.labelMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic);
+            this.labelMin.Location = new System.Drawing.Point(313, 182);
             this.labelMin.Name = "labelMin";
             this.labelMin.Size = new System.Drawing.Size(28, 15);
             this.labelMin.TabIndex = 18;
@@ -119,8 +120,8 @@
             // 
             this.labelMax.AutoSize = true;
             this.labelMax.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMax.Location = new System.Drawing.Point(472, 182);
+            this.labelMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic);
+            this.labelMax.Location = new System.Drawing.Point(388, 182);
             this.labelMax.Name = "labelMax";
             this.labelMax.Size = new System.Drawing.Size(31, 15);
             this.labelMax.TabIndex = 20;
@@ -130,12 +131,12 @@
             // 
             this.checkBoxPeopleNumberLimit.AutoSize = true;
             this.checkBoxPeopleNumberLimit.Enabled = false;
-            this.checkBoxPeopleNumberLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxPeopleNumberLimit.Location = new System.Drawing.Point(363, 150);
+            this.checkBoxPeopleNumberLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
+            this.checkBoxPeopleNumberLimit.Location = new System.Drawing.Point(316, 150);
             this.checkBoxPeopleNumberLimit.Name = "checkBoxPeopleNumberLimit";
-            this.checkBoxPeopleNumberLimit.Size = new System.Drawing.Size(182, 20);
+            this.checkBoxPeopleNumberLimit.Size = new System.Drawing.Size(111, 20);
             this.checkBoxPeopleNumberLimit.TabIndex = 21;
-            this.checkBoxPeopleNumberLimit.Text = "Number of people limit";
+            this.checkBoxPeopleNumberLimit.Text = "Players limit";
             this.checkBoxPeopleNumberLimit.UseVisualStyleBackColor = true;
             this.checkBoxPeopleNumberLimit.CheckedChanged += new System.EventHandler(this.CheckBoxPeopleNumberLimit_CheckedChanged);
             this.checkBoxPeopleNumberLimit.Click += new System.EventHandler(this.CheckBoxPeopleNumberLimit_Click);
@@ -143,7 +144,7 @@
             // numericUpDownMin
             // 
             this.numericUpDownMin.Enabled = false;
-            this.numericUpDownMin.Location = new System.Drawing.Point(384, 200);
+            this.numericUpDownMin.Location = new System.Drawing.Point(300, 200);
             this.numericUpDownMin.Maximum = new decimal(new int[] {
             99,
             0,
@@ -166,7 +167,7 @@
             // numericUpDownMax
             // 
             this.numericUpDownMax.Enabled = false;
-            this.numericUpDownMax.Location = new System.Drawing.Point(462, 200);
+            this.numericUpDownMax.Location = new System.Drawing.Point(378, 200);
             this.numericUpDownMax.Minimum = new decimal(new int[] {
             1,
             0,
@@ -184,19 +185,19 @@
             // buttonSet
             // 
             this.buttonSet.Enabled = false;
-            this.buttonSet.Location = new System.Drawing.Point(384, 226);
+            this.buttonSet.Location = new System.Drawing.Point(300, 226);
             this.buttonSet.Name = "buttonSet";
             this.buttonSet.Size = new System.Drawing.Size(139, 24);
             this.buttonSet.TabIndex = 25;
             this.buttonSet.Text = "Set";
             this.buttonSet.UseVisualStyleBackColor = true;
-            this.buttonSet.Click += new System.EventHandler(this.ButtonSet_Click);
+            this.buttonSet.Click += new System.EventHandler(this.ButtonSetPeopleLimit_Click);
             // 
             // GamesListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(578, 262);
+            this.ClientSize = new System.Drawing.Size(483, 262);
             this.Controls.Add(this.buttonSet);
             this.Controls.Add(this.numericUpDownMax);
             this.Controls.Add(this.numericUpDownMin);
@@ -210,8 +211,9 @@
             this.Controls.Add(this.buttonAddGame);
             this.Controls.Add(this.listBoxGames);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GamesListForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Games List";
             this.Load += new System.EventHandler(this.FormGamesList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMin)).EndInit();

@@ -13,7 +13,7 @@ namespace WhatGameToPlay
         private static readonly string s_optionsFileName = "Options" + s_textFileExtension;
         private static readonly string s_gamesListFileName = "GamesList" + s_textFileExtension;
         private static readonly string s_playersDirectoryName = "Players";
-        private static readonly string s_restrioctionsDirectoryName = "Restrictions";
+        private static readonly string s_limitsDirectoryName = "Limits";
 
         public static void CreateStartingFiles()
         {
@@ -28,7 +28,7 @@ namespace WhatGameToPlay
                 AddGameToGameListFile("example game");
             if (CreateDirectory(s_playersDirectoryName))
                 CreatePersonFile("example player");
-            CreateDirectory(s_restrioctionsDirectoryName);
+            CreateDirectory(s_limitsDirectoryName);
         }
 
         public static bool StandartFilesExist()
@@ -74,7 +74,7 @@ namespace WhatGameToPlay
 
         private static FileInfo[] GetRestrictionsTextFiles()
         {
-            DirectoryInfo directory = new DirectoryInfo(s_restrioctionsDirectoryName);
+            DirectoryInfo directory = new DirectoryInfo(s_limitsDirectoryName);
             return directory.GetFiles(s_allTextFileExtension);
         }
 
@@ -84,7 +84,7 @@ namespace WhatGameToPlay
             return directory.GetFiles(s_allTextFileExtension);
         }
 
-        public static void AppendGameToPlayerFile(string gameName)
+        public static void AppendGameToPlayersFiles(string gameName)
         {
             foreach (FileInfo file in GetPlayersTextFiles())
                 File.AppendAllText(file.FullName, gameName + "\n");
@@ -139,7 +139,7 @@ namespace WhatGameToPlay
             }
         }
 
-        private static void DeleteGameRestrictionsFile(string gameName)
+        public static void DeleteGameRestrictionsFile(string gameName)
         {
             string path = GetSelectedGameRestrictionsFilePath(gameName);
             if (File.Exists(path)) File.Delete(path);
@@ -174,15 +174,11 @@ namespace WhatGameToPlay
             return restrictedGames;
         }
 
-        public static bool RestrictionExist(string gameName, ref string gameFullName)
+        public static bool RestrictionExist(string gameName)
         {
             foreach (FileInfo fileInfo in GetRestrictionsTextFiles())
             {
-                if (gameName == Path.GetFileNameWithoutExtension(fileInfo.Name))
-                {
-                    gameFullName = fileInfo.Name;
-                    return true;
-                }
+                if (gameName == Path.GetFileNameWithoutExtension(fileInfo.Name)) return true;
             }
             return false;
         }
@@ -238,7 +234,7 @@ namespace WhatGameToPlay
 
         private static string GetSelectedGameRestrictionsFilePath(string gameName)
         {
-            return GetFullDirectoryFilePath(s_restrioctionsDirectoryName, gameName);
+            return GetFullDirectoryFilePath(s_limitsDirectoryName, gameName);
         }
 
         private static string GetFullDirectoryFilePath(string directory, string fileName)

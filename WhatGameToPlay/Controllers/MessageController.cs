@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
@@ -12,14 +13,14 @@ namespace WhatGameToPlay
             _mainForm = mainform;
         }
 
-        public void ShowRestrictionsMessage()
-        {
-            ShowOptionalMainFormMessage("Restrictions Set!");
-        }
-
         public void ShowRestrictionsErrorMessage()
         {
             ShowMainFormMessage("The Min value must not exceed the Max value");
+        }
+
+        public void ShowPeopleLimitSetMessage(string gameName)
+        {
+            ShowOptionalMainFormMessage("Limits for " + gameName + " set!");
         }
 
         public void ShowGameAddedMessage(string gameName)
@@ -27,14 +28,14 @@ namespace WhatGameToPlay
             ShowOptionalMainFormMessage("Game " + gameName + " is successfully added!");
         }
 
-        public void ShowGameListSetForPlayerMessage()
+        public void ShowGameListSetForPlayerMessage(string playerName)
         {
-            ShowOptionalMainFormMessage("Game list for specific player set!");
+            ShowOptionalMainFormMessage("Games list for " + playerName + " set!");
         }
 
-        public void ShowPersonAddedToListMessage()
+        public void ShowPlayerAddedToListMessage(string playerName)
         {
-            ShowOptionalMainFormMessage("New person added to the list!");
+            ShowOptionalMainFormMessage(playerName + " is added to the list!");
         }
 
         public void ShowNoGamesToPlayMessage()
@@ -44,7 +45,28 @@ namespace WhatGameToPlay
 
         public void ShowGameToPlayMessage(string gameToPlay)
         {
-            ShowMainFormMessage("Let's go play " + gameToPlay + "!");
+            string message = "";
+            Random random = new Random();
+            int randomNumber = random.Next(1, 6);
+            switch (randomNumber)
+            {
+                case 1: 
+                    message = "Let's go to play " + gameToPlay + "!";
+                    break;
+                case 2:
+                    message = "Yoooo, is it " + gameToPlay + " that we gonna play?";
+                    break;
+                case 3:
+                    message = "The best choice for today is... " + gameToPlay + "!";
+                    break;
+                case 4:
+                    message = "No way we are going to play " + gameToPlay + " rn!";
+                    break;
+                case 5:
+                    message = "Hey chads, we are going to " + gameToPlay + "!";
+                    break;
+            }
+            ShowMainFormMessage(message);
         }
 
         public void ShowTurnConfirmationMessagesError()
@@ -91,7 +113,7 @@ namespace WhatGameToPlay
 
         public bool ShowDeleteGameFileDialog(string gameName)
         {
-            return ShowDeleteConfirmationDialog(gameName, listName: "restrictions");
+            return ShowDeleteConfirmationDialog(gameName, listName: "limits");
         }
 
         public bool ShowDeletePlayerFromListDialog(string selectedPlayer)
