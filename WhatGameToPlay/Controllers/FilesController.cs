@@ -21,20 +21,13 @@ namespace WhatGameToPlay
                 AddThemeToFile(ThemeController.GetStandartThemeName());
             if (CreateFile(s_optionsFileName))
             {
-                string[] standartOptions = {
-                    "True",
-                    "True",
-                    "True",
-                    "False",
-                    "True",
-                    "False"
-                };
+                string[] standartOptions = { "True", "True", "True", "False", "True", "False" };
                 AddOptionsToFile(standartOptions);
             }
             if (CreateFile(s_gamesListFileName))
-                AddGameToGameListFile("Game1");
+                AddGameToGameListFile("example game");
             if (CreateDirectory(s_playersDirectoryName))
-                CreatePersonFile("Player1");
+                CreatePersonFile("example player");
             CreateDirectory(s_restrioctionsDirectoryName);
         }
 

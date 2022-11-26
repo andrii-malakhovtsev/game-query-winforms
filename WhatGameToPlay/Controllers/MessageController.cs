@@ -5,6 +5,7 @@ namespace WhatGameToPlay
     public class MessageController
     {
         private readonly MainForm _mainForm;
+        private readonly static string _confirmationDialogTitle = "Confirmation";
 
         public MessageController(MainForm mainform)
         {
@@ -65,14 +66,16 @@ namespace WhatGameToPlay
         {
             DialogResult dialogResult = MessageBox.Show("Seems like you are using " +
                 "the program for the first time.\nIt does create files in the same path as it is located!" +
-                "\nMake sure it is in the separate folder. Continue?", "Confirmation", MessageBoxButtons.YesNo);
+                "\nMake sure it is in the separate folder. Continue?", _confirmationDialogTitle,
+                MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }
 
         private bool ShowDeleteConfirmationDialog(string objectToDelete, string listName) 
         {
             DialogResult dialogResult = _mainForm.MyMessageBox.Show("Are you sure you want to delete " + 
-                objectToDelete + " from " + listName + " list?", "Confirmation", MessageBoxButtons.YesNo);
+                objectToDelete + " from " + listName + " list?", _confirmationDialogTitle, 
+                MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }
 
