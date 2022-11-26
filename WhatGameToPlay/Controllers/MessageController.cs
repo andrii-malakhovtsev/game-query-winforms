@@ -14,7 +14,6 @@ namespace WhatGameToPlay
         public void ShowRestrictionsMessage()
         {
             ShowOptionalMainFormMessage("Restrictions Set!");
-            _mainForm.ClearAvailableGamesListBox();
         }
 
         public void ShowRestrictionsErrorMessage()
@@ -65,14 +64,7 @@ namespace WhatGameToPlay
         private bool ShowDeleteConfirmationDialog(string objectToDelete, string listName) 
         {
             DialogResult dialogResult = _mainForm.MyMessageBox.Show("Are you sure you want to delete " + 
-                objectToDelete + "from " + listName + "list?", "Confirmation", MessageBoxButtons.YesNo);
-            return dialogResult == DialogResult.Yes;
-        }
-
-        private bool ShowDeleteConfirmationDialog(string objectToDelete)
-        {
-            DialogResult dialogResult = _mainForm.MyMessageBox.Show("Are you sure you want to delete " +
-                objectToDelete, "Confirmation", MessageBoxButtons.YesNo);
+                objectToDelete + " from " + listName + " list?", "Confirmation", MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }
 
@@ -88,7 +80,7 @@ namespace WhatGameToPlay
 
         public bool ShowDeleteGameFileDialog(string gameName)
         {
-            return ShowDeleteConfirmationDialog(gameName + "?");
+            return ShowDeleteConfirmationDialog(gameName, listName: "restrictions");
         }
 
         public bool ShowDeletePlayerFromListDialog(string selectedPlayer)

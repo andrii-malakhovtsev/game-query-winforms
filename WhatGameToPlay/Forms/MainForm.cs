@@ -6,28 +6,23 @@ namespace WhatGameToPlay
 {
     public partial class MainForm : Form
     {
-        private int _checkedPeopleCount = 0;
-        private ToolStripMenuItem[] _optionToolStrips;
         private readonly MessageController _messageController;
         private readonly ThemeController _theme;
         private readonly List<CheckBox> _checkBoxes = new List<CheckBox>();
         private readonly List<CheckBox> _checkBoxesCopy = new List<CheckBox>();
         private readonly List<ToolStripMenuItem> _colorThemeItems = new List<ToolStripMenuItem>();
-        public MyMessageBox MyMessageBox { get; set; }
-        public List<string> Games { get; set; } = new List<string>();
-        public List<string> GamesCopy { get; set; } = new List<string>();
+        private ToolStripMenuItem[] _optionToolStrips;
         public List<Player> Players { get; set; } = new List<Player>();
+        public MyMessageBox MyMessageBox { get; set; }
         public bool ShowConfirmingMessages { get; set; }
-        public bool ShowMessages { get; set; } = true;
-        public bool SaveDeletedGamesData { get; set; } = false;
+        public bool ShowMessages { get; set; }
+        public bool SaveDeletedGamesData { get; set; }
 
         public MainForm()
         {
             InitializeComponent();
             _theme = new ThemeController();
             _messageController = new MessageController(this);
-            Games = FilesController.GetGamesListFromFile();
-            GamesCopy = Games;
             _colorThemeItems.AddRange(new List<ToolStripMenuItem> {
                 whiteToolStripMenuItem,
                 darkToolStripMenuItem,
@@ -77,7 +72,7 @@ namespace WhatGameToPlay
                 showConfirmationMessagesToolStripMenuItem,
                 takeIntoAccountPeopleNumberToolStripMenuItem,
                 rouletteInsteadProgressbarToolStripMenuItem,
-                TurnOffGameCelebrationToolStripMenuItem,
+                CelebrateRandomGameToolStripMenuItem,
                 SaveDeletedGamesDataToolStripMenuItem
             };
             string[] currentOptions = FilesController.GetOptionsFromFile();
@@ -100,13 +95,6 @@ namespace WhatGameToPlay
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
                 if (colorTheme.Checked) FilesController.AddThemeToFile(colorTheme.Text);
-        }
-
-        public void RefreshGamesList()
-        {
-            GamesCopy.Clear();
-            foreach (string game in FilesController.GetGamesFromFile()) 
-                GamesCopy.Add(game);
         }
 
         public void RefreshPeopleList()
@@ -152,34 +140,32 @@ namespace WhatGameToPlay
 
         public void PlayerCheckBoxCheckedChange()
         {
-            _checkedPeopleCount = 0;
+            List<string> currentGames = FilesController.GetGamesListFromFile();
+            int checkedPeopleCount = 0;
             foreach (CheckBox checkbox in _checkBoxesCopy)
-                if (checkbox.Checked) _checkedPeopleCount++;
+                if (checkbox.Checked) checkedPeopleCount++;
             listBoxAvailableGames.Items.Clear();
-            Games.Clear();
-            foreach (string game in GamesCopy) Games.Add(game);
-            foreach (Player person in Players)
-                if (person.CheckBox.Checked)
-                    for (int i = 0; i < Games.Count; i++)
-                        foreach (string gameNotPlaying in person.GamesNotPlaying)
-                            if (Games[i] == gameNotPlaying) Games[i] = null;
+            foreach (Player player in Players)
+                if (player.CheckBox.Checked)
+                    for (int i = 0; i < currentGames.Count; i++)
+                        foreach (string gameNotPlaying in player.GamesNotPlaying)
+                            DeleteGameFromList(gameNotPlaying, currentGames);
             if (takeIntoAccountPeopleNumberToolStripMenuItem.Checked)
-                foreach (string gameToMakeNull in
-                    FilesController.GetUnrestrictedGamesFromDirectory(_checkedPeopleCount))
-                        MakeGameFromListNull(gameToMakeNull);
-            foreach (string game in Games)
-                if (game != null) 
-                    listBoxAvailableGames.Items.Add(game);
+                foreach (string restrictedGame in
+                    FilesController.GetRestrictedGamesFromDirectory(checkedPeopleCount))
+                        DeleteGameFromList(restrictedGame, currentGames);
+            foreach (string game in currentGames) 
+                listBoxAvailableGames.Items.Add(game);
             int uncheckedPeopleCount = 0;
             foreach (Player person in Players)
                 if (!person.CheckBox.Checked) uncheckedPeopleCount++;
             if (uncheckedPeopleCount == Players.Count) listBoxAvailableGames.Items.Clear();
         }
 
-        private void MakeGameFromListNull(string game)
+        private void DeleteGameFromList(string gameToDelete, List<string> currentGames)
         {
-            for (int i = 0; i < Games.Count; i++)
-                if (Games[i] == game) Games[i] = null;
+            for (int i = 0; i < currentGames.Count; i++)
+                if (currentGames[i] == gameToDelete) currentGames.RemoveAt(i);
         }
 
         private void ButtonRandomAvailableGame_Click(object sender, EventArgs e)
@@ -193,8 +179,8 @@ namespace WhatGameToPlay
                 _theme.SetTextBoxForeColor(textBox, win: false);
                 pictureBoxSmile.Hide();
                 pictureBoxFireworks.Hide();
-                timer.Interval = defaultTimerInterval;
                 buttonRandomAvailableGame.Enabled = false;
+                timer.Interval = defaultTimerInterval;
                 timer.Enabled = true;
                 foreach (CheckBox checkBox in _checkBoxes) 
                     checkBox.Enabled = false;
@@ -214,10 +200,9 @@ namespace WhatGameToPlay
 
             if (changeProgressbarValue)
             {
-                progressBar.Value = timer.Interval < timerMaximumAccelerationInterval ? 
+                progressBar.Value += timer.Interval < timerMaximumAccelerationInterval ? 
                     progressBarSmallIndent : progressBarBigIndent;
             }
-            _theme.SetBackgroundForeColor(textBox);
             listBoxAvailableGames.Focus();
             timer.Interval += timerInterval;
             Random random = new Random();
@@ -228,7 +213,7 @@ namespace WhatGameToPlay
             {
                 buttonRandomAvailableGame.Enabled = true;
                 timer.Enabled = false;
-                if (!TurnOffGameCelebrationToolStripMenuItem.Checked)
+                if (CelebrateRandomGameToolStripMenuItem.Checked)
                 {
                     pictureBoxSmile.Show();
                     pictureBoxFireworks.Show(); pictureBoxFireworks.SendToBack();
@@ -312,10 +297,10 @@ namespace WhatGameToPlay
             formPlayerList.ShowDialog();
         }
 
-        private void TurnOffGameCelebrationToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CelebrateRandomGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TurnOffGameCelebrationToolStripMenuItem.Checked =
-                !TurnOffGameCelebrationToolStripMenuItem.Checked;
+            CelebrateRandomGameToolStripMenuItem.Checked =
+                !CelebrateRandomGameToolStripMenuItem.Checked;
             pictureBoxSmile.Visible = false;
             pictureBoxFireworks.Visible = false;
             RefreshOptionsToFiles();
@@ -370,13 +355,13 @@ namespace WhatGameToPlay
             foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
                 toolStripMenuItems.Add(toolStripMenuItem);
             toolStripMenuItems.AddRange(new List<ToolStripMenuItem>{
-                peopleListToolStripMenuItem,
+                playerListToolStripMenuItem,
                 gameListToolStripMenuItem,
                 showMessagesToolStripMenuItem,
                 showConfirmationMessagesToolStripMenuItem,
                 takeIntoAccountPeopleNumberToolStripMenuItem,
                 rouletteInsteadProgressbarToolStripMenuItem,
-                TurnOffGameCelebrationToolStripMenuItem,
+                CelebrateRandomGameToolStripMenuItem,
                 SaveDeletedGamesDataToolStripMenuItem,
                 whiteToolStripMenuItem,
                 darkToolStripMenuItem,

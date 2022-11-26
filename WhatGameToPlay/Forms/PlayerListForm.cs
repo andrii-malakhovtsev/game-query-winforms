@@ -21,7 +21,7 @@ namespace WhatGameToPlay
 
         private void FormPlayerList_Load(object sender, EventArgs e)
         {
-            foreach (Player player in _mainForm.Players)
+            foreach (Player player in FilesController.GetPlayersListFromDirectory())
                 listBoxPlayers.Items.Add(player.Name);
             RefreshColors();
         }
@@ -35,7 +35,7 @@ namespace WhatGameToPlay
         private void SelectPerson()
         {
             checkedListBoxGamesPlaying.Items.Clear();
-            foreach (string game in _mainForm.GamesCopy)
+            foreach (string game in FilesController.GetGamesListFromFile())
                 checkedListBoxGamesPlaying.Items.Add(game);
             for (int index = 0; index < checkedListBoxGamesPlaying.Items.Count; index++)
                 checkedListBoxGamesPlaying.SetItemChecked(index, value: true);
@@ -57,10 +57,10 @@ namespace WhatGameToPlay
         private void ButtonGamesPlayingSet_Click(object sender, EventArgs e)
         {
             List<string> checkedCheckboxes = new List<string>();
-            foreach (CheckedListBox game in checkedListBoxGamesPlaying.CheckedItems)
+            foreach (var game in checkedListBoxGamesPlaying.CheckedItems)
                 checkedCheckboxes.Add(game.ToString());
             List<string> gamesNotPlayingList =
-                    _mainForm.GamesCopy.Distinct().Except(checkedCheckboxes).ToList();
+                FilesController.GetGamesFromFile().Distinct().Except(checkedCheckboxes).ToList();
             FilesController.WriteGamesNotPlayingToFile(textBoxSelectedPlayer.Text, gamesNotPlayingList);
             _messageController.ShowGameListSetForPlayerMessage();
             _mainForm.RefreshPeopleList();
@@ -86,7 +86,7 @@ namespace WhatGameToPlay
             FilesController.CreatePersonFile(textBoxSelectedPlayer.Text);
             _mainForm.RefreshPeopleList();
             listBoxPlayers.Items.Clear();
-            foreach (Player person in _mainForm.Players)
+            foreach (Player person in FilesController.GetPlayersListFromDirectory())
                 listBoxPlayers.Items.Add(person.Name);
             SelectPerson();
             _messageController.ShowPersonAddedToListMessage();
@@ -107,18 +107,18 @@ namespace WhatGameToPlay
 
         private void DeletePersonFromPeopleList()
         {
-            foreach (Player person in _mainForm.Players)
+            foreach (Player person in FilesController.GetPlayersListFromDirectory())
             {
                 if (person.Name == textBoxSelectedPlayer.Text)
                 {
-                    _mainForm.Players.Remove(person);
+                    FilesController.DeleteSelectedPlayerFile(person.Name);
                     break;
                 }
             }
             FilesController.DeleteSelectedPlayerFile(selectedPlayer: textBoxSelectedPlayer.Text);
             listBoxPlayers.Items.Clear();
             _mainForm.RefreshPeopleList();
-            foreach (Player person in _mainForm.Players)
+            foreach (Player person in FilesController.GetPlayersListFromDirectory())
                 listBoxPlayers.Items.Add(person.Name);
             checkedListBoxGamesPlaying.Items.Clear();
             SetPlayerButtonsEnables(enable: true);

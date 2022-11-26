@@ -15,8 +15,7 @@ namespace WhatGameToPlay
             _messageController = new MessageController(_mainForm);
             _theme = theme;
             InitializeComponent();
-            foreach (string game in mainForm.GamesCopy)
-                listBoxGames.Items.Add(game);
+            RefreshListBoxGames();
         }
 
         private string GetSelectedGameName()
@@ -24,13 +23,17 @@ namespace WhatGameToPlay
             return textBoxGameName.Text;
         }
 
+        private void RefreshListBoxGames()
+        {
+            listBoxGames.Items.Clear();
+            foreach (string game in FilesController.GetGamesListFromFile())
+                listBoxGames.Items.Add(game);
+        }
+
         private void ButtonAddGame_Click(object sender, EventArgs e)
         {
             FilesController.AddGameToGameListFile(GetSelectedGameName());
-            _mainForm.RefreshGamesList();
-            listBoxGames.Items.Clear();
-            foreach (string game in _mainForm.GamesCopy)
-                listBoxGames.Items.Add(game);
+            RefreshListBoxGames();
             FilesController.AppendGameToPlayerFile(GetSelectedGameName());
             _mainForm.RefreshPeopleList();
             _messageController.ShowGameAddedMessage(GetSelectedGameName());
@@ -42,33 +45,28 @@ namespace WhatGameToPlay
         private void ButtonDeleteGame_Click(object sender, EventArgs e)
         {
             if (_mainForm.ShowConfirmingMessages)
-                if (_messageController.ShowDeleteGameDialog(GetSelectedGameName())) 
+            {
+                if (_messageController.ShowDeleteGameDialog(GetSelectedGameName()))
                     DeleteGameFromGameList();
+            }
             else DeleteGameFromGameList();
         }
 
         private void DeleteGameFromGameList()
         {
-            foreach (string game in _mainForm.GamesCopy)
+            foreach (string game in FilesController.GetGamesListFromFile())
             {
-                if (game == textBoxGameName.Text)
+                if (game == GetSelectedGameName())
                 {
-                    _mainForm.GamesCopy.Remove(textBoxGameName.Text);
+                    FilesController.DeleteGameFromGameList(GetSelectedGameName());
                     break;
                 }
             }
             _mainForm.RefreshPeopleList();
-            //File.WriteAllLines("GamesList.txt", _mainForm.GamesCopy);
-            listBoxGames.Items.Clear();
-            foreach (string game in _mainForm.GamesCopy)
-            {
-                listBoxGames.Items.Add(game);
-                FilesController.AddGameToGameListFile(game);
-            }
-
+            RefreshListBoxGames();
             SwitchButtonsEnables();
             if (!_mainForm.SaveDeletedGamesData)
-                FilesController.DeleteGameFromFile(GetSelectedGameName());
+                FilesController.DeletePlayersGameData(GetSelectedGameName());
             textBoxGameName.Clear();
             SetNumericUpDownsStandartValues();
         }
@@ -81,26 +79,28 @@ namespace WhatGameToPlay
 
         public bool CheckGameInGamesList(string gameToCheck)
         {
-            foreach (string game in _mainForm.GamesCopy) 
+            foreach (string game in FilesController.GetGamesListFromFile()) 
                 if (gameToCheck == game) return true;
             return false;
         }
 
         private void TextBoxGameName_TextChanged(object sender, EventArgs e)
         {
-            if (CheckGameInGamesList(textBoxGameName.Text))
+            if (CheckGameInGamesList(GetSelectedGameName()))
             {
+                checkBoxPeopleNumberLimit.Checked = false;
                 checkBoxPeopleNumberLimit.Enabled = true;
                 SetNumericUpDownsStandartValues();
                 SetGameButtonsEnables(enable: false);
                 int restrictionsCount = 2;
                 decimal[] restrictions = new decimal[restrictionsCount];
-                bool restrictionsExist = FilesController.GetRestrictionsFromGameFile(GetSelectedGameName(),
-                    ref restrictions);
+                bool restrictionsExist = 
+                    FilesController.GetRestrictionsFromGameFile(GetSelectedGameName(), ref restrictions);
                 if (restrictionsExist)
                 {
                     numericUpDownMin.Value = restrictions[0];
                     numericUpDownMax.Value = restrictions[1];
+                    checkBoxPeopleNumberLimit.Checked = true;
                 }
             }
             else
@@ -109,8 +109,8 @@ namespace WhatGameToPlay
                 SetNumericUpDownsEnables(enable: false);
                 checkBoxPeopleNumberLimit.Enabled = false;
                 SetGameButtonsEnables(enable: true);
+                checkBoxPeopleNumberLimit.Checked = false;
             }
-            checkBoxPeopleNumberLimit.Checked = false;
         }
 
         private void SetNumericUpDownsEnables(bool enable)
@@ -161,9 +161,10 @@ namespace WhatGameToPlay
         {
             if (numericUpDownMax.Value > numericUpDownMin.Value)
             {
-                FilesController.AddRestrictionsToFile(textBoxGameName.Text ,numericUpDownMin.Value, 
+                FilesController.AddRestrictionsToFile(GetSelectedGameName(), numericUpDownMin.Value, 
                     numericUpDownMax.Value);
                 _messageController.ShowRestrictionsMessage();
+                _mainForm.ClearAvailableGamesListBox();
             }
             else if (_mainForm.ShowMessages)
             {

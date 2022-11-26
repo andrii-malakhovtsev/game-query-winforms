@@ -40,14 +40,14 @@
             this.pictureBoxFireworks = new System.Windows.Forms.PictureBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.peopleListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playerListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gameListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showConfirmationMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.takeIntoAccountPeopleNumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rouletteInsteadProgressbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TurnOffGameCelebrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CelebrateRandomGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveDeletedGamesDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.whiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,9 +77,9 @@
             this.labelPresentPeople.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPresentPeople.Location = new System.Drawing.Point(12, 35);
             this.labelPresentPeople.Name = "labelPresentPeople";
-            this.labelPresentPeople.Size = new System.Drawing.Size(158, 24);
+            this.labelPresentPeople.Size = new System.Drawing.Size(160, 24);
             this.labelPresentPeople.TabIndex = 10;
-            this.labelPresentPeople.Text = "Present people:";
+            this.labelPresentPeople.Text = "Present players:";
             // 
             // labelAvailableGames
             // 
@@ -153,18 +153,18 @@
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.peopleListToolStripMenuItem,
+            this.playerListToolStripMenuItem,
             this.gameListToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
             // 
-            // peopleListToolStripMenuItem
+            // playerListToolStripMenuItem
             // 
-            this.peopleListToolStripMenuItem.Name = "peopleListToolStripMenuItem";
-            this.peopleListToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.peopleListToolStripMenuItem.Text = "People List";
-            this.peopleListToolStripMenuItem.Click += new System.EventHandler(this.PeopleListToolStripMenuItem_Click);
+            this.playerListToolStripMenuItem.Name = "playerListToolStripMenuItem";
+            this.playerListToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.playerListToolStripMenuItem.Text = "Player List";
+            this.playerListToolStripMenuItem.Click += new System.EventHandler(this.PeopleListToolStripMenuItem_Click);
             // 
             // gameListToolStripMenuItem
             // 
@@ -180,7 +180,7 @@
             this.showConfirmationMessagesToolStripMenuItem,
             this.takeIntoAccountPeopleNumberToolStripMenuItem,
             this.rouletteInsteadProgressbarToolStripMenuItem,
-            this.TurnOffGameCelebrationToolStripMenuItem,
+            this.CelebrateRandomGameToolStripMenuItem,
             this.SaveDeletedGamesDataToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
@@ -220,12 +220,12 @@
             this.rouletteInsteadProgressbarToolStripMenuItem.Text = "Use progressbar instead of roulette";
             this.rouletteInsteadProgressbarToolStripMenuItem.Click += new System.EventHandler(this.RouletteInsteadProgressbarToolStripMenuItem_Click);
             // 
-            // TurnOffGameCelebrationToolStripMenuItem
+            // CelebrateRandomGameToolStripMenuItem
             // 
-            this.TurnOffGameCelebrationToolStripMenuItem.Name = "TurnOffGameCelebrationToolStripMenuItem";
-            this.TurnOffGameCelebrationToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.TurnOffGameCelebrationToolStripMenuItem.Text = "Turn off Game Celebration";
-            this.TurnOffGameCelebrationToolStripMenuItem.Click += new System.EventHandler(this.TurnOffGameCelebrationToolStripMenuItem_Click);
+            this.CelebrateRandomGameToolStripMenuItem.Name = "CelebrateRandomGameToolStripMenuItem";
+            this.CelebrateRandomGameToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.CelebrateRandomGameToolStripMenuItem.Text = "Celebrate random game";
+            this.CelebrateRandomGameToolStripMenuItem.Click += new System.EventHandler(this.CelebrateRandomGameToolStripMenuItem_Click);
             // 
             // SaveDeletedGamesDataToolStripMenuItem
             // 
@@ -337,11 +337,11 @@
         private System.Windows.Forms.ToolStripMenuItem showConfirmationMessagesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem takeIntoAccountPeopleNumberToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem peopleListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem playerListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gameListToolStripMenuItem;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ToolStripMenuItem rouletteInsteadProgressbarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem TurnOffGameCelebrationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CelebrateRandomGameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SaveDeletedGamesDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showMessagesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;

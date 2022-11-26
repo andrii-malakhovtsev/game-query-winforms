@@ -131,7 +131,7 @@
             this.checkBoxPeopleNumberLimit.AutoSize = true;
             this.checkBoxPeopleNumberLimit.Enabled = false;
             this.checkBoxPeopleNumberLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxPeopleNumberLimit.Location = new System.Drawing.Point(363, 143);
+            this.checkBoxPeopleNumberLimit.Location = new System.Drawing.Point(363, 150);
             this.checkBoxPeopleNumberLimit.Name = "checkBoxPeopleNumberLimit";
             this.checkBoxPeopleNumberLimit.Size = new System.Drawing.Size(182, 20);
             this.checkBoxPeopleNumberLimit.TabIndex = 21;
@@ -192,7 +192,7 @@
             this.buttonSet.UseVisualStyleBackColor = true;
             this.buttonSet.Click += new System.EventHandler(this.ButtonSet_Click);
             // 
-            // FormGamesList
+            // GamesListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -210,7 +210,7 @@
             this.Controls.Add(this.buttonAddGame);
             this.Controls.Add(this.listBoxGames);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "FormGamesList";
+            this.Name = "GamesListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Games List";
             this.Load += new System.EventHandler(this.FormGamesList_Load);

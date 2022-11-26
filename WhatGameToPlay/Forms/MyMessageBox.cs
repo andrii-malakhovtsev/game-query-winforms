@@ -20,6 +20,13 @@ namespace WhatGameToPlay
             buttonNo.DialogResult = DialogResult.Cancel;
         }
 
+        private void SetButtonsEnables(bool enable)
+        {
+            buttonYes.Visible = enable;
+            buttonNo.Visible = enable;
+            buttonOK.Visible = !enable;
+        }
+
         public DialogResult Show(string text)
         {
             labelMessage.Text = text;
@@ -31,19 +38,12 @@ namespace WhatGameToPlay
             return ShowDialog();
         }
 
-        private void SetButtonsEnables(bool enable)
-        {
-            buttonYes.Visible = enable;
-            buttonNo.Visible = enable;
-            buttonOK.Visible = !enable;
-        }
-
         public DialogResult Show(string text, string caption, MessageBoxButtons YesNo)
         {
             labelMessage.Text = text;
             Text = caption;
             SetFormDimensions();
-            SetButtonsEnables(enable: false);
+            SetButtonsEnables(enable: true);
             SetButtonLocation(buttonYes);
             SetButtonLocation(buttonNo);
             RefreshColors();

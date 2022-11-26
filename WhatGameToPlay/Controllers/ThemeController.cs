@@ -15,15 +15,15 @@ namespace WhatGameToPlay
         private void SetThemeColors(Color textsColor, Color secondBackgoroundColor, Color backgroundsColor,
            Color buttonsColor)
         {
-            _backgroundColor = backgroundsColor;
-            _secondBackgroundColor = secondBackgoroundColor;
             _textColor = textsColor;
+            _secondBackgroundColor = secondBackgoroundColor;
+            _backgroundColor = backgroundsColor;
             _buttonsColor = buttonsColor;
         }
 
         public void SetTextBoxForeColor(TextBox textbox, bool win)
         {
-            textbox.ForeColor = win ? Color.Green : Color.Black;
+            textbox.ForeColor = win ? Color.Green : _textColor;
         }
 
         private void RefreshCurrentThemeFromFile()

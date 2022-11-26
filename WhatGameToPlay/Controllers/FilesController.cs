@@ -43,6 +43,35 @@ namespace WhatGameToPlay
             return directory.GetFiles(s_allTextFileExtension);
         }
 
+        public static void AppendGameToPlayerFile(string gameName)
+        {
+            foreach (FileInfo file in GetPlayersTextFiles())
+                File.AppendAllText(file.FullName, gameName + "\n");
+        }
+
+        private static void DeleteGameFromPlayersFiles(string gameToDelete)
+        {
+            foreach (FileInfo fileInfo in GetPlayersTextFiles())
+            {
+                File.WriteAllLines(fileInfo.FullName,
+                    File.ReadLines(fileInfo.FullName).Where(game => game != gameToDelete).ToList());
+            }
+        }
+
+        public static void DeletePlayersGameData(string gameToDelete)
+        {
+            DeleteGameRestrictionsFile(gameToDelete);
+            DeleteGameFromPlayersFiles(gameToDelete);
+        }
+
+        public static void DeleteGameFromGameList(string gameToDelete)
+        {
+            string[] games = GetGamesFromFile();
+            File.WriteAllText(s_gamesListFileName, string.Empty);
+            foreach (string game in games)
+                if (game != gameToDelete) AddGameToGameListFile(game);
+        }
+
         public static void AddThemeToFile(string theme)
         {
             File.WriteAllText(s_themeFileName, theme);
@@ -51,12 +80,6 @@ namespace WhatGameToPlay
         public static void AddOptionsToFile(string[] options)
         {
             File.WriteAllLines(s_optionsFileName, options);
-        }
-
-        public static void AppendGameToPlayerFile(string gameName)
-        {
-            foreach (FileInfo file in GetPlayersTextFiles())
-                File.AppendAllText(file.FullName, gameName + "\n");
         }
 
         public static void AddGameToGameListFile(string gameName)
@@ -75,13 +98,8 @@ namespace WhatGameToPlay
             }
         }
 
-        public static void DeleteGameFromFile(string gameName)
+        private static void DeleteGameRestrictionsFile(string gameName)
         {
-            foreach (FileInfo fileInfo in GetPlayersTextFiles())
-            {
-                File.WriteAllLines(fileInfo.FullName,
-                    File.ReadLines(fileInfo.FullName).Where(game => game != gameName).ToList());
-            }
             string path = GetSelectedGameRestrictionsFilePath(gameName);
             if (File.Exists(path)) File.Delete(path);
         }
@@ -102,17 +120,17 @@ namespace WhatGameToPlay
             return false;
         }
 
-        public static List<string> GetUnrestrictedGamesFromDirectory(int checkedPeopleCount)
+        public static List<string> GetRestrictedGamesFromDirectory(int checkedPeopleCount)
         {
-            List<string> gamesToMakeNull = new List<string>();
+            List<string> restrictedGames = new List<string>();
             foreach (FileInfo fileInfo in GetRestrictionsTextFiles())
             {
                 string[] lines = File.ReadAllLines(fileInfo.FullName);
                 if (checkedPeopleCount < Convert.ToInt32(lines[0]) || 
                     checkedPeopleCount > Convert.ToInt32(lines[1]))
-                    gamesToMakeNull.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
+                    restrictedGames.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
             }
-            return gamesToMakeNull;
+            return restrictedGames;
         }
 
         public static bool RestrictionExist(string gameName, ref string gameFullName)
