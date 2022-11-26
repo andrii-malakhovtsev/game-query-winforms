@@ -52,7 +52,7 @@ namespace WhatGameToPlay
                     FilesController.CreateStartingFiles();
                 else Close();
             }
-            RefreshPeopleList();
+            RefreshPlayersList();
             SetSavedOptions();
             SetSavedColors();
             _theme.SetChosenThemeColors();
@@ -109,7 +109,7 @@ namespace WhatGameToPlay
                 if (colorTheme.Checked) FilesController.AddThemeToFile(colorTheme.Text);
         }
 
-        private void RefreshPeopleList()
+        private void RefreshPlayersList()
         {
             Players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
@@ -147,9 +147,9 @@ namespace WhatGameToPlay
         public void PlayerCheckBoxCheckedChange()
         {
             List<string> currentGames = FilesController.GetGamesListFromFile();
-            int checkedPeopleCount = 0;
+            int checkedPlayersCount = 0;
             foreach (CheckBox checkbox in _checkBoxesCopy)
-                if (checkbox.Checked) checkedPeopleCount++;
+                if (checkbox.Checked) checkedPlayersCount++;
             listBoxAvailableGames.Items.Clear();
             foreach (Player player in Players)
                 if (player.CheckBox.Checked)
@@ -158,14 +158,14 @@ namespace WhatGameToPlay
                             DeleteGameFromList(gameNotPlaying, currentGames);
             if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
                 foreach (string restrictedGame in
-                    FilesController.GetRestrictedGamesFromDirectory(checkedPeopleCount))
+                    FilesController.GetRestrictedGamesFromDirectory(checkedPlayersCount))
                         DeleteGameFromList(restrictedGame, currentGames);
             foreach (string game in currentGames) 
                 listBoxAvailableGames.Items.Add(game);
-            int uncheckedPeopleCount = 0;
-            foreach (Player person in Players)
-                if (!person.CheckBox.Checked) uncheckedPeopleCount++;
-            if (uncheckedPeopleCount == Players.Count) listBoxAvailableGames.Items.Clear();
+            int uncheckedPlayersCount = 0;
+            foreach (Player player in Players)
+                if (!player.CheckBox.Checked) uncheckedPlayersCount++;
+            if (uncheckedPlayersCount == Players.Count) listBoxAvailableGames.Items.Clear();
         }
 
         private void DeleteGameFromList(string gameToDelete, List<string> currentGames)
@@ -246,7 +246,7 @@ namespace WhatGameToPlay
 
         public void ClearInformation()
         {
-            RefreshPeopleList();
+            RefreshPlayersList();
             listBoxAvailableGames.Items.Clear();
             textBox.Clear();
         }
@@ -286,7 +286,7 @@ namespace WhatGameToPlay
             RefreshOptionsToFiles();
         }
 
-        private void TakeIntoAccountPeopleNumberToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ConsiderPlayersLimitsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConsiderGamePlayersLimitsToolStripMenuItem.Checked =
                 !ConsiderGamePlayersLimitsToolStripMenuItem.Checked;
@@ -307,7 +307,7 @@ namespace WhatGameToPlay
             RefreshOptionsToFiles();
         }
 
-        private void PeopleListToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PlayersListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PlayerListForm formPlayerList = new PlayerListForm(this, _theme);
             formPlayerList.ShowDialog();
@@ -355,13 +355,13 @@ namespace WhatGameToPlay
             _theme.SetFormBackgroundColor(this);
             List<Control> foreColorControls = new List<Control>();
             foreColorControls.AddRange(_checkBoxes);
-            foreColorControls.Add(labelPresentPeople);
+            foreColorControls.Add(labelPresentPlayers);
             foreColorControls.Add(labelAvailableGames);
             _theme.SetControlsForeColor(foreColorControls);
             foreColorControls.Clear();
             _theme.SetButtonColor(buttonRandomAvailableGame);
             Label[] labels = {
-                labelPresentPeople,
+                labelPresentPlayers,
                 labelAvailableGames
             };
             _theme.SetTextForeColor(labels);

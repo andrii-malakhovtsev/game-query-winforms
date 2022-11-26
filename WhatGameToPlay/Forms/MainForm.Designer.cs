@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.listBoxAvailableGames = new System.Windows.Forms.ListBox();
-            this.labelPresentPeople = new System.Windows.Forms.Label();
+            this.labelPresentPlayers = new System.Windows.Forms.Label();
             this.labelAvailableGames = new System.Windows.Forms.Label();
             this.buttonRandomAvailableGame = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
@@ -73,13 +73,13 @@
             // 
             // labelPresentPeople
             // 
-            this.labelPresentPeople.AutoSize = true;
-            this.labelPresentPeople.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
-            this.labelPresentPeople.Location = new System.Drawing.Point(12, 35);
-            this.labelPresentPeople.Name = "labelPresentPeople";
-            this.labelPresentPeople.Size = new System.Drawing.Size(160, 24);
-            this.labelPresentPeople.TabIndex = 10;
-            this.labelPresentPeople.Text = "Present players:";
+            this.labelPresentPlayers.AutoSize = true;
+            this.labelPresentPlayers.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
+            this.labelPresentPlayers.Location = new System.Drawing.Point(12, 35);
+            this.labelPresentPlayers.Name = "labelPresentPeople";
+            this.labelPresentPlayers.Size = new System.Drawing.Size(160, 24);
+            this.labelPresentPlayers.TabIndex = 10;
+            this.labelPresentPlayers.Text = "Present players:";
             // 
             // labelAvailableGames
             // 
@@ -164,7 +164,7 @@
             this.playerListToolStripMenuItem.Name = "playerListToolStripMenuItem";
             this.playerListToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.playerListToolStripMenuItem.Text = "Player List";
-            this.playerListToolStripMenuItem.Click += new System.EventHandler(this.PeopleListToolStripMenuItem_Click);
+            this.playerListToolStripMenuItem.Click += new System.EventHandler(this.PlayersListToolStripMenuItem_Click);
             // 
             // gameListToolStripMenuItem
             // 
@@ -211,7 +211,7 @@
             this.ConsiderGamePlayersLimitsToolStripMenuItem.Name = "ConsiderGamePlayersLimitsToolStripMenuItem";
             this.ConsiderGamePlayersLimitsToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.ConsiderGamePlayersLimitsToolStripMenuItem.Text = "Consider players limits on games";
-            this.ConsiderGamePlayersLimitsToolStripMenuItem.Click += new System.EventHandler(this.TakeIntoAccountPeopleNumberToolStripMenuItem_Click);
+            this.ConsiderGamePlayersLimitsToolStripMenuItem.Click += new System.EventHandler(this.ConsiderPlayersLimitsToolStripMenuItem_Click);
             // 
             // rouletteInsteadProgressbarToolStripMenuItem
             // 
@@ -301,7 +301,7 @@
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.buttonRandomAvailableGame);
             this.Controls.Add(this.labelAvailableGames);
-            this.Controls.Add(this.labelPresentPeople);
+            this.Controls.Add(this.labelPresentPlayers);
             this.Controls.Add(this.listBoxAvailableGames);
             this.Controls.Add(this.pictureBoxSmile);
             this.Controls.Add(this.menuStrip);
@@ -324,7 +324,7 @@
 
         #endregion
         public System.Windows.Forms.ListBox listBoxAvailableGames;
-        private System.Windows.Forms.Label labelPresentPeople;
+        private System.Windows.Forms.Label labelPresentPlayers;
         private System.Windows.Forms.Label labelAvailableGames;
         private System.Windows.Forms.Button buttonRandomAvailableGame;
         private System.Windows.Forms.Timer timer;

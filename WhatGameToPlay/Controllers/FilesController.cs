@@ -27,7 +27,7 @@ namespace WhatGameToPlay
             if (CreateFile(s_gamesListFileName))
                 AddGameToGameListFile("example game");
             if (CreateDirectory(s_playersDirectoryName))
-                CreatePersonFile("example player");
+                CreatePlayerFile("example player");
             CreateDirectory(s_limitsDirectoryName);
         }
 
@@ -161,14 +161,14 @@ namespace WhatGameToPlay
             return false;
         }
 
-        public static List<string> GetRestrictedGamesFromDirectory(int checkedPeopleCount)
+        public static List<string> GetRestrictedGamesFromDirectory(int checkedPlayersCount)
         {
             List<string> restrictedGames = new List<string>();
             foreach (FileInfo fileInfo in GetRestrictionsTextFiles())
             {
                 string[] lines = File.ReadAllLines(fileInfo.FullName);
-                if (checkedPeopleCount < Convert.ToInt32(lines[0]) ||
-                    checkedPeopleCount > Convert.ToInt32(lines[1]))
+                if (checkedPlayersCount < Convert.ToInt32(lines[0]) ||
+                    checkedPlayersCount > Convert.ToInt32(lines[1]))
                     restrictedGames.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
             }
             return restrictedGames;
@@ -190,7 +190,7 @@ namespace WhatGameToPlay
 
         public static void DeleteSelectedPlayerFile(string selectedPlayer)
         {
-            DeleteFile(GetSelectedPersonFilePath(selectedPlayer));
+            DeleteFile(GetSelectedPlayerFilePath(selectedPlayer));
         }
 
         public static string[] GetGamesPlayerDoesntPlay(string selectedPlayer)
@@ -206,8 +206,8 @@ namespace WhatGameToPlay
         public static void WriteGamesNotPlayingToFile(string selectedPlayer,
             List<string> gamesNotPlayingList)
         {
-            string path = GetSelectedPersonFilePath(selectedPlayer);
-            CreatePersonFile(selectedPlayer);
+            string path = GetSelectedPlayerFilePath(selectedPlayer);
+            CreatePlayerFile(selectedPlayer);
             using (TextWriter textWriter = new StreamWriter(path))
             {
                 foreach (string gameNotPlaying in gamesNotPlayingList)
@@ -215,19 +215,19 @@ namespace WhatGameToPlay
             }
         }
 
-        public static bool DoesPersonFileExist(string checkPerson)
+        public static bool DoesPlayerFileExist(string checkPlayer)
         {
             foreach (FileInfo fileInfo in GetPlayersTextFiles())
-                if (checkPerson == Path.GetFileNameWithoutExtension(fileInfo.Name)) return true;
+                if (checkPlayer == Path.GetFileNameWithoutExtension(fileInfo.Name)) return true;
             return false;
         }
 
-        public static void CreatePersonFile(string selectedPlayer)
+        public static void CreatePlayerFile(string selectedPlayer)
         {
-            CreateFile(fileName: GetSelectedPersonFilePath(selectedPlayer));
+            CreateFile(fileName: GetSelectedPlayerFilePath(selectedPlayer));
         }
 
-        private static string GetSelectedPersonFilePath(string selectedPlayer)
+        private static string GetSelectedPlayerFilePath(string selectedPlayer)
         {
             return GetFullDirectoryFilePath(s_playersDirectoryName, selectedPlayer);
         }

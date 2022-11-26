@@ -20,32 +20,38 @@ namespace WhatGameToPlay
             buttonNo.DialogResult = DialogResult.Cancel;
         }
 
-        private void SetButtonsEnables(bool enable)
+        private void SetButtonsVisibility(bool visible)
         {
-            buttonYes.Visible = enable;
-            buttonNo.Visible = enable;
-            buttonOK.Visible = !enable;
+            buttonYes.Visible = visible;
+            buttonNo.Visible = visible;
+            buttonOK.Visible = !visible;
         }
 
         public DialogResult Show(string text)
         {
-            labelMessage.Text = text;
-            Text = "";
-            SetFormDimensions();
-            SetButtonsEnables(enable: false);
-            SetButtonLocation(buttonOK);
-            RefreshColors();
-            return ShowDialog();
+            return SetMessageBox(text, "", yesNoMessageBox: false);
         }
 
         public DialogResult Show(string text, string caption, MessageBoxButtons YesNo)
         {
+            return SetMessageBox(text, caption, yesNoMessageBox: true);
+        }
+
+        private DialogResult SetMessageBox(string text, string caption, bool yesNoMessageBox)
+        {
             labelMessage.Text = text;
             Text = caption;
             SetFormDimensions();
-            SetButtonsEnables(enable: true);
-            SetButtonLocation(buttonYes);
-            SetButtonLocation(buttonNo);
+            SetButtonsVisibility(visible: yesNoMessageBox);
+            if (yesNoMessageBox)
+            {
+                SetButtonLocation(buttonYes);
+                SetButtonLocation(buttonNo);
+            }
+            else
+            {
+                SetButtonLocation(buttonOK);
+            }
             RefreshColors();
             return ShowDialog();
         }

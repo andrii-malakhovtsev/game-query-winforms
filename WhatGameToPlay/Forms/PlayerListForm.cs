@@ -37,7 +37,7 @@ namespace WhatGameToPlay
                 textBoxSelectedPlayer.Text = listBoxPlayers.SelectedItem.ToString();
         }
 
-        private void SelectPerson()
+        private void SelectPlayer()
         {
             checkedListBoxGamesPlaying.Items.Clear();
             List<string> gamesList = FilesController.GetGamesListFromFile();
@@ -81,68 +81,68 @@ namespace WhatGameToPlay
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            bool personExist = FilesController.DoesPersonFileExist(GetSelectedPlayerName());
-            if (personExist) SelectPerson();
+            bool playerExist = FilesController.DoesPlayerFileExist(GetSelectedPlayerName());
+            if (playerExist) SelectPlayer();
             else checkedListBoxGamesPlaying.Items.Clear();
-            SetPlayerButtonsEnables(enable: !personExist);
-            SetButtonsEnables(enable: personExist);
-            buttonAddPerson.Enabled = GetSelectedPlayerName() != "";
+            SetPlayerButtonsEnables(enable: !playerExist);
+            SetControlsEnables(enable: playerExist);
+            buttonAddPlayer.Enabled = GetSelectedPlayerName() != "";
         }
 
-        private void SetButtonsEnables(bool enable)
+        private void SetControlsEnables(bool enable)
         {
             checkBoxSelectAll.Enabled = enable;
             buttonSet.Enabled = enable;
         }
 
-        private void ButtonAddPerson_Click(object sender, EventArgs e)
+        private void ButtonAddPlayer_Click(object sender, EventArgs e)
         {
-            FilesController.CreatePersonFile(GetSelectedPlayerName());
+            FilesController.CreatePlayerFile(GetSelectedPlayerName());
             _mainForm.ClearInformation();
             listBoxPlayers.Items.Clear();
-            foreach (Player person in FilesController.GetPlayersListFromDirectory())
-                listBoxPlayers.Items.Add(person.Name);
-            SelectPerson();
+            foreach (Player player in FilesController.GetPlayersListFromDirectory())
+                listBoxPlayers.Items.Add(player.Name);
+            SelectPlayer();
             _messageController.ShowPlayerAddedToListMessage(GetSelectedPlayerName());
             SetPlayerButtonsEnables(enable: false);
-            SetButtonsEnables(enable: true);
+            SetControlsEnables(enable: true);
         }
 
-        private void ButtonDeletePerson_Click(object sender, EventArgs e)
+        private void ButtonDeletePlayer_Click(object sender, EventArgs e)
         {
             if (_mainForm.ShowConfirmingMessages)
             {
                 if (_messageController.ShowDeletePlayerFromListDialog(GetSelectedPlayerName()))
-                    DeletePersonFromPeopleList();
+                    DeletePlayerFromList();
             }
-            else DeletePersonFromPeopleList();
+            else DeletePlayerFromList();
             _mainForm.ClearInformation();
             textBoxSelectedPlayer.Clear();
         }
 
-        private void DeletePersonFromPeopleList()
+        private void DeletePlayerFromList()
         {
-            foreach (Player person in FilesController.GetPlayersListFromDirectory())
+            foreach (Player player in FilesController.GetPlayersListFromDirectory())
             {
-                if (person.Name == GetSelectedPlayerName())
+                if (player.Name == GetSelectedPlayerName())
                 {
-                    FilesController.DeleteSelectedPlayerFile(person.Name);
+                    FilesController.DeleteSelectedPlayerFile(player.Name);
                     break;
                 }
             }
             FilesController.DeleteSelectedPlayerFile(selectedPlayer: GetSelectedPlayerName());
             listBoxPlayers.Items.Clear();
             _mainForm.ClearInformation();
-            foreach (Player person in FilesController.GetPlayersListFromDirectory())
-                listBoxPlayers.Items.Add(person.Name);
+            foreach (Player player in FilesController.GetPlayersListFromDirectory())
+                listBoxPlayers.Items.Add(player.Name);
             checkedListBoxGamesPlaying.Items.Clear();
             SetPlayerButtonsEnables(enable: true);
         }
 
         private void SetPlayerButtonsEnables(bool enable)
         {
-            buttonAddPerson.Enabled = enable;
-            buttonDeletePerson.Enabled = !enable;
+            buttonAddPlayer.Enabled = enable;
+            buttonDeletePlayer.Enabled = !enable;
         }
 
         private void RefreshColors()
@@ -162,8 +162,8 @@ namespace WhatGameToPlay
             _theme.SetControlsFullColor(fullColorControls);
             Button[] buttons = {
                 buttonSet,
-                buttonAddPerson,
-                buttonDeletePerson
+                buttonAddPlayer,
+                buttonDeletePlayer
             };
             _theme.SetButtonsColor(buttons);
         }

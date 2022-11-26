@@ -39,9 +39,9 @@ namespace WhatGameToPlay
             if (!_playerLimitsExist) FilesController.AppendGameToPlayersFiles(GetSelectedGameName());
             _mainForm.ClearInformation();
             _messageController.ShowGameAddedMessage(GetSelectedGameName());
-            SwitchButtonsEnables();
+            SwitchGameButtonsEnables();
             SetGameButtonsEnables(enable: false);
-            checkBoxPeopleNumberLimit.Enabled = true;
+            checkBoxPlayersNumberLimit.Enabled = true;
         }
 
         private void ButtonDeleteGame_Click(object sender, EventArgs e)
@@ -66,7 +66,7 @@ namespace WhatGameToPlay
             }
             _mainForm.ClearInformation();
             RefreshListBoxGames();
-            SwitchButtonsEnables();
+            SwitchGameButtonsEnables();
             if (!_mainForm.SaveDeletedGamesData)
                 FilesController.DeletePlayersGameData(GetSelectedGameName());
             textBoxGameName.Clear();
@@ -90,25 +90,25 @@ namespace WhatGameToPlay
         {
             if (CheckGameInGamesList(GetSelectedGameName()))
             {
-                checkBoxPeopleNumberLimit.Enabled = true;
+                checkBoxPlayersNumberLimit.Enabled = true;
                 SetNumericUpDownsStandartValues();
                 SetGameButtonsEnables(enable: false);
             }
             else
             {
-                buttonSet.Enabled = false;
-                SetNumericUpDownsEnables(enable: false);
-                checkBoxPeopleNumberLimit.Enabled = false;
                 SetGameButtonsEnables(enable: true);
+                SetNumericUpDownsEnables(enable: false);
+                buttonSet.Enabled = false;
+                checkBoxPlayersNumberLimit.Enabled = false;
                 buttonAddGame.Enabled = GetSelectedGameName() != "";
             }
-            checkBoxPeopleNumberLimit.Checked = false;
+            checkBoxPlayersNumberLimit.Checked = false;
             decimal[] restrictions = GetRestrictions();
             if (_playerLimitsExist)
             {
                 numericUpDownMin.Value = restrictions[0];
                 numericUpDownMax.Value = restrictions[1];
-                checkBoxPeopleNumberLimit.Checked = true;
+                checkBoxPlayersNumberLimit.Checked = true;
             }
         }
 
@@ -139,21 +139,21 @@ namespace WhatGameToPlay
             buttonDeleteGame.Enabled = !enable;
         }
 
-        private void SwitchButtonsEnables()
+        private void SwitchGameButtonsEnables()
         {
             buttonAddGame.Enabled = !buttonAddGame.Enabled;
             buttonDeleteGame.Enabled = !buttonDeleteGame.Enabled;
         }
 
-        private void CheckBoxPeopleNumberLimit_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxPlayersNumberLimit_CheckedChanged(object sender, EventArgs e)
         {
-            SetNumericUpDownsEnables(enable: checkBoxPeopleNumberLimit.Checked);
-            buttonSet.Enabled = checkBoxPeopleNumberLimit.Checked;
+            SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
+            buttonSet.Enabled = checkBoxPlayersNumberLimit.Checked;
         }
 
-        private void CheckBoxPeopleNumberLimit_Click(object sender, EventArgs e)
+        private void CheckBoxPlayersNumberLimit_Click(object sender, EventArgs e)
         {
-            if (!checkBoxPeopleNumberLimit.Checked && _mainForm.ShowConfirmingMessages &&
+            if (!checkBoxPlayersNumberLimit.Checked && _mainForm.ShowConfirmingMessages &&
                 FilesController.RestrictionExist(GetSelectedGameName()))
             {
                 if (_messageController.ShowDeleteGameFileDialog(GetSelectedGameName()))
@@ -162,17 +162,17 @@ namespace WhatGameToPlay
                     SetNumericUpDownsStandartValues();
                     _mainForm.ClearInformation();
                 }
-                else checkBoxPeopleNumberLimit.Checked = true;
+                else checkBoxPlayersNumberLimit.Checked = true;
             }
         }
 
-        private void ButtonSetPeopleLimit_Click(object sender, EventArgs e)
+        private void ButtonSetPlayersLimit_Click(object sender, EventArgs e)
         {
             if (numericUpDownMax.Value > numericUpDownMin.Value)
             {
                 FilesController.AddRestrictionsToFile(GetSelectedGameName(), numericUpDownMin.Value,
                     numericUpDownMax.Value);
-                _messageController.ShowPeopleLimitSetMessage(GetSelectedGameName());
+                _messageController.ShowPlayersLimitSetMessage(GetSelectedGameName());
                 _mainForm.ClearInformation();
             }
             else if (_mainForm.ShowMessages)
@@ -190,7 +190,7 @@ namespace WhatGameToPlay
         {
             _theme.SetFormBackgroundColor(this);
             Control[] foreColorControls = {
-                checkBoxPeopleNumberLimit,
+                checkBoxPlayersNumberLimit,
                 labelGamesList,
                 labelEnterGameName,
                 labelMin,

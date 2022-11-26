@@ -18,7 +18,7 @@ namespace WhatGameToPlay
             ShowMainFormMessage("The Min value must not exceed the Max value");
         }
 
-        public void ShowPeopleLimitSetMessage(string gameName)
+        public void ShowPlayersLimitSetMessage(string gameName)
         {
             ShowOptionalMainFormMessage("Limits for " + gameName + " set!");
         }
@@ -71,7 +71,8 @@ namespace WhatGameToPlay
 
         public void ShowTurnConfirmationMessagesError()
         {
-            ShowMainFormMessage("You can't turn confirmation messages off while (all) messages are on");
+            ShowMainFormMessage("You can't turn showing confirmation messages off while showing " +
+                "(all) messages are on");
         }
 
         private void ShowMainFormMessage(string message)

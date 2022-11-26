@@ -36,8 +36,8 @@
             this.textBoxSelectedPlayer = new System.Windows.Forms.TextBox();
             this.checkedListBoxGamesPlaying = new System.Windows.Forms.CheckedListBox();
             this.checkBoxSelectAll = new System.Windows.Forms.CheckBox();
-            this.buttonAddPerson = new System.Windows.Forms.Button();
-            this.buttonDeletePerson = new System.Windows.Forms.Button();
+            this.buttonAddPlayer = new System.Windows.Forms.Button();
+            this.buttonDeletePlayer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // labelPlayerList
@@ -108,33 +108,33 @@
             // 
             // buttonAddPerson
             // 
-            this.buttonAddPerson.Enabled = false;
-            this.buttonAddPerson.Location = new System.Drawing.Point(13, 276);
-            this.buttonAddPerson.Name = "buttonAddPerson";
-            this.buttonAddPerson.Size = new System.Drawing.Size(84, 23);
-            this.buttonAddPerson.TabIndex = 18;
-            this.buttonAddPerson.Text = "Add";
-            this.buttonAddPerson.UseVisualStyleBackColor = true;
-            this.buttonAddPerson.Click += new System.EventHandler(this.ButtonAddPerson_Click);
+            this.buttonAddPlayer.Enabled = false;
+            this.buttonAddPlayer.Location = new System.Drawing.Point(13, 276);
+            this.buttonAddPlayer.Name = "buttonAddPerson";
+            this.buttonAddPlayer.Size = new System.Drawing.Size(84, 23);
+            this.buttonAddPlayer.TabIndex = 18;
+            this.buttonAddPlayer.Text = "Add";
+            this.buttonAddPlayer.UseVisualStyleBackColor = true;
+            this.buttonAddPlayer.Click += new System.EventHandler(this.ButtonAddPlayer_Click);
             // 
             // buttonDeletePerson
             // 
-            this.buttonDeletePerson.Enabled = false;
-            this.buttonDeletePerson.Location = new System.Drawing.Point(103, 276);
-            this.buttonDeletePerson.Name = "buttonDeletePerson";
-            this.buttonDeletePerson.Size = new System.Drawing.Size(84, 23);
-            this.buttonDeletePerson.TabIndex = 19;
-            this.buttonDeletePerson.Text = "Delete";
-            this.buttonDeletePerson.UseVisualStyleBackColor = true;
-            this.buttonDeletePerson.Click += new System.EventHandler(this.ButtonDeletePerson_Click);
+            this.buttonDeletePlayer.Enabled = false;
+            this.buttonDeletePlayer.Location = new System.Drawing.Point(103, 276);
+            this.buttonDeletePlayer.Name = "buttonDeletePerson";
+            this.buttonDeletePlayer.Size = new System.Drawing.Size(84, 23);
+            this.buttonDeletePlayer.TabIndex = 19;
+            this.buttonDeletePlayer.Text = "Delete";
+            this.buttonDeletePlayer.UseVisualStyleBackColor = true;
+            this.buttonDeletePlayer.Click += new System.EventHandler(this.ButtonDeletePlayer_Click);
             // 
             // PlayerListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(412, 307);
-            this.Controls.Add(this.buttonDeletePerson);
-            this.Controls.Add(this.buttonAddPerson);
+            this.Controls.Add(this.buttonDeletePlayer);
+            this.Controls.Add(this.buttonAddPlayer);
             this.Controls.Add(this.checkBoxSelectAll);
             this.Controls.Add(this.checkedListBoxGamesPlaying);
             this.Controls.Add(this.textBoxSelectedPlayer);
@@ -162,7 +162,7 @@
         private System.Windows.Forms.TextBox textBoxSelectedPlayer;
         private System.Windows.Forms.CheckedListBox checkedListBoxGamesPlaying;
         private System.Windows.Forms.CheckBox checkBoxSelectAll;
-        private System.Windows.Forms.Button buttonAddPerson;
-        private System.Windows.Forms.Button buttonDeletePerson;
+        private System.Windows.Forms.Button buttonAddPlayer;
+        private System.Windows.Forms.Button buttonDeletePlayer;
     }
 }

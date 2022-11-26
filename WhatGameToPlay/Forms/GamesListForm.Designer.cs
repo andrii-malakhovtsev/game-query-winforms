@@ -37,7 +37,7 @@
             this.buttonDeleteGame = new System.Windows.Forms.Button();
             this.labelMin = new System.Windows.Forms.Label();
             this.labelMax = new System.Windows.Forms.Label();
-            this.checkBoxPeopleNumberLimit = new System.Windows.Forms.CheckBox();
+            this.checkBoxPlayersNumberLimit = new System.Windows.Forms.CheckBox();
             this.numericUpDownMin = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownMax = new System.Windows.Forms.NumericUpDown();
             this.buttonSet = new System.Windows.Forms.Button();
@@ -129,17 +129,17 @@
             // 
             // checkBoxPeopleNumberLimit
             // 
-            this.checkBoxPeopleNumberLimit.AutoSize = true;
-            this.checkBoxPeopleNumberLimit.Enabled = false;
-            this.checkBoxPeopleNumberLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.checkBoxPeopleNumberLimit.Location = new System.Drawing.Point(316, 150);
-            this.checkBoxPeopleNumberLimit.Name = "checkBoxPeopleNumberLimit";
-            this.checkBoxPeopleNumberLimit.Size = new System.Drawing.Size(111, 20);
-            this.checkBoxPeopleNumberLimit.TabIndex = 21;
-            this.checkBoxPeopleNumberLimit.Text = "Players limit";
-            this.checkBoxPeopleNumberLimit.UseVisualStyleBackColor = true;
-            this.checkBoxPeopleNumberLimit.CheckedChanged += new System.EventHandler(this.CheckBoxPeopleNumberLimit_CheckedChanged);
-            this.checkBoxPeopleNumberLimit.Click += new System.EventHandler(this.CheckBoxPeopleNumberLimit_Click);
+            this.checkBoxPlayersNumberLimit.AutoSize = true;
+            this.checkBoxPlayersNumberLimit.Enabled = false;
+            this.checkBoxPlayersNumberLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
+            this.checkBoxPlayersNumberLimit.Location = new System.Drawing.Point(316, 150);
+            this.checkBoxPlayersNumberLimit.Name = "checkBoxPeopleNumberLimit";
+            this.checkBoxPlayersNumberLimit.Size = new System.Drawing.Size(111, 20);
+            this.checkBoxPlayersNumberLimit.TabIndex = 21;
+            this.checkBoxPlayersNumberLimit.Text = "Players limit";
+            this.checkBoxPlayersNumberLimit.UseVisualStyleBackColor = true;
+            this.checkBoxPlayersNumberLimit.CheckedChanged += new System.EventHandler(this.CheckBoxPlayersNumberLimit_CheckedChanged);
+            this.checkBoxPlayersNumberLimit.Click += new System.EventHandler(this.CheckBoxPlayersNumberLimit_Click);
             // 
             // numericUpDownMin
             // 
@@ -191,7 +191,7 @@
             this.buttonSet.TabIndex = 25;
             this.buttonSet.Text = "Set";
             this.buttonSet.UseVisualStyleBackColor = true;
-            this.buttonSet.Click += new System.EventHandler(this.ButtonSetPeopleLimit_Click);
+            this.buttonSet.Click += new System.EventHandler(this.ButtonSetPlayersLimit_Click);
             // 
             // GamesListForm
             // 
@@ -201,7 +201,7 @@
             this.Controls.Add(this.buttonSet);
             this.Controls.Add(this.numericUpDownMax);
             this.Controls.Add(this.numericUpDownMin);
-            this.Controls.Add(this.checkBoxPeopleNumberLimit);
+            this.Controls.Add(this.checkBoxPlayersNumberLimit);
             this.Controls.Add(this.labelMax);
             this.Controls.Add(this.labelMin);
             this.Controls.Add(this.buttonDeleteGame);
@@ -233,7 +233,7 @@
         private System.Windows.Forms.Button buttonDeleteGame;
         private System.Windows.Forms.Label labelMin;
         private System.Windows.Forms.Label labelMax;
-        private System.Windows.Forms.CheckBox checkBoxPeopleNumberLimit;
+        private System.Windows.Forms.CheckBox checkBoxPlayersNumberLimit;
         private System.Windows.Forms.NumericUpDown numericUpDownMin;
         private System.Windows.Forms.NumericUpDown numericUpDownMax;
         private System.Windows.Forms.Button buttonSet;
