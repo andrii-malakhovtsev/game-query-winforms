@@ -42,6 +42,12 @@ namespace WhatGameToPlay
                 menuToolStripItem.DropDownOpening += new EventHandler(MenuToolStripItem_DropDownOpening);
                 menuToolStripItem.DropDownClosed += new EventHandler(MenuToolStripItem_DropDownClosed);
             }
+            if (!FilesController.StandartFilesExist())
+            {
+                if (MessageController.ShowFirstMeetDialog())
+                    FilesController.CreateStartingFiles();
+                else Close();
+            }
             RefreshPeopleList();
             SetSavedOptions();
             SetSavedColors();

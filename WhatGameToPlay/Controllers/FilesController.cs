@@ -15,6 +15,54 @@ namespace WhatGameToPlay
         private static readonly string s_playersDirectoryName = "Players";
         private static readonly string s_restrioctionsDirectoryName = "Restrictions";
 
+        public static void CreateStartingFiles()
+        {
+            if (CreateFile(s_themeFileName))
+                AddThemeToFile(ThemeController.GetStandartThemeName());
+            if (CreateFile(s_optionsFileName))
+            {
+                string[] standartOptions = {
+                    "True",
+                    "True",
+                    "True",
+                    "False",
+                    "True",
+                    "False"
+                };
+                AddOptionsToFile(standartOptions);
+            }
+            if (CreateFile(s_gamesListFileName))
+                AddGameToGameListFile("Game1");
+            if (CreateDirectory(s_playersDirectoryName))
+                CreatePersonFile("Player1");
+            CreateDirectory(s_restrioctionsDirectoryName);
+        }
+
+        public static bool StandartFilesExist()
+        {
+            return File.Exists(s_themeFileName);
+        }
+
+        private static bool CreateFile(string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+                File.Create(fileName).Dispose();
+                return true;
+            }
+            return false;
+        }
+
+        private static bool CreateDirectory(string directoryName)
+        {
+            if (!Directory.Exists(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+                return true;
+            }
+            return false;
+        }
+
         public static string GetCurrentTheme()
         {
             string[] fileRead = File.ReadAllLines(s_themeFileName);
@@ -90,7 +138,7 @@ namespace WhatGameToPlay
         public static void AddRestrictionsToFile(string gameName, decimal minValue, decimal maxValue)
         {
             string path = GetSelectedGameRestrictionsFilePath(gameName);
-            if (!File.Exists(path)) File.Create(path).Dispose();
+            CreateFile(path);
             using (TextWriter textWriter = new StreamWriter(path))
             {
                 textWriter.WriteLine(Convert.ToString(minValue));
@@ -104,7 +152,7 @@ namespace WhatGameToPlay
             if (File.Exists(path)) File.Delete(path);
         }
 
-        public static bool GetRestrictionsFromGameFile(string gameName, 
+        public static bool GetRestrictionsFromGameFile(string gameName,
             ref decimal[] numericUpDownsValues)
         {
             foreach (FileInfo file in GetRestrictionsTextFiles())
@@ -126,7 +174,7 @@ namespace WhatGameToPlay
             foreach (FileInfo fileInfo in GetRestrictionsTextFiles())
             {
                 string[] lines = File.ReadAllLines(fileInfo.FullName);
-                if (checkedPeopleCount < Convert.ToInt32(lines[0]) || 
+                if (checkedPeopleCount < Convert.ToInt32(lines[0]) ||
                     checkedPeopleCount > Convert.ToInt32(lines[1]))
                     restrictedGames.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
             }
@@ -166,7 +214,7 @@ namespace WhatGameToPlay
             return null;
         }
 
-        public static void WriteGamesNotPlayingToFile(string selectedPlayer, 
+        public static void WriteGamesNotPlayingToFile(string selectedPlayer,
             List<string> gamesNotPlayingList)
         {
             string path = GetSelectedPersonFilePath(selectedPlayer);
@@ -187,8 +235,7 @@ namespace WhatGameToPlay
 
         public static void CreatePersonFile(string selectedPlayer)
         {
-            string path = GetSelectedPersonFilePath(selectedPlayer);
-            if (!File.Exists(path)) File.Create(path).Dispose();
+            CreateFile(fileName: GetSelectedPersonFilePath(selectedPlayer));
         }
 
         private static string GetSelectedPersonFilePath(string selectedPlayer)

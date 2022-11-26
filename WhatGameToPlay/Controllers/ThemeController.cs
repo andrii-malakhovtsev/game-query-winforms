@@ -6,6 +6,7 @@ namespace WhatGameToPlay
 {
     public class ThemeController
     {
+        private static readonly string s_standartTheme = "White";
         private Color _backgroundColor;
         private Color _secondBackgroundColor;
         private Color _textColor;
@@ -24,6 +25,11 @@ namespace WhatGameToPlay
         public void SetTextBoxForeColor(TextBox textbox, bool win)
         {
             textbox.ForeColor = win ? Color.Green : _textColor;
+        }
+
+        public static string GetStandartThemeName()
+        {
+            return s_standartTheme;
         }
 
         private void RefreshCurrentThemeFromFile()
@@ -130,7 +136,7 @@ namespace WhatGameToPlay
 
         private bool CurrentThemeIsNotStandart()
         {
-            return _currentTheme != "White";
+            return _currentTheme != s_standartTheme;
         }
 
         public void SetFormWithPanelBackgroundColor(Form form, Panel panel)

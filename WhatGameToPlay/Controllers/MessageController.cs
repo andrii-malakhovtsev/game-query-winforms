@@ -61,6 +61,14 @@ namespace WhatGameToPlay
             if (_mainForm.ShowMessages) ShowMainFormMessage(message);
         }
 
+        public static bool ShowFirstMeetDialog()
+        {
+            DialogResult dialogResult = MessageBox.Show("Seems like you are using " +
+                "the program for the first time.\nIt does create files in the same path as it is located!" +
+                "\nMake sure it is in the separate folder. Continue?", "Confirmation", MessageBoxButtons.YesNo);
+            return dialogResult == DialogResult.Yes;
+        }
+
         private bool ShowDeleteConfirmationDialog(string objectToDelete, string listName) 
         {
             DialogResult dialogResult = _mainForm.MyMessageBox.Show("Are you sure you want to delete " + 
