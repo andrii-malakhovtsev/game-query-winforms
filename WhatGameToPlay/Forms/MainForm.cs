@@ -97,7 +97,7 @@ namespace WhatGameToPlay
                 if (colorTheme.Checked) FilesController.AddThemeToFile(colorTheme.Text);
         }
 
-        public void RefreshPeopleList()
+        private void RefreshPeopleList()
         {
             Players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
@@ -116,18 +116,18 @@ namespace WhatGameToPlay
             RefreshColors();
         }
 
-        public void AddPlayerCheckBox(Player person)
+        public void AddPlayerCheckBox(Player player)
         {
             int topMeasure = 70, leftMeasure = 25;
             CheckBox checkBox = new CheckBox
             {
                 Top = topMeasure + (_checkBoxesCopy.Count * leftMeasure),
                 Left = leftMeasure,
-                Name = ("checkBox " + person.Name),
-                Text = person.Name
+                Name = ("checkBox " + player.Name),
+                Text = player.Name
             };
             checkBox.CheckedChanged += new EventHandler(CheckBox_CheckedChanged);
-            person.CheckBox = checkBox;
+            player.CheckBox = checkBox;
             checkBox.BringToFront();
             Controls.Add(checkBox);
             _checkBoxesCopy.Add(checkBox);
@@ -230,8 +230,9 @@ namespace WhatGameToPlay
             Close();
         }
 
-        public void ClearAvailableGamesListBox()
+        public void ClearInformation()
         {
+            RefreshPeopleList();
             listBoxAvailableGames.Items.Clear();
         }
 
@@ -343,7 +344,6 @@ namespace WhatGameToPlay
             foreColorControls.Add(labelAvailableGames);
             _theme.SetControlsForeColor(foreColorControls);
             foreColorControls.Clear();
-            _theme.SetSecondBackgroundForeColor(progressBar);
             _theme.SetButtonColor(buttonRandomAvailableGame);
             Label[] labels = {
                 labelPresentPeople,
@@ -373,7 +373,7 @@ namespace WhatGameToPlay
             Control[] fullColorControls = {
                 menuStrip,
                 listBoxAvailableGames,
-                textBox,
+                textBox
             };
             _theme.SetControlsFullColor(fullColorControls);
         }

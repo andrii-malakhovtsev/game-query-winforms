@@ -63,8 +63,7 @@ namespace WhatGameToPlay
                 FilesController.GetGamesFromFile().Distinct().Except(checkedCheckboxes).ToList();
             FilesController.WriteGamesNotPlayingToFile(textBoxSelectedPlayer.Text, gamesNotPlayingList);
             _messageController.ShowGameListSetForPlayerMessage();
-            _mainForm.RefreshPeopleList();
-            _mainForm.ClearAvailableGamesListBox();
+            _mainForm.ClearInformation();
         }
 
         private void CheckBoxSelectAll_CheckedChanged(object sender, EventArgs e)
@@ -84,7 +83,7 @@ namespace WhatGameToPlay
         private void ButtonAddPerson_Click(object sender, EventArgs e)
         {
             FilesController.CreatePersonFile(textBoxSelectedPlayer.Text);
-            _mainForm.RefreshPeopleList();
+            _mainForm.ClearInformation();
             listBoxPlayers.Items.Clear();
             foreach (Player person in FilesController.GetPlayersListFromDirectory())
                 listBoxPlayers.Items.Add(person.Name);
@@ -101,7 +100,7 @@ namespace WhatGameToPlay
                     DeletePersonFromPeopleList();
             }
             else DeletePersonFromPeopleList();
-            _mainForm.ClearAvailableGamesListBox();
+            _mainForm.ClearInformation();
             textBoxSelectedPlayer.Clear();
         }
 
@@ -117,7 +116,7 @@ namespace WhatGameToPlay
             }
             FilesController.DeleteSelectedPlayerFile(selectedPlayer: textBoxSelectedPlayer.Text);
             listBoxPlayers.Items.Clear();
-            _mainForm.RefreshPeopleList();
+            _mainForm.ClearInformation();
             foreach (Player person in FilesController.GetPlayersListFromDirectory())
                 listBoxPlayers.Items.Add(person.Name);
             checkedListBoxGamesPlaying.Items.Clear();

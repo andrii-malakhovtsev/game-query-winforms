@@ -92,11 +92,6 @@ namespace WhatGameToPlay
                 control.BackColor = _secondBackgroundColor;
         }
 
-        public void SetSecondBackgroundForeColor(Control control)
-        {
-            control.ForeColor = _secondBackgroundColor;
-        }
-
         public void SetTextForeColor(Label label)
         {
             label.ForeColor = _textColor;

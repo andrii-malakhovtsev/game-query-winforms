@@ -35,7 +35,7 @@ namespace WhatGameToPlay
             FilesController.AddGameToGameListFile(GetSelectedGameName());
             RefreshListBoxGames();
             FilesController.AppendGameToPlayerFile(GetSelectedGameName());
-            _mainForm.RefreshPeopleList();
+            _mainForm.ClearInformation();
             _messageController.ShowGameAddedMessage(GetSelectedGameName());
             SwitchButtonsEnables();
             SetGameButtonsEnables(enable: false);
@@ -62,7 +62,7 @@ namespace WhatGameToPlay
                     break;
                 }
             }
-            _mainForm.RefreshPeopleList();
+            _mainForm.ClearInformation();
             RefreshListBoxGames();
             SwitchButtonsEnables();
             if (!_mainForm.SaveDeletedGamesData)
@@ -151,7 +151,10 @@ namespace WhatGameToPlay
                 if (FilesController.RestrictionExist(GetSelectedGameName(), ref gameFullName))
                 {
                     if (_messageController.ShowDeleteGameFileDialog(GetSelectedGameName()))
+                    {
                         FilesController.DeleteFile(gameFullName);
+                        _mainForm.ClearInformation();
+                    }
                     else checkBoxPeopleNumberLimit.Checked = true;
                 }
             }
@@ -164,7 +167,7 @@ namespace WhatGameToPlay
                 FilesController.AddRestrictionsToFile(GetSelectedGameName(), numericUpDownMin.Value, 
                     numericUpDownMax.Value);
                 _messageController.ShowRestrictionsMessage();
-                _mainForm.ClearAvailableGamesListBox();
+                _mainForm.ClearInformation();
             }
             else if (_mainForm.ShowMessages)
             {
