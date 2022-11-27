@@ -247,6 +247,7 @@ namespace WhatGameToPlay
             List<string> games = new List<string>();
             foreach (string game in File.ReadAllLines(s_gamesListFileName))
                 games.Add(game);
+            games.Sort();
             return games;
         }
 

@@ -57,6 +57,7 @@
             this.youtubeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.playersPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSmile)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFireworks)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -71,12 +72,12 @@
             this.listBoxAvailableGames.TabIndex = 6;
             this.listBoxAvailableGames.DoubleClick += new System.EventHandler(this.ListBoxAvailableGames_DoubleClick);
             // 
-            // labelPresentPeople
+            // labelPresentPlayers
             // 
             this.labelPresentPlayers.AutoSize = true;
             this.labelPresentPlayers.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             this.labelPresentPlayers.Location = new System.Drawing.Point(12, 35);
-            this.labelPresentPlayers.Name = "labelPresentPeople";
+            this.labelPresentPlayers.Name = "labelPresentPlayers";
             this.labelPresentPlayers.Size = new System.Drawing.Size(160, 24);
             this.labelPresentPlayers.TabIndex = 10;
             this.labelPresentPlayers.Text = "Present players:";
@@ -291,6 +292,14 @@
             this.progressBar.TabIndex = 17;
             this.progressBar.Visible = false;
             // 
+            // playersPanel
+            // 
+            this.playersPanel.AutoScroll = true;
+            this.playersPanel.Location = new System.Drawing.Point(12, 71);
+            this.playersPanel.Name = "playersPanel";
+            this.playersPanel.Size = new System.Drawing.Size(160, 250);
+            this.playersPanel.TabIndex = 19;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -305,6 +314,7 @@
             this.Controls.Add(this.listBoxAvailableGames);
             this.Controls.Add(this.pictureBoxSmile);
             this.Controls.Add(this.menuStrip);
+            this.Controls.Add(this.playersPanel);
             this.Controls.Add(this.pictureBoxFireworks);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -350,6 +360,7 @@
         private System.Windows.Forms.ToolStripMenuItem telegramToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem discordToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem youtubeToolStripMenuItem;
+        private System.Windows.Forms.Panel playersPanel;
     }
 }
 

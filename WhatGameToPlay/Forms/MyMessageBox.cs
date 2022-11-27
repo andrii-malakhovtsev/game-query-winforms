@@ -25,6 +25,7 @@ namespace WhatGameToPlay
             buttonYes.Visible = visible;
             buttonNo.Visible = visible;
             buttonOK.Visible = !visible;
+            AcceptButton = visible ? buttonYes : buttonOK;
         }
 
         public DialogResult Show(string text)

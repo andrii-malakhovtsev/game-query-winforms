@@ -73,7 +73,7 @@ namespace WhatGameToPlay
         private void SetSavedColors()
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
-                if (FilesController.GetCurrentTheme() == colorTheme.Text) 
+                if (FilesController.GetCurrentTheme() == colorTheme.Text)
                     colorTheme.Checked = true;
         }
 
@@ -109,12 +109,19 @@ namespace WhatGameToPlay
                 if (colorTheme.Checked) FilesController.AddThemeToFile(colorTheme.Text);
         }
 
+        private bool FormHasExtraCheckBoxes()
+        {
+            int maxCheckBoxesOnFormCount = 10;
+            return Players.Count > maxCheckBoxesOnFormCount;
+        }
+
         private void RefreshPlayersList()
         {
             Players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
             Players = FilesController.GetPlayersListFromDirectory();
             _checkBoxesCopy.Clear();
+            playersPanel.Visible = FormHasExtraCheckBoxes();
             foreach (Player player in Players)
                 AddPlayerCheckBox(player);
             _checkBoxes.AddRange(_checkBoxesCopy);
@@ -124,18 +131,20 @@ namespace WhatGameToPlay
 
         public void AddPlayerCheckBox(Player player)
         {
-            int topMeasure = 70, leftMeasure = 25;
+            int topMeasure = FormHasExtraCheckBoxes() ? 5 : 70, 
+                leftMeasure = FormHasExtraCheckBoxes() ? 20 : 25;
             CheckBox checkBox = new CheckBox
             {
                 Top = topMeasure + (_checkBoxesCopy.Count * leftMeasure),
                 Left = leftMeasure,
-                Name = ("checkBox " + player.Name),
+                Name = "checkBox " + player.Name,
                 Text = player.Name
             };
             checkBox.CheckedChanged += new EventHandler(CheckBox_CheckedChanged);
             player.CheckBox = checkBox;
             checkBox.BringToFront();
-            Controls.Add(checkBox);
+            if (FormHasExtraCheckBoxes()) playersPanel.Controls.Add(checkBox);
+            else Controls.Add(checkBox);
             _checkBoxesCopy.Add(checkBox);
         }
 
@@ -147,31 +156,27 @@ namespace WhatGameToPlay
         public void PlayerCheckBoxCheckedChange()
         {
             List<string> currentGames = FilesController.GetGamesListFromFile();
-            int checkedPlayersCount = 0;
-            foreach (CheckBox checkbox in _checkBoxesCopy)
-                if (checkbox.Checked) checkedPlayersCount++;
             listBoxAvailableGames.Items.Clear();
             foreach (Player player in Players)
                 if (player.CheckBox.Checked)
                     for (int i = 0; i < currentGames.Count; i++)
                         foreach (string gameNotPlaying in player.GamesNotPlaying)
-                            DeleteGameFromList(gameNotPlaying, currentGames);
+                            currentGames.Remove(gameNotPlaying);
             if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
                 foreach (string restrictedGame in
-                    FilesController.GetRestrictedGamesFromDirectory(checkedPlayersCount))
-                        DeleteGameFromList(restrictedGame, currentGames);
-            foreach (string game in currentGames) 
+                    FilesController.GetRestrictedGamesFromDirectory(GetCheckedPlayersCount()))
+                        currentGames.Remove(restrictedGame);
+            foreach (string game in currentGames)
                 listBoxAvailableGames.Items.Add(game);
-            int uncheckedPlayersCount = 0;
-            foreach (Player player in Players)
-                if (!player.CheckBox.Checked) uncheckedPlayersCount++;
-            if (uncheckedPlayersCount == Players.Count) listBoxAvailableGames.Items.Clear();
+            if (GetCheckedPlayersCount() == 0) listBoxAvailableGames.Items.Clear();
         }
 
-        private void DeleteGameFromList(string gameToDelete, List<string> currentGames)
+        private int GetCheckedPlayersCount()
         {
-            for (int i = 0; i < currentGames.Count; i++)
-                if (currentGames[i] == gameToDelete) currentGames.RemoveAt(i);
+            int checkedCheckBoxesCount = 0;
+            foreach (CheckBox checkbox in _checkBoxesCopy)
+                if (checkbox.Checked) checkedCheckBoxesCount++;
+            return checkedCheckBoxesCount;
         }
 
         private void ButtonRandomAvailableGame_Click(object sender, EventArgs e)
@@ -179,7 +184,7 @@ namespace WhatGameToPlay
             int defaultTimerInterval = 10;
             if (listBoxAvailableGames.Items.Count > 0)
             {
-                if (rouletteInsteadProgressbarToolStripMenuItem.Checked) 
+                if (rouletteInsteadProgressbarToolStripMenuItem.Checked)
                     progressBar.Visible = true;
                 progressBar.Value = 0;
                 _theme.SetTextBoxForeColor(textBox, win: false);
@@ -189,7 +194,7 @@ namespace WhatGameToPlay
                 SetToolStripItemsEnables(enable: false);
                 timer.Interval = defaultTimerInterval;
                 timer.Enabled = true;
-                foreach (CheckBox checkBox in _checkBoxes) 
+                foreach (CheckBox checkBox in _checkBoxes)
                     checkBox.Enabled = false;
             }
             else if (ShowMessages)
@@ -206,14 +211,14 @@ namespace WhatGameToPlay
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            int progressBarSmallIndent = 2, progressBarBigIndent = 3, timerInterval = 5, 
+            int progressBarSmallIndent = 2, progressBarBigIndent = 3, timerInterval = 5,
                 timerMaximumAccelerationInterval = 45, maximumTimerInterval = 200;
             bool changeProgressbarValue = progressBar.Value < progressBar.Maximum - progressBarBigIndent
                 && rouletteInsteadProgressbarToolStripMenuItem.Checked;
 
             if (changeProgressbarValue)
             {
-                progressBar.Value += timer.Interval < timerMaximumAccelerationInterval ? 
+                progressBar.Value += timer.Interval < timerMaximumAccelerationInterval ?
                     progressBarSmallIndent : progressBarBigIndent;
             }
             listBoxAvailableGames.Focus();
@@ -259,7 +264,7 @@ namespace WhatGameToPlay
                 {
                     if (_messageController.ShowDeleteAvailableGameDialog
                         (listBoxAvailableGames.SelectedItem.ToString()))
-                            DeleteGameFromListBox();
+                        DeleteGameFromListBox();
                 }
                 else DeleteGameFromListBox();
             }
@@ -302,7 +307,7 @@ namespace WhatGameToPlay
 
         private void RouletteInsteadProgressbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            rouletteInsteadProgressbarToolStripMenuItem.Checked = 
+            rouletteInsteadProgressbarToolStripMenuItem.Checked =
                 !rouletteInsteadProgressbarToolStripMenuItem.Checked;
             RefreshOptionsToFiles();
         }
@@ -388,7 +393,8 @@ namespace WhatGameToPlay
             Control[] fullColorControls = {
                 menuStrip,
                 listBoxAvailableGames,
-                textBox
+                textBox,
+                playersPanel
             };
             _theme.SetControlsFullColor(fullColorControls);
         }
