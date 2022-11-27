@@ -39,6 +39,7 @@ namespace WhatGameToPlay
 
         private void SelectPlayer()
         {
+            listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(GetSelectedPlayerName());
             checkedListBoxGamesPlaying.Items.Clear();
             List<string> gamesList = FilesController.GetGamesListFromFile();
             for (int index = 0; index < gamesList.Count; index++)
@@ -82,17 +83,31 @@ namespace WhatGameToPlay
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
             bool playerExist = FilesController.DoesPlayerFileExist(GetSelectedPlayerName());
-            if (playerExist) SelectPlayer();
-            else checkedListBoxGamesPlaying.Items.Clear();
+            if (playerExist)
+            {
+                SelectPlayer();
+            }
+            else
+            {
+                listBoxPlayers.ClearSelected();
+                checkedListBoxGamesPlaying.Items.Clear();
+            }
             SetPlayerButtonsEnables(enable: !playerExist);
             SetControlsEnables(enable: playerExist);
-            buttonAddPlayer.Enabled = GetSelectedPlayerName() != "";
+            if (GetSelectedPlayerName() == "") buttonAddPlayer.Enabled = false;
         }
 
         private void SetControlsEnables(bool enable)
         {
             checkBoxSelectAll.Enabled = enable;
             buttonSet.Enabled = enable;
+        }
+
+        private void SetPlayerButtonsEnables(bool enable)
+        {
+            buttonAddPlayer.Enabled = enable;
+            buttonDeletePlayer.Enabled = !enable;
+            AcceptButton = enable ? buttonAddPlayer : buttonDeletePlayer;
         }
 
         private void ButtonAddPlayer_Click(object sender, EventArgs e)
@@ -137,12 +152,6 @@ namespace WhatGameToPlay
                 listBoxPlayers.Items.Add(player.Name);
             checkedListBoxGamesPlaying.Items.Clear();
             SetPlayerButtonsEnables(enable: true);
-        }
-
-        private void SetPlayerButtonsEnables(bool enable)
-        {
-            buttonAddPlayer.Enabled = enable;
-            buttonDeletePlayer.Enabled = !enable;
         }
 
         private void RefreshColors()

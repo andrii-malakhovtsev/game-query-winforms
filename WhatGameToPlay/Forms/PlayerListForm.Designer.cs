@@ -56,7 +56,7 @@
             this.listBoxPlayers.Location = new System.Drawing.Point(12, 41);
             this.listBoxPlayers.Name = "listBoxPlayers";
             this.listBoxPlayers.Size = new System.Drawing.Size(175, 199);
-            this.listBoxPlayers.TabIndex = 10;
+            this.listBoxPlayers.TabIndex = 0;
             this.listBoxPlayers.DoubleClick += new System.EventHandler(this.ListBoxPlayers_DoubleClick);
             // 
             // labelGamesPlaying
@@ -106,22 +106,22 @@
             this.checkBoxSelectAll.UseVisualStyleBackColor = true;
             this.checkBoxSelectAll.CheckedChanged += new System.EventHandler(this.CheckBoxSelectAll_CheckedChanged);
             // 
-            // buttonAddPerson
+            // buttonAddPlayer
             // 
             this.buttonAddPlayer.Enabled = false;
             this.buttonAddPlayer.Location = new System.Drawing.Point(13, 276);
-            this.buttonAddPlayer.Name = "buttonAddPerson";
+            this.buttonAddPlayer.Name = "buttonAddPlayer";
             this.buttonAddPlayer.Size = new System.Drawing.Size(84, 23);
             this.buttonAddPlayer.TabIndex = 18;
             this.buttonAddPlayer.Text = "Add";
             this.buttonAddPlayer.UseVisualStyleBackColor = true;
             this.buttonAddPlayer.Click += new System.EventHandler(this.ButtonAddPlayer_Click);
             // 
-            // buttonDeletePerson
+            // buttonDeletePlayer
             // 
             this.buttonDeletePlayer.Enabled = false;
             this.buttonDeletePlayer.Location = new System.Drawing.Point(103, 276);
-            this.buttonDeletePlayer.Name = "buttonDeletePerson";
+            this.buttonDeletePlayer.Name = "buttonDeletePlayer";
             this.buttonDeletePlayer.Size = new System.Drawing.Size(84, 23);
             this.buttonDeletePlayer.TabIndex = 19;
             this.buttonDeletePlayer.Text = "Delete";

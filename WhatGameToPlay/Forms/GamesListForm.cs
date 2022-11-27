@@ -90,12 +90,16 @@ namespace WhatGameToPlay
         {
             if (CheckGameInGamesList(GetSelectedGameName()))
             {
+                listBoxGames.SelectedIndex = 
+                    listBoxGames.FindString(GetSelectedGameName());
                 checkBoxPlayersNumberLimit.Enabled = true;
                 SetNumericUpDownsStandartValues();
                 SetGameButtonsEnables(enable: false);
             }
             else
             {
+                SetNumericUpDownsStandartValues();
+                listBoxGames.ClearSelected();
                 SetGameButtonsEnables(enable: true);
                 SetNumericUpDownsEnables(enable: false);
                 buttonSet.Enabled = false;
@@ -137,6 +141,7 @@ namespace WhatGameToPlay
         {
             buttonAddGame.Enabled = enable;
             buttonDeleteGame.Enabled = !enable;
+            AcceptButton = enable ? buttonAddGame : buttonDeleteGame;
         }
 
         private void SwitchGameButtonsEnables()

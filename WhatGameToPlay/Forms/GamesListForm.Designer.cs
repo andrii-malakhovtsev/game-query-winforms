@@ -51,7 +51,7 @@
             this.listBoxGames.Location = new System.Drawing.Point(12, 41);
             this.listBoxGames.Name = "listBoxGames";
             this.listBoxGames.Size = new System.Drawing.Size(244, 212);
-            this.listBoxGames.TabIndex = 7;
+            this.listBoxGames.TabIndex = 0;
             this.listBoxGames.DoubleClick += new System.EventHandler(this.ListBoxGames_DoubleClick);
             // 
             // buttonAddGame
@@ -127,13 +127,13 @@
             this.labelMax.TabIndex = 20;
             this.labelMax.Text = "Max";
             // 
-            // checkBoxPeopleNumberLimit
+            // checkBoxPlayersNumberLimit
             // 
             this.checkBoxPlayersNumberLimit.AutoSize = true;
             this.checkBoxPlayersNumberLimit.Enabled = false;
             this.checkBoxPlayersNumberLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
             this.checkBoxPlayersNumberLimit.Location = new System.Drawing.Point(316, 150);
-            this.checkBoxPlayersNumberLimit.Name = "checkBoxPeopleNumberLimit";
+            this.checkBoxPlayersNumberLimit.Name = "checkBoxPlayersNumberLimit";
             this.checkBoxPlayersNumberLimit.Size = new System.Drawing.Size(111, 20);
             this.checkBoxPlayersNumberLimit.TabIndex = 21;
             this.checkBoxPlayersNumberLimit.Text = "Players limit";
