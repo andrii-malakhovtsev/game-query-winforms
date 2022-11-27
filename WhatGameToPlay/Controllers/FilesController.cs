@@ -31,6 +31,11 @@ namespace WhatGameToPlay
             CreateDirectory(s_limitsDirectoryName);
         }
 
+        public static bool IsStringSpacesOnly(string @string)
+        {
+            return (!@string.Any(letter => char.IsLetter(letter)) || @string.Length == 0);
+        }
+
         public static bool StandartFilesExist()
         {
             return File.Exists(s_themeFileName);

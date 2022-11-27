@@ -50,7 +50,7 @@ namespace WhatGameToPlay
             int randomNumber = random.Next(1, 6);
             switch (randomNumber)
             {
-                case 1: 
+                case 1:
                     message = "Let's go to play " + gameToPlay + "!";
                     break;
                 case 2:
@@ -94,11 +94,24 @@ namespace WhatGameToPlay
             return dialogResult == DialogResult.Yes;
         }
 
-        private bool ShowDeleteConfirmationDialog(string objectToDelete, string listName) 
+        public bool ShowUnsavedDataWarining()
         {
-            DialogResult dialogResult = _mainForm.MyMessageBox.Show("Are you sure you want to delete " + 
-                objectToDelete + " from " + listName + " list?", _confirmationDialogTitle, 
-                MessageBoxButtons.YesNo);
+            string textToShow = "You need to press \"Set\" button" +
+                " to save changes.\nChanges you made might be unsaved. Continue?";
+            return ShowDialog(textToShow);
+        }
+
+        private bool ShowDeleteConfirmationDialog(string objectToDelete, string listName)
+        {
+            string textToShow = "Are you sure you want to delete " +
+                objectToDelete + " from " + listName + " list?";
+            return ShowDialog(textToShow);
+        }
+
+        private bool ShowDialog(string text)
+        {
+            DialogResult dialogResult = _mainForm.MyMessageBox.Show(text,
+                _confirmationDialogTitle, MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }
 

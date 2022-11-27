@@ -14,7 +14,7 @@ namespace WhatGameToPlay
         private ToolStripMenuItem[] _optionToolStrips;
         public List<Player> Players { get; set; } = new List<Player>();
         public MyMessageBox MyMessageBox { get; set; }
-        public bool ShowConfirmingMessages { get; set; }
+        public bool ShowConfirmationMessages { get; set; }
         public bool ShowMessages { get; set; }
         public bool SaveDeletedGamesData { get; set; }
 
@@ -91,7 +91,7 @@ namespace WhatGameToPlay
             for (int i = 0; i < currentOptions.Length; i++)
                 _optionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
             ShowMessages = showMessagesToolStripMenuItem.Checked;
-            ShowConfirmingMessages = showConfirmationMessagesToolStripMenuItem.Checked;
+            ShowConfirmationMessages = showConfirmationMessagesToolStripMenuItem.Checked;
             SaveDeletedGamesData = SaveDeletedGamesDataToolStripMenuItem.Checked;
         }
 
@@ -111,7 +111,7 @@ namespace WhatGameToPlay
 
         private bool FormHasExtraCheckBoxes()
         {
-            int maxCheckBoxesOnFormCount = 10;
+            int maxCheckBoxesOnFormCount = 11;
             return Players.Count > maxCheckBoxesOnFormCount;
         }
 
@@ -286,7 +286,7 @@ namespace WhatGameToPlay
             {
                 showConfirmationMessagesToolStripMenuItem.Checked =
                     !showConfirmationMessagesToolStripMenuItem.Checked;
-                ShowConfirmingMessages = showConfirmationMessagesToolStripMenuItem.Checked;
+                ShowConfirmationMessages = showConfirmationMessagesToolStripMenuItem.Checked;
             }
             RefreshOptionsToFiles();
         }

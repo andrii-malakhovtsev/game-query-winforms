@@ -94,6 +94,7 @@
             this.checkedListBoxGamesPlaying.Name = "checkedListBoxGamesPlaying";
             this.checkedListBoxGamesPlaying.Size = new System.Drawing.Size(193, 229);
             this.checkedListBoxGamesPlaying.TabIndex = 16;
+            this.checkedListBoxGamesPlaying.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxGamesPlaying_ItemCheck);
             // 
             // checkBoxSelectAll
             // 

@@ -10,6 +10,8 @@ namespace WhatGameToPlay
         private readonly MainForm _mainForm;
         private readonly ThemeController _theme;
         private readonly MessageController _messageController;
+        private string _startedSettingPlayerName;
+        private bool _startedSetting = false;
 
         public PlayerListForm(MainForm MainForm, ThemeController theme)
         {
@@ -33,7 +35,7 @@ namespace WhatGameToPlay
 
         private void ListBoxPlayers_DoubleClick(object sender, EventArgs e)
         {
-            if (listBoxPlayers.SelectedItem != null) 
+            if (listBoxPlayers.SelectedItem != null)
                 textBoxSelectedPlayer.Text = listBoxPlayers.SelectedItem.ToString();
         }
 
@@ -47,7 +49,7 @@ namespace WhatGameToPlay
                 checkedListBoxGamesPlaying.Items.Add(gamesList[index]);
                 checkedListBoxGamesPlaying.SetItemChecked(index, value: true);
             }
-            string[] gamesPlayerDoesntPlay = 
+            string[] gamesPlayerDoesntPlay =
                 FilesController.GetGamesPlayerDoesntPlay(GetSelectedPlayerName());
             if (gamesPlayerDoesntPlay.Length != 0 && gamesPlayerDoesntPlay != null)
             {
@@ -72,6 +74,7 @@ namespace WhatGameToPlay
             FilesController.WriteGamesNotPlayingToFile(GetSelectedPlayerName(), gamesNotPlayingList);
             _messageController.ShowGameListSetForPlayerMessage(GetSelectedPlayerName());
             _mainForm.ClearInformation();
+            _startedSetting = false;
         }
 
         private void CheckBoxSelectAll_CheckedChanged(object sender, EventArgs e)
@@ -80,13 +83,29 @@ namespace WhatGameToPlay
                 checkedListBoxGamesPlaying.SetItemChecked(i, checkBoxSelectAll.Checked);
         }
 
+        private void CheckedListBoxGamesPlaying_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (MouseButtons == MouseButtons.Left)
+            {
+                _startedSetting = e.NewValue != CheckState.Indeterminate;
+                if (_startedSetting) _startedSettingPlayerName = textBoxSelectedPlayer.Text;
+            }
+        }
+
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            bool playerExist = FilesController.DoesPlayerFileExist(GetSelectedPlayerName());
-            if (playerExist)
+            if (_startedSetting && _mainForm.ShowConfirmationMessages)
             {
-                SelectPlayer();
+                if (!_messageController.ShowUnsavedDataWarining())
+                {
+                    _startedSetting = false;
+                    textBoxSelectedPlayer.Text = _startedSettingPlayerName;
+                    return;
+                }
             }
+            string selectedPlayer = GetSelectedPlayerName();
+            bool playerExist = FilesController.DoesPlayerFileExist(selectedPlayer);
+            if (playerExist) SelectPlayer();
             else
             {
                 listBoxPlayers.ClearSelected();
@@ -94,7 +113,8 @@ namespace WhatGameToPlay
             }
             SetPlayerButtonsEnables(enable: !playerExist);
             SetControlsEnables(enable: playerExist);
-            if (GetSelectedPlayerName() == "") buttonAddPlayer.Enabled = false;
+            if (FilesController.IsStringSpacesOnly(selectedPlayer))
+                buttonAddPlayer.Enabled = false;
         }
 
         private void SetControlsEnables(bool enable)
@@ -125,7 +145,7 @@ namespace WhatGameToPlay
 
         private void ButtonDeletePlayer_Click(object sender, EventArgs e)
         {
-            if (_mainForm.ShowConfirmingMessages)
+            if (_mainForm.ShowConfirmationMessages)
             {
                 if (_messageController.ShowDeletePlayerFromListDialog(GetSelectedPlayerName()))
                     DeletePlayerFromList();

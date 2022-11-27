@@ -46,7 +46,7 @@ namespace WhatGameToPlay
 
         private void ButtonDeleteGame_Click(object sender, EventArgs e)
         {
-            if (_mainForm.ShowConfirmingMessages)
+            if (_mainForm.ShowConfirmationMessages)
             {
                 if (_messageController.ShowDeleteGameDialog(GetSelectedGameName()))
                     DeleteGameFromGameList();
@@ -104,7 +104,8 @@ namespace WhatGameToPlay
                 SetNumericUpDownsEnables(enable: false);
                 buttonSet.Enabled = false;
                 checkBoxPlayersNumberLimit.Enabled = false;
-                buttonAddGame.Enabled = GetSelectedGameName() != "";
+                buttonAddGame.Enabled = 
+                    !FilesController.IsStringSpacesOnly(GetSelectedGameName());
             }
             checkBoxPlayersNumberLimit.Checked = false;
             decimal[] restrictions = GetRestrictions();
@@ -158,7 +159,7 @@ namespace WhatGameToPlay
 
         private void CheckBoxPlayersNumberLimit_Click(object sender, EventArgs e)
         {
-            if (!checkBoxPlayersNumberLimit.Checked && _mainForm.ShowConfirmingMessages &&
+            if (!checkBoxPlayersNumberLimit.Checked && _mainForm.ShowConfirmationMessages &&
                 FilesController.RestrictionExist(GetSelectedGameName()))
             {
                 if (_messageController.ShowDeleteGameFileDialog(GetSelectedGameName()))
