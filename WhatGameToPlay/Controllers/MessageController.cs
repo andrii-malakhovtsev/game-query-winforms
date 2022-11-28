@@ -20,7 +20,7 @@ namespace WhatGameToPlay
 
         private void ShowOptionalMainFormMessage(string message)
         {
-            if (_mainForm.ShowMessages) ShowMainFormMessage(message);
+            if (_mainForm.ShowMessages()) ShowMainFormMessage(message);
         }
 
         public void ShowTurningConfirmationMessagesError()
@@ -85,7 +85,6 @@ namespace WhatGameToPlay
                 s_confirmationDialogTitle, MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }
-
 
         public bool ShowDeleteAvailableGameDialog(string gameName)
         {

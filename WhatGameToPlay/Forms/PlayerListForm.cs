@@ -57,7 +57,7 @@ namespace WhatGameToPlay
         private void SelectPlayer()
         {
             _currentSelectedPlayerName = GetSelectedPlayerName();
-            listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(GetSelectedPlayerName());
+            listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(_currentSelectedPlayerName);
             checkedListBoxGamesPlaying.Items.Clear();
             List<string> gamesList = FilesController.GetGamesListFromFile();
             for (int index = 0; index < gamesList.Count; index++)
@@ -126,7 +126,7 @@ namespace WhatGameToPlay
 
         private void DeletePlayer()
         {
-            if (_mainForm.ShowConfirmationMessages)
+            if (_mainForm.ShowConfirmationMessages())
             {
                 if (_messageController.ShowDeletePlayerFromListDialog(GetSelectedPlayerName()))
                     DeletePlayerFromList();
@@ -147,7 +147,7 @@ namespace WhatGameToPlay
 
         private void PlayerListForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (FilesController.PlayerFileExist(textBoxSelectedPlayer.Text))
+            if (FilesController.PlayerFileExist(GetSelectedPlayerName()))
                 SavePlayerGames(GetSelectedPlayerName());
             _mainForm.ClearInformation();
         }

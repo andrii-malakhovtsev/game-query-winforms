@@ -13,8 +13,6 @@ namespace WhatGameToPlay
         private readonly MessageController _messageController;
         public List<Player> Players { get; set; } = new List<Player>();
         public MyMessageBox MyMessageBox { get; set; }
-        public bool ShowConfirmationMessages { get; set; }
-        public bool ShowMessages { get; set; }
         public bool SaveDeletedGamesData { get; set; }
 
         public MainForm()
@@ -71,6 +69,16 @@ namespace WhatGameToPlay
             ThemeController.SetTextForeColor(sender as ToolStripMenuItem);
         }
 
+        public bool ShowMessages()
+        {
+            return showMessagesToolStripMenuItem.Checked;
+        }
+
+        public bool ShowConfirmationMessages()
+        {
+            return showConfirmationMessagesToolStripMenuItem.Checked;
+        }
+
         private void SetSavedColors()
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
@@ -83,8 +91,6 @@ namespace WhatGameToPlay
             string[] currentOptions = FilesController.GetOptionsFromFile();
             for (int i = 0; i < currentOptions.Length; i++)
                 _optionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
-            ShowMessages = showMessagesToolStripMenuItem.Checked;
-            ShowConfirmationMessages = showConfirmationMessagesToolStripMenuItem.Checked;
             SaveDeletedGamesData = SaveDeletedGamesDataToolStripMenuItem.Checked;
         }
 
@@ -134,6 +140,7 @@ namespace WhatGameToPlay
                 Name = "checkBox " + player.Name,
                 Text = player.Name
             };
+            checkBox.AutoSize = true;
             checkBox.CheckedChanged += new EventHandler(CheckBox_CheckedChanged);
             player.CheckBox = checkBox;
             checkBox.BringToFront();
@@ -196,15 +203,9 @@ namespace WhatGameToPlay
         private void ShowConfirmationMessagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (showMessagesToolStripMenuItem.Checked)
-            {
                 _messageController.ShowTurningConfirmationMessagesError();
-            }
-            else
-            {
-                showConfirmationMessagesToolStripMenuItem.Checked =
+            else showConfirmationMessagesToolStripMenuItem.Checked =
                     !showConfirmationMessagesToolStripMenuItem.Checked;
-                ShowConfirmationMessages = showConfirmationMessagesToolStripMenuItem.Checked;
-            }
             RefreshOptionsToFiles();
         }
 
@@ -257,7 +258,6 @@ namespace WhatGameToPlay
             showMessagesToolStripMenuItem.Checked
                 = !showMessagesToolStripMenuItem.Checked;
             showConfirmationMessagesToolStripMenuItem.Checked = showMessagesToolStripMenuItem.Checked;
-            ShowMessages = showMessagesToolStripMenuItem.Checked;
             RefreshOptionsToFiles();
         }
 
@@ -303,7 +303,7 @@ namespace WhatGameToPlay
                 foreach (CheckBox checkBox in _checkBoxes)
                     checkBox.Enabled = false;
             }
-            else if (ShowMessages)
+            else if (ShowMessages())
             {
                 _messageController.ShowNoGamesToPlayMessage();
             }
@@ -321,7 +321,6 @@ namespace WhatGameToPlay
                 timerMaximumAccelerationInterval = 45, maximumTimerInterval = 200;
             bool changeProgressbarValue = progressBar.Value < progressBar.Maximum - progressBarBigIndent
                 && rouletteInsteadProgressbarToolStripMenuItem.Checked;
-
             if (changeProgressbarValue)
             {
                 progressBar.Value += timer.Interval < timerMaximumAccelerationInterval ?

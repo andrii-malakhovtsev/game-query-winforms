@@ -6,8 +6,6 @@ namespace WhatGameToPlay
 {
     public static class ThemeController
     {
-        private static readonly List<System.Type> s_backColorClearTypes = 
-            new List<System.Type>() { typeof(Label), typeof(GroupBox), typeof(CheckBox) };
         private static readonly string s_standartTheme = "White";
         private static string s_currentTheme;
         private static Color s_textColor;
@@ -20,7 +18,7 @@ namespace WhatGameToPlay
             s_currentTheme = FilesController.GetCurrentTheme();
         }
 
-        private static void SetThemeColors(Color textColor, Color buttonColor, 
+        private static void SetThemeColors(Color textColor, Color buttonColor,
             Color backgroundColor, Color secondBackgroundColor)
         {
             s_textColor = textColor;
@@ -113,15 +111,19 @@ namespace WhatGameToPlay
 
         public static void SetFormControlsTheme(Form form)
         {
+            List<System.Type> backColorClearTypes = new List<System.Type>() 
+                { typeof(Label), typeof(GroupBox), typeof(CheckBox) };
             form.BackColor = s_backgroundColor;
             foreach (Control control in form.Controls)
             {
                 System.Type controlType = control.GetType();
                 control.ForeColor = s_textColor;
-                if (!s_backColorClearTypes.Contains(controlType))
+                // if add typeof(PictureBox) to backColorClearTypes - program detects as virus
+                if (!backColorClearTypes.Contains(controlType) && controlType != typeof(PictureBox))
                     control.BackColor = controlType == typeof(Button) ?
                         s_buttonColor : s_secondBackgroundColor;
             }
+            backColorClearTypes.Clear();
         }
     }
 }

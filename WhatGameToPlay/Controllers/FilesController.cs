@@ -26,20 +26,20 @@ namespace WhatGameToPlay
                 || @string.Length == 0);
         }
 
-        public static bool PlayersLimitsExist(string gameName)
-        {
-            foreach (FileInfo fileInfo in GetPlayersLimitsTextFiles())
-            {
-                if (gameName == Path.GetFileNameWithoutExtension(fileInfo.Name))
-                    return true;
-            }
-            return false;
-        }
-
         public static bool PlayerFileExist(string checkPlayer)
         {
-            foreach (FileInfo fileInfo in GetPlayersTextFiles())
-                if (checkPlayer == Path.GetFileNameWithoutExtension(fileInfo.Name)) return true;
+            return TextFileExist(GetPlayersTextFiles(), checkPlayer);
+        }
+
+        public static bool PlayersLimitsFileExist(string checkGame)
+        {
+            return TextFileExist(GetPlayersLimitsTextFiles(), checkGame);
+        }
+
+        private static bool TextFileExist(FileInfo[] filesCollection, string fileName)
+        {
+            foreach (FileInfo fileInfo in filesCollection)
+                if (fileName == Path.GetFileNameWithoutExtension(fileInfo.Name)) return true;
             return false;
         }
 
@@ -140,17 +140,21 @@ namespace WhatGameToPlay
             }
             return null;
         }
+        
+        private static FileInfo[] GetTextFiles(string directoryName)
+        {
+            DirectoryInfo directory = new DirectoryInfo(directoryName);
+            return directory.GetFiles(s_allTextFileExtension);
+        }
 
         private static FileInfo[] GetPlayersTextFiles()
         {
-            DirectoryInfo directory = new DirectoryInfo(s_playersDirectoryName);
-            return directory.GetFiles(s_allTextFileExtension);
+            return GetTextFiles(directoryName: s_playersDirectoryName);
         }
 
         private static FileInfo[] GetPlayersLimitsTextFiles()
         {
-            DirectoryInfo directory = new DirectoryInfo(s_limitsDirectoryName);
-            return directory.GetFiles(s_allTextFileExtension);
+            return GetTextFiles(directoryName: s_limitsDirectoryName);
         }
 
         public static List<string> GetLimitedGamesFromDirectory(int checkedPlayersCount)

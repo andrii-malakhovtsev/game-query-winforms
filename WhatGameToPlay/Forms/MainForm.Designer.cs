@@ -363,7 +363,6 @@
         private System.Windows.Forms.ToolStripMenuItem rouletteInsteadProgressbarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CelebrateRandomGameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SaveDeletedGamesDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showMessagesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem whiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
@@ -372,6 +371,7 @@
         private System.Windows.Forms.ToolStripMenuItem youtubeToolStripMenuItem;
         private System.Windows.Forms.Panel playersPanel;
         private System.Windows.Forms.GroupBox playersGroupBox;
+        private System.Windows.Forms.ToolStripMenuItem showMessagesToolStripMenuItem;
     }
 }
 
