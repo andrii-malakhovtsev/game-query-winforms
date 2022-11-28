@@ -23,7 +23,7 @@ namespace WhatGameToPlay
             if (_mainForm.ShowMessages) ShowMainFormMessage(message);
         }
 
-        public void ShowTurnConfirmationMessagesError()
+        public void ShowTurningConfirmationMessagesError()
         {
             ShowMainFormMessage("You can't turn showing confirmation messages off while showing " +
                 "(all) messages are on");

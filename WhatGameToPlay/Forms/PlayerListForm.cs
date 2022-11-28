@@ -39,9 +39,9 @@ namespace WhatGameToPlay
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
             if (_playerSelected) SavePlayerGames(_currentSelectedPlayerName);
-            _playerSelected = false;
             string selectedPlayer = GetSelectedPlayerName();
             bool playerExist = FilesController.PlayerFileExist(selectedPlayer);
+            _playerSelected = playerExist;
             if (playerExist) SelectPlayer();
             else
             {
@@ -57,7 +57,6 @@ namespace WhatGameToPlay
         private void SelectPlayer()
         {
             _currentSelectedPlayerName = GetSelectedPlayerName();
-            _playerSelected = true;
             listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(GetSelectedPlayerName());
             checkedListBoxGamesPlaying.Items.Clear();
             List<string> gamesList = FilesController.GetGamesListFromFile();
@@ -69,16 +68,10 @@ namespace WhatGameToPlay
             string[] gamesPlayerDoesntPlay =
                 FilesController.GetGamesPlayerDoesntPlay(GetSelectedPlayerName());
             if (gamesPlayerDoesntPlay.Length != 0 && gamesPlayerDoesntPlay != null)
-            {
                 foreach (string gameDoesntPlay in gamesPlayerDoesntPlay)
-                {
                     for (int i = 0; i < gamesList.Count; i++)
-                    {
                         if (gameDoesntPlay == checkedListBoxGamesPlaying.Items[i].ToString())
                             checkedListBoxGamesPlaying.SetItemChecked(i, false);
-                    }
-                }
-            }
         }
 
         private void CheckBoxSelectAll_CheckedChanged(object sender, EventArgs e)

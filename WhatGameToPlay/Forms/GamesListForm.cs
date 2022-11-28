@@ -36,7 +36,7 @@ namespace WhatGameToPlay
                 listBoxGames.Items.Add(game);
         }
 
-        private bool CheckGameInGamesList(string gameToCheck)
+        private bool GameInList(string gameToCheck)
         {
             foreach (string game in FilesController.GetGamesListFromFile())
                 if (gameToCheck == game) return true;
@@ -58,12 +58,11 @@ namespace WhatGameToPlay
                 listBoxGames.SelectedIndex = listBoxGames.FindString(_currentSelectedGame);
                 return;
             }
-            bool selectedGameInGameList = CheckGameInGamesList(GetSelectedGameName());
-            if (selectedGameInGameList)
+            bool selectedGameInList = GameInList(GetSelectedGameName());
+            if (selectedGameInList)
             {
                 _currentSelectedGame = GetSelectedGameName();
-                listBoxGames.SelectedIndex =
-                    listBoxGames.FindString(GetSelectedGameName());
+                listBoxGames.SelectedIndex = listBoxGames.FindString(_currentSelectedGame);
                 SetNumericUpDownsStandartValues();
             }
             else
@@ -71,11 +70,10 @@ namespace WhatGameToPlay
                 SetNumericUpDownsStandartValues();
                 listBoxGames.ClearSelected();
                 SetNumericUpDownsEnables(enable: false);
-                buttonAddGame.Enabled =
-                    !FilesController.StringSpacesOnly(GetSelectedGameName());
+                buttonAddGame.Enabled = !FilesController.StringSpacesOnly(GetSelectedGameName());
             }
-            checkBoxPlayersNumberLimit.Enabled = selectedGameInGameList;
-            SetGameButtonsEnables(enable: !selectedGameInGameList);
+            checkBoxPlayersNumberLimit.Enabled = selectedGameInList;
+            SetGameButtonsEnables(enable: !selectedGameInList);
             SetPlayersLimitsToNumericUpDowns();
         }
 

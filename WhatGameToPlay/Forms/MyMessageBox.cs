@@ -22,7 +22,6 @@ namespace WhatGameToPlay
             buttonYes.Visible = visible;
             buttonNo.Visible = visible;
             buttonOK.Visible = !visible;
-            AcceptButton = visible ? buttonYes : buttonOK;
         }
 
         public DialogResult Show(string text)
@@ -41,6 +40,7 @@ namespace WhatGameToPlay
             Text = caption;
             SetFormDimensions();
             SetButtonsVisibility(visible: yesNoMessageBox);
+            AcceptButton = yesNoMessageBox ? buttonYes : buttonOK;
             if (yesNoMessageBox)
             {
                 SetButtonLocation(buttonYes);
@@ -78,7 +78,7 @@ namespace WhatGameToPlay
                 buttonYes,
                 buttonNo
             };
-            ThemeController.SetButtonsColors(allButtons);
+            ThemeController.SetButtonsBackColor(allButtons);
         }
 
         private void ButtonConfirm_Click(object sender, EventArgs e)

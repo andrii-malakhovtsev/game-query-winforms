@@ -226,10 +226,8 @@ namespace WhatGameToPlay
             string path = GetSelectedPlayerFilePath(selectedPlayer);
             CreatePlayerFile(selectedPlayer);
             using (TextWriter textWriter = new StreamWriter(path))
-            {
                 foreach (string gameNotPlaying in gamesNotPlayingList)
                     textWriter.WriteLine(gameNotPlaying.ToString());
-            }
         }
 
         public static void DeleteGameFromGameList(string gameToDelete)

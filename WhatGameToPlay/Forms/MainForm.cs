@@ -25,8 +25,8 @@ namespace WhatGameToPlay
             {
                 if (toolStripMenuItem.DropDownItems.Count != 0)
                 {
-                    bool isToolStripThemeMenuItem = toolStripMenuItem.Text == "Theme",
-                        isToolStripOptionsMenuItem = toolStripMenuItem.Text == "Options";
+                    bool isToolStripThemeMenuItem = toolStripMenuItem == themeToolStripMenuItem,
+                        isToolStripOptionsMenuItem = toolStripMenuItem == optionsToolStripMenuItem;
                     toolStripMenuItem.DropDownOpening += new EventHandler(MenuToolStripItem_DropDownOpening);
                     toolStripMenuItem.DropDownClosed += new EventHandler(MenuToolStripItem_DropDownClosed);
                     if (isToolStripThemeMenuItem || isToolStripOptionsMenuItem)
@@ -104,8 +104,8 @@ namespace WhatGameToPlay
 
         private bool FormHasExtraCheckBoxes()
         {
-            int maxCheckBoxesOnFormCount = 11;
-            return Players.Count > maxCheckBoxesOnFormCount;
+            int maximumCheckBoxesOnForm = 11;
+            return Players.Count > maximumCheckBoxesOnForm;
         }
 
         private void RefreshPlayersList()
@@ -149,18 +149,18 @@ namespace WhatGameToPlay
 
         private void PlayerCheckBoxCheckedChange()
         {
-            List<string> currentGames = FilesController.GetGamesListFromFile();
+            List<string> gamesAvailable = FilesController.GetGamesListFromFile();
             listBoxAvailableGames.Items.Clear();
             foreach (Player player in Players)
                 if (player.CheckBox.Checked)
-                    for (int i = 0; i < currentGames.Count; i++)
+                    for (int i = 0; i < gamesAvailable.Count; i++)
                         foreach (string gameNotPlaying in player.GamesNotPlaying)
-                            currentGames.Remove(gameNotPlaying);
+                            gamesAvailable.Remove(gameNotPlaying);
             if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
-                foreach (string restrictedGame in
+                foreach (string limitedGame in
                     FilesController.GetLimitedGamesFromDirectory(GetCheckedPlayersCount()))
-                    currentGames.Remove(restrictedGame);
-            foreach (string game in currentGames)
+                        gamesAvailable.Remove(limitedGame);
+            foreach (string game in gamesAvailable)
                 listBoxAvailableGames.Items.Add(game);
             if (GetCheckedPlayersCount() == 0) listBoxAvailableGames.Items.Clear();
         }
@@ -197,7 +197,7 @@ namespace WhatGameToPlay
         {
             if (showMessagesToolStripMenuItem.Checked)
             {
-                _messageController.ShowTurnConfirmationMessagesError();
+                _messageController.ShowTurningConfirmationMessagesError();
             }
             else
             {
