@@ -107,7 +107,7 @@ namespace WhatGameToPlay
             foreach (Button button in buttons)
             {
                 button.ForeColor = s_textColor;
-                button.BackColor = s_secondBackgroundColor;
+                button.BackColor = s_buttonColor;
             }
         }
 
