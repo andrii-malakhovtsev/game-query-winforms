@@ -6,17 +6,22 @@ namespace WhatGameToPlay
     public partial class GamesListForm : Form
     {
         private readonly MainForm _mainForm;
-        private readonly ThemeController _theme;
         private readonly MessageController _messageController;
+        private string _currentSelectedGame;
+        private bool _startedLimitsEntering;
         private bool _playerLimitsExist;
 
-        public GamesListForm(MainForm mainForm, ThemeController theme)
+        public GamesListForm(MainForm mainForm)
         {
             _mainForm = mainForm;
             _messageController = new MessageController(_mainForm);
-            _theme = theme;
             InitializeComponent();
             RefreshListBoxGames();
+        }
+
+        private void GamesListForm_Load(object sender, EventArgs e)
+        {
+            ThemeController.SetFormControlsTheme(form: this);
         }
 
         private string GetSelectedGameName()
@@ -31,111 +36,56 @@ namespace WhatGameToPlay
                 listBoxGames.Items.Add(game);
         }
 
-        private void ButtonAddGame_Click(object sender, EventArgs e)
-        {
-            FilesController.AddGameToGameListFile(GetSelectedGameName());
-            RefreshListBoxGames();
-            GetRestrictions();
-            if (!_playerLimitsExist) FilesController.AppendGameToPlayersFiles(GetSelectedGameName());
-            _mainForm.ClearInformation();
-            _messageController.ShowGameAddedMessage(GetSelectedGameName());
-            SwitchGameButtonsEnables();
-            SetGameButtonsEnables(enable: false);
-            checkBoxPlayersNumberLimit.Enabled = true;
-        }
-
-        private void ButtonDeleteGame_Click(object sender, EventArgs e)
-        {
-            if (_mainForm.ShowConfirmationMessages)
-            {
-                if (_messageController.ShowDeleteGameDialog(GetSelectedGameName()))
-                    DeleteGameFromGameList();
-            }
-            else DeleteGameFromGameList();
-        }
-
-        private void DeleteGameFromGameList()
-        {
-            foreach (string game in FilesController.GetGamesListFromFile())
-            {
-                if (game == GetSelectedGameName())
-                {
-                    FilesController.DeleteGameFromGameList(GetSelectedGameName());
-                    break;
-                }
-            }
-            _mainForm.ClearInformation();
-            RefreshListBoxGames();
-            SwitchGameButtonsEnables();
-            if (!_mainForm.SaveDeletedGamesData)
-                FilesController.DeletePlayersGameData(GetSelectedGameName());
-            textBoxGameName.Clear();
-            SetNumericUpDownsStandartValues();
-        }
-
-        private void ListBoxGames_DoubleClick(object sender, EventArgs e)
-        {
-            if (listBoxGames.SelectedItem != null)
-                textBoxGameName.Text = listBoxGames.SelectedItem.ToString();
-        }
-
-        public bool CheckGameInGamesList(string gameToCheck)
+        private bool CheckGameInGamesList(string gameToCheck)
         {
             foreach (string game in FilesController.GetGamesListFromFile())
                 if (gameToCheck == game) return true;
             return false;
         }
 
+        private void ListBoxGames_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxGames.SelectedItem != null)
+                textBoxGameName.Text = listBoxGames.SelectedItem.ToString();
+        }
+
         private void TextBoxGameName_TextChanged(object sender, EventArgs e)
         {
-            if (CheckGameInGamesList(GetSelectedGameName()))
+            if (_startedLimitsEntering && !SavePlayersLimits())
             {
-                listBoxGames.SelectedIndex = 
+                _startedLimitsEntering = false;
+                textBoxGameName.Text = _currentSelectedGame;
+                listBoxGames.SelectedIndex = listBoxGames.FindString(_currentSelectedGame);
+                return;
+            }
+            bool selectedGameInGameList = CheckGameInGamesList(GetSelectedGameName());
+            if (selectedGameInGameList)
+            {
+                _currentSelectedGame = GetSelectedGameName();
+                listBoxGames.SelectedIndex =
                     listBoxGames.FindString(GetSelectedGameName());
-                checkBoxPlayersNumberLimit.Enabled = true;
                 SetNumericUpDownsStandartValues();
-                SetGameButtonsEnables(enable: false);
             }
             else
             {
                 SetNumericUpDownsStandartValues();
                 listBoxGames.ClearSelected();
-                SetGameButtonsEnables(enable: true);
                 SetNumericUpDownsEnables(enable: false);
-                buttonSet.Enabled = false;
-                checkBoxPlayersNumberLimit.Enabled = false;
-                buttonAddGame.Enabled = 
-                    !FilesController.IsStringSpacesOnly(GetSelectedGameName());
+                buttonAddGame.Enabled =
+                    !FilesController.StringSpacesOnly(GetSelectedGameName());
             }
-            checkBoxPlayersNumberLimit.Checked = false;
-            decimal[] restrictions = GetRestrictions();
-            if (_playerLimitsExist)
-            {
-                numericUpDownMin.Value = restrictions[0];
-                numericUpDownMax.Value = restrictions[1];
-                checkBoxPlayersNumberLimit.Checked = true;
-            }
+            checkBoxPlayersNumberLimit.Enabled = selectedGameInGameList;
+            SetGameButtonsEnables(enable: !selectedGameInGameList);
+            SetPlayersLimitsToNumericUpDowns();
         }
 
-        private decimal[] GetRestrictions()
+        private decimal[] GetPlayersLimits()
         {
-            int restrictionsCount = 2;
-            decimal[] restrictions = new decimal[restrictionsCount];
+            int limitsCount = 2;
+            decimal[] limits = new decimal[limitsCount];
             _playerLimitsExist =
-                FilesController.GetRestrictionsFromGameFile(GetSelectedGameName(), ref restrictions);
-            return restrictions;
-        }
-
-        private void SetNumericUpDownsEnables(bool enable)
-        {
-            numericUpDownMax.Enabled = enable;
-            numericUpDownMin.Enabled = enable;
-        }
-
-        private void SetNumericUpDownsStandartValues()
-        {
-            numericUpDownMin.Value = numericUpDownMin.Minimum;
-            numericUpDownMax.Value = numericUpDownMax.Maximum;
+                FilesController.GetPlayersLimitsFromGameFile(GetSelectedGameName(), ref limits);
+            return limits;
         }
 
         private void SetGameButtonsEnables(bool enable)
@@ -151,74 +101,115 @@ namespace WhatGameToPlay
             buttonDeleteGame.Enabled = !buttonDeleteGame.Enabled;
         }
 
+        private void ButtonAddGame_Click(object sender, EventArgs e)
+        {
+            FilesController.AddGameToGameListFile(GetSelectedGameName());
+            RefreshListBoxGames();
+            GetPlayersLimits();
+            if (!_playerLimitsExist) 
+                FilesController.AppendGameToPlayersFiles(GetSelectedGameName());
+            _messageController.ShowGameAddedToListMessage(GetSelectedGameName());
+            SwitchGameButtonsEnables();
+            SetGameButtonsEnables(enable: false);
+            checkBoxPlayersNumberLimit.Enabled = true;
+        }
+
+        private void ButtonDeleteGame_Click(object sender, EventArgs e)
+        {
+            DeleteGame();
+        }
+
+        private void ListBoxGames_DoubleClick(object sender, EventArgs e)
+        {
+            DeleteGame();
+        }
+
+        private void DeleteGame()
+        {
+            if (_mainForm.ShowConfirmationMessages)
+            {
+                if (_messageController.ShowDeleteGameDialog(GetSelectedGameName()))
+                    DeleteGameFromGameList();
+            }
+            else DeleteGameFromGameList();
+        }
+
+        private void SetNumericUpDownsEnables(bool enable)
+        {
+            numericUpDownMax.Enabled = enable;
+            numericUpDownMin.Enabled = enable;
+        }
+
+        private void SetNumericUpDownsStandartValues()
+        {
+            numericUpDownMin.Value = numericUpDownMin.Minimum;
+            numericUpDownMax.Value = numericUpDownMax.Maximum;
+        }
+
+        private void DeleteGameFromGameList()
+        {
+            foreach (string game in FilesController.GetGamesListFromFile())
+            {
+                if (game == GetSelectedGameName())
+                {
+                    FilesController.DeleteGameFromGameList(GetSelectedGameName());
+                    break;
+                }
+            }
+            RefreshListBoxGames();
+            SwitchGameButtonsEnables();
+            if (!_mainForm.SaveDeletedGamesData)
+                FilesController.DeletePlayersGameData(GetSelectedGameName());
+            textBoxGameName.Clear();
+            SetNumericUpDownsStandartValues();
+        }
+
         private void CheckBoxPlayersNumberLimit_CheckedChanged(object sender, EventArgs e)
         {
             SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
-            buttonSet.Enabled = checkBoxPlayersNumberLimit.Checked;
-        }
-
-        private void CheckBoxPlayersNumberLimit_Click(object sender, EventArgs e)
-        {
+            _startedLimitsEntering = checkBoxPlayersNumberLimit.Checked;
             if (!checkBoxPlayersNumberLimit.Checked && _mainForm.ShowConfirmationMessages &&
-                FilesController.RestrictionExist(GetSelectedGameName()))
+                FilesController.PlayersLimitsExist(GetSelectedGameName()))
             {
-                if (_messageController.ShowDeleteGameFileDialog(GetSelectedGameName()))
+                if (_messageController.ShowDeletePlayersLimitsFileDialog(GetSelectedGameName()))
                 {
-                    FilesController.DeleteGameRestrictionsFile(GetSelectedGameName());
+                    FilesController.DeletePlayersLimitsFile(GetSelectedGameName());
                     SetNumericUpDownsStandartValues();
-                    _mainForm.ClearInformation();
                 }
                 else checkBoxPlayersNumberLimit.Checked = true;
             }
         }
 
-        private void ButtonSetPlayersLimit_Click(object sender, EventArgs e)
+        private void SetPlayersLimitsToNumericUpDowns()
         {
-            if (numericUpDownMax.Value > numericUpDownMin.Value)
+            checkBoxPlayersNumberLimit.Checked = false;
+            decimal[] limits = GetPlayersLimits();
+            if (_playerLimitsExist)
             {
-                FilesController.AddRestrictionsToFile(GetSelectedGameName(), numericUpDownMin.Value,
+                numericUpDownMin.Value = limits[0];
+                numericUpDownMax.Value = limits[1];
+                checkBoxPlayersNumberLimit.Checked = true;
+            }
+        }
+
+        private bool SavePlayersLimits()
+        {
+            bool limitsFit = numericUpDownMax.Value > numericUpDownMin.Value;
+            if (limitsFit)
+            {
+                FilesController.WritePlayersLimitsToFile(_currentSelectedGame, numericUpDownMin.Value,
                     numericUpDownMax.Value);
-                _messageController.ShowPlayersLimitSetMessage(GetSelectedGameName());
-                _mainForm.ClearInformation();
             }
             else if (_mainForm.ShowMessages)
             {
-                _messageController.ShowRestrictionsErrorMessage();
+                _messageController.ShowPlayersLimitsErrorMessage();
             }
+            return limitsFit;
         }
 
-        private void FormGamesList_Load(object sender, EventArgs e)
+        private void GamesListForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            RefreshColors();
-        }
-
-        private void RefreshColors()
-        {
-            _theme.SetFormBackgroundColor(this);
-            Control[] foreColorControls = {
-                checkBoxPlayersNumberLimit,
-                labelGamesList,
-                labelEnterGameName,
-                labelMin,
-                labelMax,
-                buttonAddGame,
-                buttonDeleteGame,
-                buttonSet,
-            };
-            _theme.SetControlsForeColor(foreColorControls);
-            Control[] fullColorControls = {
-                listBoxGames,
-                textBoxGameName,
-                numericUpDownMax,
-                numericUpDownMin
-            };
-            _theme.SetControlsFullColor(fullColorControls);
-            Button[] buttons = {
-                buttonAddGame,
-                buttonDeleteGame,
-                buttonSet
-            };
-            _theme.SetButtonsColor(buttons);
+            _mainForm.ClearInformation();
         }
     }
 }

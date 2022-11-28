@@ -58,6 +58,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.playersPanel = new System.Windows.Forms.Panel();
+            this.playersGroupBox = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSmile)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFireworks)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -78,9 +79,9 @@
             this.labelPresentPlayers.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             this.labelPresentPlayers.Location = new System.Drawing.Point(12, 35);
             this.labelPresentPlayers.Name = "labelPresentPlayers";
-            this.labelPresentPlayers.Size = new System.Drawing.Size(160, 24);
+            this.labelPresentPlayers.Size = new System.Drawing.Size(154, 24);
             this.labelPresentPlayers.TabIndex = 10;
-            this.labelPresentPlayers.Text = "Present players:";
+            this.labelPresentPlayers.Text = "Present players";
             // 
             // labelAvailableGames
             // 
@@ -88,9 +89,9 @@
             this.labelAvailableGames.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             this.labelAvailableGames.Location = new System.Drawing.Point(275, 35);
             this.labelAvailableGames.Name = "labelAvailableGames";
-            this.labelAvailableGames.Size = new System.Drawing.Size(169, 24);
+            this.labelAvailableGames.Size = new System.Drawing.Size(163, 24);
             this.labelAvailableGames.TabIndex = 11;
-            this.labelAvailableGames.Text = "Available games:";
+            this.labelAvailableGames.Text = "Available games";
             // 
             // buttonRandomAvailableGame
             // 
@@ -149,7 +150,7 @@
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(530, 24);
             this.menuStrip.TabIndex = 16;
-            this.menuStrip.Text = "menuStrip1";
+            this.menuStrip.Text = "menuStrip";
             // 
             // editToolStripMenuItem
             // 
@@ -295,10 +296,18 @@
             // playersPanel
             // 
             this.playersPanel.AutoScroll = true;
-            this.playersPanel.Location = new System.Drawing.Point(12, 71);
+            this.playersPanel.Location = new System.Drawing.Point(18, 71);
             this.playersPanel.Name = "playersPanel";
-            this.playersPanel.Size = new System.Drawing.Size(160, 250);
+            this.playersPanel.Size = new System.Drawing.Size(159, 250);
             this.playersPanel.TabIndex = 19;
+            // 
+            // playersGroupBox
+            // 
+            this.playersGroupBox.Location = new System.Drawing.Point(16, 62);
+            this.playersGroupBox.Name = "playersGroupBox";
+            this.playersGroupBox.Size = new System.Drawing.Size(164, 263);
+            this.playersGroupBox.TabIndex = 20;
+            this.playersGroupBox.TabStop = false;
             // 
             // MainForm
             // 
@@ -306,6 +315,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(530, 419);
+            this.Controls.Add(this.playersPanel);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.buttonRandomAvailableGame);
@@ -314,7 +324,7 @@
             this.Controls.Add(this.listBoxAvailableGames);
             this.Controls.Add(this.pictureBoxSmile);
             this.Controls.Add(this.menuStrip);
-            this.Controls.Add(this.playersPanel);
+            this.Controls.Add(this.playersGroupBox);
             this.Controls.Add(this.pictureBoxFireworks);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -361,6 +371,7 @@
         private System.Windows.Forms.ToolStripMenuItem discordToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem youtubeToolStripMenuItem;
         private System.Windows.Forms.Panel playersPanel;
+        private System.Windows.Forms.GroupBox playersGroupBox;
     }
 }
 

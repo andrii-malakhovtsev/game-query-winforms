@@ -4,27 +4,34 @@ using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
-    public class ThemeController
+    public static class ThemeController
     {
+        private static readonly List<System.Type> s_backColorClearTypes = 
+            new List<System.Type>() { typeof(Label), typeof(GroupBox), typeof(CheckBox) };
         private static readonly string s_standartTheme = "White";
-        private Color _backgroundColor;
-        private Color _secondBackgroundColor;
-        private Color _textColor;
-        private Color _buttonsColor;
-        private string _currentTheme;
+        private static string s_currentTheme;
+        private static Color s_backgroundColor;
+        private static Color s_secondBackgroundColor;
+        private static Color s_textColor;
+        private static Color s_buttonsColor;
 
-        private void SetThemeColors(Color textsColor, Color secondBackgoroundColor, Color backgroundsColor,
-           Color buttonsColor)
+        private static void RefreshCurrentThemeFromFile()
         {
-            _textColor = textsColor;
-            _secondBackgroundColor = secondBackgoroundColor;
-            _backgroundColor = backgroundsColor;
-            _buttonsColor = buttonsColor;
+            s_currentTheme = FilesController.GetCurrentTheme();
         }
 
-        public void SetTextBoxForeColor(TextBox textbox, bool win)
+        private static void SetThemeColors(Color textsColor, Color secondBackgoroundColor, 
+            Color backgroundsColor, Color buttonsColor)
         {
-            textbox.ForeColor = win ? Color.Green : _textColor;
+            s_textColor = textsColor;
+            s_secondBackgroundColor = secondBackgoroundColor;
+            s_backgroundColor = backgroundsColor;
+            s_buttonsColor = buttonsColor;
+        }
+
+        public static void SetTextBoxForeColor(TextBox textbox, bool win)
+        {
+            textbox.ForeColor = win ? Color.Green : s_textColor;
         }
 
         public static string GetStandartThemeName()
@@ -32,138 +39,89 @@ namespace WhatGameToPlay
             return s_standartTheme;
         }
 
-        private void RefreshCurrentThemeFromFile()
+        private static bool IsCurrentThemeStandart()
         {
-            _currentTheme = FilesController.GetCurrentTheme();
+            return s_currentTheme == s_standartTheme;
         }
 
-        public void SetChosenThemeColors()
+        public static void SetChosenThemeColors()
         {
             RefreshCurrentThemeFromFile();
-            switch (_currentTheme)
+            switch (s_currentTheme)
             {
                 case "White":
-                    SetThemeColors(Color.Black, Color.White, Color.FromArgb(240, 240, 240),
-                    Color.FromArgb(225, 225, 225));
+                    SetThemeColors(textsColor: Color.Black,
+                       secondBackgoroundColor: Color.White,
+                             backgroundsColor: Color.FromArgb(240, 240, 240),
+                                 buttonsColor: Color.FromArgb(225, 225, 225));
                     break;
                 case "Dark":
-                    SetThemeColors(Color.White, Color.FromArgb(50, 46, 52), Color.FromArgb(70, 65, 72),
-                        Color.FromArgb(56, 52, 57));
+                    SetThemeColors(textsColor: Color.White,
+                       secondBackgoroundColor: Color.FromArgb(50, 46, 52),
+                             backgroundsColor: Color.FromArgb(70, 65, 72),
+                                 buttonsColor: Color.FromArgb(56, 52, 57));
                     break;
                 case "Telegram":
-                    SetThemeColors(Color.FromArgb(245, 245, 245), Color.FromArgb(14, 22, 33),
-                        Color.FromArgb(23, 33, 43), Color.FromArgb(32, 43, 54));
+                    SetThemeColors(textsColor: Color.FromArgb(245, 245, 245),
+                       secondBackgoroundColor: Color.FromArgb(14, 22, 33),
+                             backgroundsColor: Color.FromArgb(23, 33, 43),
+                                 buttonsColor: Color.FromArgb(32, 43, 54));
                     break;
                 case "Discord":
-                    SetThemeColors(Color.FromArgb(241, 236, 235), Color.FromArgb(47, 49, 54),
-                        Color.FromArgb(54, 57, 63), Color.FromArgb(66, 70, 77));
+                    SetThemeColors(textsColor: Color.FromArgb(241, 236, 235),
+                       secondBackgoroundColor: Color.FromArgb(47, 49, 54),
+                             backgroundsColor: Color.FromArgb(54, 57, 63),
+                                 buttonsColor: Color.FromArgb(66, 70, 77));
                     break;
                 case "YouTube":
-                    SetThemeColors(Color.FromArgb(254, 254, 254), Color.FromArgb(24, 24, 24),
-                        Color.FromArgb(33, 33, 33), Color.FromArgb(56, 56, 56));
+                    SetThemeColors(textsColor: Color.FromArgb(254, 254, 254),
+                       secondBackgoroundColor: Color.FromArgb(24, 24, 24), 
+                             backgroundsColor: Color.FromArgb(33, 33, 33), 
+                                 buttonsColor: Color.FromArgb(56, 56, 56));
                     break;
             }
         }
 
-        public void SetBackgroundForeColor(Control control)
+        public static void SetTextForeColor(ToolStripMenuItem toolStripMenuItem)
         {
-            control.ForeColor = _backgroundColor;
+            toolStripMenuItem.ForeColor = s_textColor;
         }
 
-        public void SetTextForeColor(ToolStripMenuItem toolStripMenuItem)
-        {
-            toolStripMenuItem.ForeColor = _textColor;
-        }
-
-        public void SetToolStripBackColor(ToolStripMenuItem toolStripMenuItem)
-        {
-            toolStripMenuItem.BackColor = _textColor;
-        }
-
-        public void SetControlsForeColor(Control[] controls)
-        {
-            foreach (Control control in controls)
-                control.ForeColor = _textColor;
-        }
-
-        public void SetControlsForeColor(List<Control> controls)
-        {
-            foreach (Control control in controls)
-                control.ForeColor = _textColor;
-        }
-
-        public void SetSecondBackgroundBackColor(Control[] controls)
-        {
-            foreach (Control control in controls)
-                control.BackColor = _secondBackgroundColor;
-        }
-
-        public void SetTextForeColor(Label label)
-        {
-            label.ForeColor = _textColor;
-        }
-
-        public void SetTextForeColor(Label[] labels)
-        {
-            foreach (Label label in labels) SetTextForeColor(label);
-        }
-
-        public void SetBackgroundForeColor(ToolStripMenuItem toolStripMenuItem)
+        public static void SetBackgroundForeColor(ToolStripMenuItem toolStripMenuItem)
         {
             RefreshCurrentThemeFromFile();
-            if (CurrentThemeIsNotStandart()) toolStripMenuItem.ForeColor = _backgroundColor;
+            if (!IsCurrentThemeStandart()) toolStripMenuItem.ForeColor = s_backgroundColor;
         }
 
-        public void SetControlsFullColor(Control[] controls)
-        {
-            SetControlsForeColor(controls);
-            SetSecondBackgroundBackColor(controls);
-        }
-
-        public void SetToolStripMenuItemsFullColor(List<ToolStripMenuItem> toolStripMenuItems)
+        public static void SetToolStripMenuItemsFullColor(List<ToolStripMenuItem> toolStripMenuItems)
         {
             foreach (ToolStripMenuItem toolStripMenuItem in toolStripMenuItems)
             {
-                toolStripMenuItem.ForeColor = _textColor;
-                toolStripMenuItem.BackColor = _secondBackgroundColor;
+                toolStripMenuItem.ForeColor = s_textColor;
+                toolStripMenuItem.BackColor = s_secondBackgroundColor;
             }
         }
 
-        public void SetFormBackgroundColor(Form form)
-        {
-            form.BackColor = _backgroundColor;
-        }
-
-        private bool CurrentThemeIsNotStandart()
-        {
-            return _currentTheme != s_standartTheme;
-        }
-
-        public void SetFormWithPanelBackgroundColor(Form form, Panel panel)
-        {
-            RefreshCurrentThemeFromFile();
-            if (CurrentThemeIsNotStandart())
-            {
-                form.BackColor = _backgroundColor;
-                panel.BackColor = _secondBackgroundColor;
-            }
-            else
-            {
-                form.BackColor = _secondBackgroundColor;
-                panel.BackColor = _backgroundColor;
-            }
-        }
-
-        public void SetButtonsColor(Button[] buttons)
+        public static void SetButtonsColors(Button[] buttons)
         {
             foreach (Button button in buttons)
-                SetButtonColor(button);
+            {
+                button.ForeColor = s_textColor;
+                button.BackColor = s_buttonsColor;
+            }
         }
 
-        public void SetButtonColor(Button button)
+        public static void SetFormControlsTheme(Form form)
         {
-            button.ForeColor = _textColor;
-            button.BackColor = _buttonsColor;
+            form.BackColor = s_backgroundColor;
+            foreach (Control control in form.Controls)
+            {
+                System.Type controlType = control.GetType();
+                control.ForeColor = s_textColor;
+                if (!s_backColorClearTypes.Contains(controlType))
+                    control.BackColor = controlType == typeof(Button) ?
+                        s_buttonsColor : s_secondBackgroundColor;
+            }
         }
     }
 }

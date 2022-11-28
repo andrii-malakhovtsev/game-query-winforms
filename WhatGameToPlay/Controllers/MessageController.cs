@@ -6,73 +6,11 @@ namespace WhatGameToPlay
     public class MessageController
     {
         private readonly MainForm _mainForm;
-        private readonly static string _confirmationDialogTitle = "Confirmation";
+        private readonly static string s_confirmationDialogTitle = "Confirmation";
 
         public MessageController(MainForm mainform)
         {
             _mainForm = mainform;
-        }
-
-        public void ShowRestrictionsErrorMessage()
-        {
-            ShowMainFormMessage("The Min value must not exceed the Max value");
-        }
-
-        public void ShowPlayersLimitSetMessage(string gameName)
-        {
-            ShowOptionalMainFormMessage("Limits for " + gameName + " set!");
-        }
-
-        public void ShowGameAddedMessage(string gameName)
-        {
-            ShowOptionalMainFormMessage("Game " + gameName + " is successfully added!");
-        }
-
-        public void ShowGameListSetForPlayerMessage(string playerName)
-        {
-            ShowOptionalMainFormMessage("Games list for " + playerName + " set!");
-        }
-
-        public void ShowPlayerAddedToListMessage(string playerName)
-        {
-            ShowOptionalMainFormMessage(playerName + " is added to the list!");
-        }
-
-        public void ShowNoGamesToPlayMessage()
-        {
-            ShowMainFormMessage("You don't have games to play (Bad ending)");
-        }
-
-        public void ShowGameToPlayMessage(string gameToPlay)
-        {
-            string message = "";
-            Random random = new Random();
-            int randomNumber = random.Next(1, 6);
-            switch (randomNumber)
-            {
-                case 1:
-                    message = "Let's go to play " + gameToPlay + "!";
-                    break;
-                case 2:
-                    message = "Yoooo, is it " + gameToPlay + " that we gonna play?";
-                    break;
-                case 3:
-                    message = "The best choice for today is... " + gameToPlay + "!";
-                    break;
-                case 4:
-                    message = "No way we are going to play " + gameToPlay + " rn!";
-                    break;
-                case 5:
-                    message = "Hey chads, we are going to " + gameToPlay + "!";
-                    break;
-            }
-            ShowMainFormMessage(message);
-        }
-
-        public void ShowTurnConfirmationMessagesError()
-        {
-            ShowMainFormMessage("You can't turn showing confirmation messages off while showing " +
-                "(all) messages are on");
         }
 
         private void ShowMainFormMessage(string message)
@@ -85,34 +23,73 @@ namespace WhatGameToPlay
             if (_mainForm.ShowMessages) ShowMainFormMessage(message);
         }
 
-        public static bool ShowFirstMeetDialog()
+        public void ShowTurnConfirmationMessagesError()
+        {
+            ShowMainFormMessage("You can't turn showing confirmation messages off while showing " +
+                "(all) messages are on");
+        }
+
+        public void ShowNoGamesToPlayMessage()
+        {
+            ShowMainFormMessage("You don't have games to play (Bad ending)");
+        }
+
+        private string GetRandomGameToPlayPhrase(string gameToPlay)
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(1, 6);
+            switch (randomNumber)
+            {
+                case 1: return "Let's go to play " + gameToPlay + "!";
+                case 2: return "Yoooo, is it " + gameToPlay + " that we gonna play?";
+                case 3: return "The best choice for today is... " + gameToPlay + "!";
+                case 4: return "No way we are going to play " + gameToPlay + " rn!";
+                case 5: return "Hey chads, we are going to " + gameToPlay + "!";
+            }
+            return string.Empty;
+        }
+
+        public void ShowGameToPlayMessage(string gameToPlay)
+        {
+            ShowMainFormMessage(GetRandomGameToPlayPhrase(gameToPlay));
+        }
+
+        public void ShowPlayersLimitsErrorMessage()
+        {
+            ShowMainFormMessage("The Min value must not exceed the Max value");
+        }
+
+        public void ShowGameAddedToListMessage(string gameName)
+        {
+            ShowOptionalMainFormMessage("Game " + gameName + " is successfully added!");
+        }
+
+        public void ShowPlayerAddedToListMessage(string playerName)
+        {
+            ShowOptionalMainFormMessage(playerName + " is added to the list!");
+        }
+
+        public static bool ShowFirstMeetingDialog()
         {
             DialogResult dialogResult = MessageBox.Show("Seems like you are using " +
                 "the program for the first time.\nIt does create files in the same path as it is located!" +
-                "\nMake sure it is in the separate folder. Continue?", _confirmationDialogTitle,
+                "\nMake sure it is in the separate folder. Continue?", s_confirmationDialogTitle,
                 MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }
 
-        public bool ShowUnsavedDataWarining()
-        {
-            string textToShow = "You need to press \"Set\" button" +
-                " to save changes.\nChanges you made might be unsaved. Continue?";
-            return ShowDialog(textToShow);
-        }
-
         private bool ShowDeleteConfirmationDialog(string objectToDelete, string listName)
         {
-            string textToShow = "Are you sure you want to delete " +
-                objectToDelete + " from " + listName + " list?";
-            return ShowDialog(textToShow);
+            DialogResult dialogResult = _mainForm.MyMessageBox.Show("Are you sure you want to delete " +
+                objectToDelete + " from " + listName + " list?",
+                s_confirmationDialogTitle, MessageBoxButtons.YesNo);
+            return dialogResult == DialogResult.Yes;
         }
 
-        private bool ShowDialog(string text)
+
+        public bool ShowDeleteAvailableGameDialog(string gameName)
         {
-            DialogResult dialogResult = _mainForm.MyMessageBox.Show(text,
-                _confirmationDialogTitle, MessageBoxButtons.YesNo);
-            return dialogResult == DialogResult.Yes;
+            return ShowDeleteConfirmationDialog(gameName, listName: "available games");
         }
 
         public bool ShowDeleteGameDialog(string gameName)
@@ -120,12 +97,7 @@ namespace WhatGameToPlay
             return ShowDeleteConfirmationDialog(gameName, listName: "games");
         }
 
-        public bool ShowDeleteAvailableGameDialog(string gameName)
-        {
-            return ShowDeleteConfirmationDialog(gameName, listName: "available games");
-        }
-
-        public bool ShowDeleteGameFileDialog(string gameName)
+        public bool ShowDeletePlayersLimitsFileDialog(string gameName)
         {
             return ShowDeleteConfirmationDialog(gameName, listName: "limits");
         }

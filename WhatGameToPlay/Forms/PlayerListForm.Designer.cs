@@ -32,12 +32,13 @@
             this.labelPlayerList = new System.Windows.Forms.Label();
             this.listBoxPlayers = new System.Windows.Forms.ListBox();
             this.labelGamesPlaying = new System.Windows.Forms.Label();
-            this.buttonSet = new System.Windows.Forms.Button();
             this.textBoxSelectedPlayer = new System.Windows.Forms.TextBox();
             this.checkedListBoxGamesPlaying = new System.Windows.Forms.CheckedListBox();
             this.checkBoxSelectAll = new System.Windows.Forms.CheckBox();
             this.buttonAddPlayer = new System.Windows.Forms.Button();
             this.buttonDeletePlayer = new System.Windows.Forms.Button();
+            this.groupBox = new System.Windows.Forms.GroupBox();
+            this.groupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelPlayerList
@@ -57,6 +58,7 @@
             this.listBoxPlayers.Name = "listBoxPlayers";
             this.listBoxPlayers.Size = new System.Drawing.Size(175, 199);
             this.listBoxPlayers.TabIndex = 0;
+            this.listBoxPlayers.SelectedIndexChanged += new System.EventHandler(this.ListBoxPlayers_SelectedIndexChanged);
             this.listBoxPlayers.DoubleClick += new System.EventHandler(this.ListBoxPlayers_DoubleClick);
             // 
             // labelGamesPlaying
@@ -68,16 +70,6 @@
             this.labelGamesPlaying.Size = new System.Drawing.Size(127, 20);
             this.labelGamesPlaying.TabIndex = 13;
             this.labelGamesPlaying.Text = "Games playing";
-            // 
-            // buttonSet
-            // 
-            this.buttonSet.Location = new System.Drawing.Point(204, 276);
-            this.buttonSet.Name = "buttonSet";
-            this.buttonSet.Size = new System.Drawing.Size(110, 23);
-            this.buttonSet.TabIndex = 14;
-            this.buttonSet.Text = "Set";
-            this.buttonSet.UseVisualStyleBackColor = true;
-            this.buttonSet.Click += new System.EventHandler(this.ButtonGamesPlayingSet_Click);
             // 
             // textBoxSelectedPlayer
             // 
@@ -94,12 +86,12 @@
             this.checkedListBoxGamesPlaying.Name = "checkedListBoxGamesPlaying";
             this.checkedListBoxGamesPlaying.Size = new System.Drawing.Size(193, 229);
             this.checkedListBoxGamesPlaying.TabIndex = 16;
-            this.checkedListBoxGamesPlaying.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxGamesPlaying_ItemCheck);
             // 
             // checkBoxSelectAll
             // 
             this.checkBoxSelectAll.AutoSize = true;
-            this.checkBoxSelectAll.Location = new System.Drawing.Point(320, 280);
+            this.checkBoxSelectAll.Enabled = false;
+            this.checkBoxSelectAll.Location = new System.Drawing.Point(64, 9);
             this.checkBoxSelectAll.Name = "checkBoxSelectAll";
             this.checkBoxSelectAll.Size = new System.Drawing.Size(70, 17);
             this.checkBoxSelectAll.TabIndex = 17;
@@ -129,17 +121,25 @@
             this.buttonDeletePlayer.UseVisualStyleBackColor = true;
             this.buttonDeletePlayer.Click += new System.EventHandler(this.ButtonDeletePlayer_Click);
             // 
+            // groupBox
+            // 
+            this.groupBox.Controls.Add(this.checkBoxSelectAll);
+            this.groupBox.Location = new System.Drawing.Point(204, 269);
+            this.groupBox.Name = "groupBox";
+            this.groupBox.Size = new System.Drawing.Size(193, 30);
+            this.groupBox.TabIndex = 20;
+            this.groupBox.TabStop = false;
+            // 
             // PlayerListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(412, 307);
+            this.Controls.Add(this.checkedListBoxGamesPlaying);
+            this.Controls.Add(this.groupBox);
             this.Controls.Add(this.buttonDeletePlayer);
             this.Controls.Add(this.buttonAddPlayer);
-            this.Controls.Add(this.checkBoxSelectAll);
-            this.Controls.Add(this.checkedListBoxGamesPlaying);
             this.Controls.Add(this.textBoxSelectedPlayer);
-            this.Controls.Add(this.buttonSet);
             this.Controls.Add(this.labelGamesPlaying);
             this.Controls.Add(this.labelPlayerList);
             this.Controls.Add(this.listBoxPlayers);
@@ -148,7 +148,10 @@
             this.Name = "PlayerListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Player List";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlayerListForm_FormClosing);
             this.Load += new System.EventHandler(this.FormPlayerList_Load);
+            this.groupBox.ResumeLayout(false);
+            this.groupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,11 +162,11 @@
         private System.Windows.Forms.Label labelPlayerList;
         public System.Windows.Forms.ListBox listBoxPlayers;
         private System.Windows.Forms.Label labelGamesPlaying;
-        private System.Windows.Forms.Button buttonSet;
         private System.Windows.Forms.TextBox textBoxSelectedPlayer;
         private System.Windows.Forms.CheckedListBox checkedListBoxGamesPlaying;
         private System.Windows.Forms.CheckBox checkBoxSelectAll;
         private System.Windows.Forms.Button buttonAddPlayer;
         private System.Windows.Forms.Button buttonDeletePlayer;
+        private System.Windows.Forms.GroupBox groupBox;
     }
 }

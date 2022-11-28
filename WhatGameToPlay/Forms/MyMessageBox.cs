@@ -6,11 +6,8 @@ namespace WhatGameToPlay
 {
     public partial class MyMessageBox : Form
     {
-        private readonly ThemeController _theme;
-
-        public MyMessageBox(ThemeController theme)
+        public MyMessageBox()
         {
-            _theme = theme;
             InitializeComponent();
         }
 
@@ -53,7 +50,7 @@ namespace WhatGameToPlay
             {
                 SetButtonLocation(buttonOK);
             }
-            RefreshColors();
+            RefreshTheme();
             return ShowDialog();
         }
 
@@ -73,22 +70,20 @@ namespace WhatGameToPlay
             Height = labelMessage.Height + heightAfterLabel;
         }
 
-        private void ButtonOK_Click(object sender, EventArgs e)
+        private void RefreshTheme()
         {
-            Close();
-        }
-
-        private void RefreshColors()
-        {
+            ThemeController.SetFormControlsTheme(form: this);
             Button[] allButtons = {
                 buttonOK,
                 buttonYes,
                 buttonNo
             };
-            _theme.SetButtonsColor(allButtons);
-            _theme.SetBackgroundForeColor(labelMessage);
-            _theme.SetTextForeColor(labelMessage);
-            _theme.SetFormWithPanelBackgroundColor(form: this, panel);
+            ThemeController.SetButtonsColors(allButtons);
+        }
+
+        private void ButtonConfirm_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

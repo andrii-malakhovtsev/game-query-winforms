@@ -6,12 +6,11 @@ namespace WhatGameToPlay
 {
     public partial class MainForm : Form
     {
-        private readonly MessageController _messageController;
-        private readonly ThemeController _theme;
         private readonly List<CheckBox> _checkBoxes = new List<CheckBox>();
         private readonly List<CheckBox> _checkBoxesCopy = new List<CheckBox>();
         private readonly List<ToolStripMenuItem> _colorThemeItems = new List<ToolStripMenuItem>();
-        private ToolStripMenuItem[] _optionToolStrips;
+        private readonly List<ToolStripMenuItem> _optionToolStrips = new List<ToolStripMenuItem>();
+        private readonly MessageController _messageController;
         public List<Player> Players { get; set; } = new List<Player>();
         public MyMessageBox MyMessageBox { get; set; }
         public bool ShowConfirmationMessages { get; set; }
@@ -21,26 +20,28 @@ namespace WhatGameToPlay
         public MainForm()
         {
             InitializeComponent();
-            _theme = new ThemeController();
             _messageController = new MessageController(this);
-            _colorThemeItems.AddRange(new List<ToolStripMenuItem> {
-                whiteToolStripMenuItem,
-                darkToolStripMenuItem,
-                telegramToolStripMenuItem,
-                discordToolStripMenuItem,
-                youtubeToolStripMenuItem
-            });
-            foreach (ToolStripMenuItem themeToolStripMenuItem in _colorThemeItems)
-                themeToolStripMenuItem.Click += new EventHandler(SetTheme);
-            ToolStripMenuItem[] menuToolStripItems = new ToolStripMenuItem[] {
-                editToolStripMenuItem,
-                optionsToolStripMenuItem,
-                themeToolStripMenuItem
-            };
-            foreach (ToolStripMenuItem menuToolStripItem in menuToolStripItems)
+            foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
             {
-                menuToolStripItem.DropDownOpening += new EventHandler(MenuToolStripItem_DropDownOpening);
-                menuToolStripItem.DropDownClosed += new EventHandler(MenuToolStripItem_DropDownClosed);
+                if (toolStripMenuItem.DropDownItems.Count != 0)
+                {
+                    bool isToolStripThemeMenuItem = toolStripMenuItem.Text == "Theme",
+                        isToolStripOptionsMenuItem = toolStripMenuItem.Text == "Options";
+                    toolStripMenuItem.DropDownOpening += new EventHandler(MenuToolStripItem_DropDownOpening);
+                    toolStripMenuItem.DropDownClosed += new EventHandler(MenuToolStripItem_DropDownClosed);
+                    if (isToolStripThemeMenuItem || isToolStripOptionsMenuItem)
+                    {
+                        foreach (ToolStripMenuItem toolStripItem in toolStripMenuItem.DropDownItems)
+                        {
+                            if (isToolStripThemeMenuItem)
+                            {
+                                _colorThemeItems.Add(toolStripItem);
+                                toolStripItem.Click += new EventHandler(SetThemeFromToolStrip);
+                            }
+                            else _optionToolStrips.Add(toolStripItem);
+                        }
+                    }
+                }
             }
         }
 
@@ -48,26 +49,26 @@ namespace WhatGameToPlay
         {
             if (!FilesController.StandartFilesExist())
             {
-                if (MessageController.ShowFirstMeetDialog())
+                if (MessageController.ShowFirstMeetingDialog())
                     FilesController.CreateStartingFiles();
                 else Close();
             }
             RefreshPlayersList();
-            SetSavedOptions();
+            SetSavedOptionsFromFile();
             SetSavedColors();
-            _theme.SetChosenThemeColors();
-            MyMessageBox = new MyMessageBox(_theme);
-            RefreshColors();
+            ThemeController.SetChosenThemeColors();
+            MyMessageBox = new MyMessageBox();
+            RefreshTheme();
         }
 
         private void MenuToolStripItem_DropDownOpening(object sender, EventArgs e)
         {
-            _theme.SetBackgroundForeColor((ToolStripMenuItem)sender);
+            ThemeController.SetBackgroundForeColor(sender as ToolStripMenuItem);
         }
 
         private void MenuToolStripItem_DropDownClosed(object sender, EventArgs e)
         {
-            _theme.SetTextForeColor((ToolStripMenuItem)sender);
+            ThemeController.SetTextForeColor(sender as ToolStripMenuItem);
         }
 
         private void SetSavedColors()
@@ -77,16 +78,8 @@ namespace WhatGameToPlay
                     colorTheme.Checked = true;
         }
 
-        private void SetSavedOptions()
+        private void SetSavedOptionsFromFile()
         {
-            _optionToolStrips = new ToolStripMenuItem[] {
-                showMessagesToolStripMenuItem,
-                showConfirmationMessagesToolStripMenuItem,
-                ConsiderGamePlayersLimitsToolStripMenuItem,
-                rouletteInsteadProgressbarToolStripMenuItem,
-                CelebrateRandomGameToolStripMenuItem,
-                SaveDeletedGamesDataToolStripMenuItem
-            };
             string[] currentOptions = FilesController.GetOptionsFromFile();
             for (int i = 0; i < currentOptions.Length; i++)
                 _optionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
@@ -97,16 +90,16 @@ namespace WhatGameToPlay
 
         private void RefreshOptionsToFiles()
         {
-            string[] options = new string[_optionToolStrips.Length];
-            for (int i = 0; i < _optionToolStrips.Length; i++)
+            string[] options = new string[_optionToolStrips.Count];
+            for (int i = 0; i < _optionToolStrips.Count; i++)
                 options[i] = Convert.ToString(_optionToolStrips[i].Checked);
-            FilesController.AddOptionsToFile(options);
+            FilesController.WriteOptionsToFile(options);
         }
 
         private void RefreshThemeToFile()
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
-                if (colorTheme.Checked) FilesController.AddThemeToFile(colorTheme.Text);
+                if (colorTheme.Checked) FilesController.WriteThemeToFile(colorTheme.Text);
         }
 
         private bool FormHasExtraCheckBoxes()
@@ -122,16 +115,17 @@ namespace WhatGameToPlay
             Players = FilesController.GetPlayersListFromDirectory();
             _checkBoxesCopy.Clear();
             playersPanel.Visible = FormHasExtraCheckBoxes();
+            playersGroupBox.Visible = FormHasExtraCheckBoxes();
             foreach (Player player in Players)
                 AddPlayerCheckBox(player);
             _checkBoxes.AddRange(_checkBoxesCopy);
             pictureBoxFireworks.SendToBack();
-            RefreshColors();
+            RefreshTheme();
         }
 
         public void AddPlayerCheckBox(Player player)
         {
-            int topMeasure = FormHasExtraCheckBoxes() ? 5 : 70, 
+            int topMeasure = FormHasExtraCheckBoxes() ? 5 : 70,
                 leftMeasure = FormHasExtraCheckBoxes() ? 20 : 25;
             CheckBox checkBox = new CheckBox
             {
@@ -153,7 +147,7 @@ namespace WhatGameToPlay
             PlayerCheckBoxCheckedChange();
         }
 
-        public void PlayerCheckBoxCheckedChange()
+        private void PlayerCheckBoxCheckedChange()
         {
             List<string> currentGames = FilesController.GetGamesListFromFile();
             listBoxAvailableGames.Items.Clear();
@@ -164,8 +158,8 @@ namespace WhatGameToPlay
                             currentGames.Remove(gameNotPlaying);
             if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
                 foreach (string restrictedGame in
-                    FilesController.GetRestrictedGamesFromDirectory(GetCheckedPlayersCount()))
-                        currentGames.Remove(restrictedGame);
+                    FilesController.GetLimitedGamesFromDirectory(GetCheckedPlayersCount()))
+                    currentGames.Remove(restrictedGame);
             foreach (string game in currentGames)
                 listBoxAvailableGames.Items.Add(game);
             if (GetCheckedPlayersCount() == 0) listBoxAvailableGames.Items.Clear();
@@ -179,6 +173,118 @@ namespace WhatGameToPlay
             return checkedCheckBoxesCount;
         }
 
+        private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)
+        {
+            if (listBoxAvailableGames.SelectedItem != null)
+            {
+                if (showConfirmationMessagesToolStripMenuItem.Checked)
+                {
+                    if (_messageController.ShowDeleteAvailableGameDialog
+                        (listBoxAvailableGames.SelectedItem.ToString()))
+                        DeleteGameFromListBox();
+                }
+                else DeleteGameFromListBox();
+            }
+        }
+
+        private void DeleteGameFromListBox()
+        {
+            while (listBoxAvailableGames.SelectedItems.Count > 0)
+                listBoxAvailableGames.Items.Remove(listBoxAvailableGames.SelectedItems[0]);
+        }
+
+        private void ShowConfirmationMessagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (showMessagesToolStripMenuItem.Checked)
+            {
+                _messageController.ShowTurnConfirmationMessagesError();
+            }
+            else
+            {
+                showConfirmationMessagesToolStripMenuItem.Checked =
+                    !showConfirmationMessagesToolStripMenuItem.Checked;
+                ShowConfirmationMessages = showConfirmationMessagesToolStripMenuItem.Checked;
+            }
+            RefreshOptionsToFiles();
+        }
+
+        private void ConsiderPlayersLimitsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConsiderGamePlayersLimitsToolStripMenuItem.Checked =
+                !ConsiderGamePlayersLimitsToolStripMenuItem.Checked;
+            PlayerCheckBoxCheckedChange();
+            RefreshOptionsToFiles();
+        }
+
+        private void GamesListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GamesListForm formGamesList = new GamesListForm(this);
+            formGamesList.ShowDialog();
+        }
+
+        private void RouletteInsteadProgressbarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rouletteInsteadProgressbarToolStripMenuItem.Checked =
+                !rouletteInsteadProgressbarToolStripMenuItem.Checked;
+            RefreshOptionsToFiles();
+        }
+
+        private void PlayersListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PlayerListForm formPlayerList = new PlayerListForm(this);
+            formPlayerList.ShowDialog();
+        }
+
+        private void CelebrateRandomGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CelebrateRandomGameToolStripMenuItem.Checked =
+                !CelebrateRandomGameToolStripMenuItem.Checked;
+            pictureBoxSmile.Visible = false;
+            pictureBoxFireworks.Visible = false;
+            RefreshOptionsToFiles();
+        }
+
+        private void SaveDeletedGamesDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveDeletedGamesDataToolStripMenuItem.Checked
+                = !SaveDeletedGamesDataToolStripMenuItem.Checked;
+            SaveDeletedGamesData = SaveDeletedGamesDataToolStripMenuItem.Checked;
+            RefreshOptionsToFiles();
+        }
+
+        private void ShowMessagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            showMessagesToolStripMenuItem.Checked
+                = !showMessagesToolStripMenuItem.Checked;
+            showConfirmationMessagesToolStripMenuItem.Checked = showMessagesToolStripMenuItem.Checked;
+            ShowMessages = showMessagesToolStripMenuItem.Checked;
+            RefreshOptionsToFiles();
+        }
+
+        private void SetThemeFromToolStrip(object sender, EventArgs e)
+        {
+            foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
+                colorTheme.Checked = false;
+            ((ToolStripMenuItem)sender).Checked = true;
+            RefreshThemeToFile();
+            ThemeController.SetChosenThemeColors();
+            RefreshTheme();
+        }
+
+        private void RefreshTheme()
+        {
+            ThemeController.SetFormControlsTheme(form: this);
+            List<ToolStripMenuItem> toolStripMenuItems = new List<ToolStripMenuItem>();
+            foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
+            {
+                toolStripMenuItems.Add(toolStripMenuItem);
+                foreach (ToolStripMenuItem toolStripItem in toolStripMenuItem.DropDownItems)
+                    toolStripMenuItems.Add(toolStripItem);
+            }
+            ThemeController.SetToolStripMenuItemsFullColor(toolStripMenuItems);
+            toolStripMenuItems.Clear();
+        }
+
         private void ButtonRandomAvailableGame_Click(object sender, EventArgs e)
         {
             int defaultTimerInterval = 10;
@@ -187,7 +293,7 @@ namespace WhatGameToPlay
                 if (rouletteInsteadProgressbarToolStripMenuItem.Checked)
                     progressBar.Visible = true;
                 progressBar.Value = 0;
-                _theme.SetTextBoxForeColor(textBox, win: false);
+                ThemeController.SetTextBoxForeColor(textBox, win: false);
                 pictureBoxSmile.Hide();
                 pictureBoxFireworks.Hide();
                 buttonRandomAvailableGame.Enabled = false;
@@ -237,16 +343,11 @@ namespace WhatGameToPlay
                     pictureBoxSmile.Show();
                     pictureBoxFireworks.Show(); pictureBoxFireworks.SendToBack();
                 }
-                _theme.SetTextBoxForeColor(textBox, win: true);
+                ThemeController.SetTextBoxForeColor(textBox, win: true);
                 foreach (CheckBox checkBox in _checkBoxes) checkBox.Enabled = true;
                 progressBar.Visible = false;
                 _messageController.ShowGameToPlayMessage(gameToPlay: textBox.Text);
             }
-        }
-
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         public void ClearInformation()
@@ -256,147 +357,9 @@ namespace WhatGameToPlay
             textBox.Clear();
         }
 
-        private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listBoxAvailableGames.SelectedItem != null)
-            {
-                if (showConfirmationMessagesToolStripMenuItem.Checked)
-                {
-                    if (_messageController.ShowDeleteAvailableGameDialog
-                        (listBoxAvailableGames.SelectedItem.ToString()))
-                        DeleteGameFromListBox();
-                }
-                else DeleteGameFromListBox();
-            }
-        }
-
-        private void DeleteGameFromListBox()
-        {
-            while (listBoxAvailableGames.SelectedItems.Count > 0)
-                listBoxAvailableGames.Items.Remove(listBoxAvailableGames.SelectedItems[0]);
-        }
-
-        private void ShowConfirmationMessagesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (showMessagesToolStripMenuItem.Checked)
-            {
-                _messageController.ShowTurnConfirmationMessagesError();
-            }
-            else
-            {
-                showConfirmationMessagesToolStripMenuItem.Checked =
-                    !showConfirmationMessagesToolStripMenuItem.Checked;
-                ShowConfirmationMessages = showConfirmationMessagesToolStripMenuItem.Checked;
-            }
-            RefreshOptionsToFiles();
-        }
-
-        private void ConsiderPlayersLimitsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ConsiderGamePlayersLimitsToolStripMenuItem.Checked =
-                !ConsiderGamePlayersLimitsToolStripMenuItem.Checked;
-            PlayerCheckBoxCheckedChange();
-            RefreshOptionsToFiles();
-        }
-
-        private void GamesListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            GamesListForm formGamesList = new GamesListForm(this, _theme);
-            formGamesList.ShowDialog();
-        }
-
-        private void RouletteInsteadProgressbarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            rouletteInsteadProgressbarToolStripMenuItem.Checked =
-                !rouletteInsteadProgressbarToolStripMenuItem.Checked;
-            RefreshOptionsToFiles();
-        }
-
-        private void PlayersListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            PlayerListForm formPlayerList = new PlayerListForm(this, _theme);
-            formPlayerList.ShowDialog();
-        }
-
-        private void CelebrateRandomGameToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CelebrateRandomGameToolStripMenuItem.Checked =
-                !CelebrateRandomGameToolStripMenuItem.Checked;
-            pictureBoxSmile.Visible = false;
-            pictureBoxFireworks.Visible = false;
-            RefreshOptionsToFiles();
-        }
-
-        private void SaveDeletedGamesDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveDeletedGamesDataToolStripMenuItem.Checked
-                = !SaveDeletedGamesDataToolStripMenuItem.Checked;
-            SaveDeletedGamesData = SaveDeletedGamesDataToolStripMenuItem.Checked;
-            RefreshOptionsToFiles();
-        }
-
-        private void ShowMessagesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            showMessagesToolStripMenuItem.Checked
-                = !showMessagesToolStripMenuItem.Checked;
-            if (showMessagesToolStripMenuItem.Checked)
-                showConfirmationMessagesToolStripMenuItem.Checked = true;
-            ShowMessages = showMessagesToolStripMenuItem.Checked;
-            RefreshOptionsToFiles();
-        }
-
-        private void SetTheme(object sender, EventArgs e)
-        {
-            foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
-                colorTheme.Checked = false;
-            ((ToolStripMenuItem)sender).Checked = true;
-            RefreshThemeToFile();
-            _theme.SetChosenThemeColors();
-            RefreshColors();
-        }
-
-        private void RefreshColors()
-        {
-            _theme.SetFormBackgroundColor(this);
-            List<Control> foreColorControls = new List<Control>();
-            foreColorControls.AddRange(_checkBoxes);
-            foreColorControls.Add(labelPresentPlayers);
-            foreColorControls.Add(labelAvailableGames);
-            _theme.SetControlsForeColor(foreColorControls);
-            foreColorControls.Clear();
-            _theme.SetButtonColor(buttonRandomAvailableGame);
-            Label[] labels = {
-                labelPresentPlayers,
-                labelAvailableGames
-            };
-            _theme.SetTextForeColor(labels);
-            _theme.SetToolStripBackColor(optionsToolStripMenuItem);
-            List<ToolStripMenuItem> toolStripMenuItems = new List<ToolStripMenuItem>();
-            foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
-                toolStripMenuItems.Add(toolStripMenuItem);
-            toolStripMenuItems.AddRange(new List<ToolStripMenuItem>{
-                playerListToolStripMenuItem,
-                gameListToolStripMenuItem,
-                showMessagesToolStripMenuItem,
-                showConfirmationMessagesToolStripMenuItem,
-                ConsiderGamePlayersLimitsToolStripMenuItem,
-                rouletteInsteadProgressbarToolStripMenuItem,
-                CelebrateRandomGameToolStripMenuItem,
-                SaveDeletedGamesDataToolStripMenuItem,
-                whiteToolStripMenuItem,
-                darkToolStripMenuItem,
-                telegramToolStripMenuItem,
-                discordToolStripMenuItem,
-                youtubeToolStripMenuItem});
-            _theme.SetToolStripMenuItemsFullColor(toolStripMenuItems);
-            toolStripMenuItems.Clear();
-            Control[] fullColorControls = {
-                menuStrip,
-                listBoxAvailableGames,
-                textBox,
-                playersPanel
-            };
-            _theme.SetControlsFullColor(fullColorControls);
+            Close();
         }
     }
 }
