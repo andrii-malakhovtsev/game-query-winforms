@@ -99,7 +99,7 @@ namespace WhatGameToPlay
                 buttonYes,
                 buttonNo
             };
-            ThemeController.SetButtonsBackColor(allButtons);
+            ThemeController.SetButtonsFullColor(allButtons);
         }
 
         private void ButtonConfirm_Click(object sender, EventArgs e)

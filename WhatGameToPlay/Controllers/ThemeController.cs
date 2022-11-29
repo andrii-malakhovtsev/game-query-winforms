@@ -95,12 +95,12 @@ namespace WhatGameToPlay
         {
             foreach (ToolStripMenuItem toolStripMenuItem in toolStripMenuItems)
             {
-                toolStripMenuItem.ForeColor = s_textColor;
+                SetTextForeColor(toolStripMenuItem);
                 toolStripMenuItem.BackColor = s_secondBackgroundColor;
             }
         }
 
-        public static void SetButtonsBackColor(Button[] buttons)
+        public static void SetButtonsFullColor(Button[] buttons)
         {
             foreach (Button button in buttons)
             {
