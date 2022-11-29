@@ -23,4 +23,5 @@ Check the available game among the ones you can play together
 ![3](https://user-images.githubusercontent.com/111363234/204443969-185d4b7f-e9e5-423b-a34b-736c43e47843.png)
 
 If you still can't decide what game you want to play together - press the "Random available game" button!
+
 ![4](https://user-images.githubusercontent.com/111363234/204444025-e57c32ff-599e-479f-8a0b-883dde0c48e9.png)
