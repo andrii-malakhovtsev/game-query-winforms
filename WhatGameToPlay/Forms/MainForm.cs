@@ -190,16 +190,11 @@ namespace WhatGameToPlay
 
         private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)
         {
-            if (listBoxAvailableGames.SelectedItem != null)
-            {
-                if (showConfirmationMessagesToolStripMenuItem.Checked)
-                {
-                    if (_messageController.ShowDeleteAvailableGameDialog
-                        (listBoxAvailableGames.SelectedItem.ToString()))
+            if (listBoxAvailableGames.SelectedItem == null) return;
+            if (!showConfirmationMessagesToolStripMenuItem.Checked ||
+                _messageController.ShowDeleteAvailableGameDialog(
+                    listBoxAvailableGames.SelectedItem.ToString()))
                         DeleteGameFromListBox();
-                }
-                else DeleteGameFromListBox();
-            }
         }
 
         private void DeleteGameFromListBox()
@@ -248,8 +243,7 @@ namespace WhatGameToPlay
         {
             CelebrateRandomGameToolStripMenuItem.Checked =
                 !CelebrateRandomGameToolStripMenuItem.Checked;
-            pictureBoxSmile.Visible = false;
-            pictureBoxFireworks.Visible = false;
+            HidePictureBoxes();
             RefreshOptionsToFiles();
         }
 
@@ -358,9 +352,16 @@ namespace WhatGameToPlay
 
         public void ClearInformation()
         {
+            HidePictureBoxes();
             RefreshPlayersList();
             listBoxAvailableGames.Items.Clear();
             textBox.Clear();
+        }
+
+        private void HidePictureBoxes()
+        {
+            pictureBoxFireworks.Visible = false;
+            pictureBoxSmile.Visible = false;
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)

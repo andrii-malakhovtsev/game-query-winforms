@@ -18,15 +18,6 @@ namespace WhatGameToPlay
             s_currentTheme = FilesController.GetCurrentTheme();
         }
 
-        private static void SetThemeColors(Color textColor, Color buttonColor,
-            Color backgroundColor, Color secondBackgroundColor)
-        {
-            s_textColor = textColor;
-            s_buttonColor = buttonColor;
-            s_backgroundColor = backgroundColor;
-            s_secondBackgroundColor = secondBackgroundColor;
-        }
-
         public static void SetTextBoxForeColor(TextBox textbox, bool win)
         {
             textbox.ForeColor = win ? Color.Green : s_textColor;
@@ -37,9 +28,18 @@ namespace WhatGameToPlay
             return s_standartTheme;
         }
 
-        private static bool IsCurrentThemeStandart()
+        private static bool CurrentThemeIsStandart()
         {
             return s_currentTheme == s_standartTheme;
+        }
+
+        private static void SetThemeColors(Color textColor, Color buttonColor,
+            Color backgroundColor, Color secondBackgroundColor)
+        {
+            s_textColor = textColor;
+            s_buttonColor = buttonColor;
+            s_backgroundColor = backgroundColor;
+            s_secondBackgroundColor = secondBackgroundColor;
         }
 
         public static void SetChosenThemeColors()
@@ -88,7 +88,7 @@ namespace WhatGameToPlay
         public static void SetBackgroundForeColor(ToolStripMenuItem toolStripMenuItem)
         {
             RefreshCurrentThemeFromFile();
-            if (!IsCurrentThemeStandart()) toolStripMenuItem.ForeColor = s_backgroundColor;
+            if (!CurrentThemeIsStandart()) toolStripMenuItem.ForeColor = s_backgroundColor;
         }
 
         public static void SetToolStripMenuItemsFullColor(List<ToolStripMenuItem> toolStripMenuItems)
@@ -118,7 +118,7 @@ namespace WhatGameToPlay
             {
                 System.Type controlType = control.GetType();
                 control.ForeColor = s_textColor;
-                // if add typeof(PictureBox) to backColorClearTypes - program detects as virus
+                // if add typeof(PictureBox) to backColorClearTypes - program detects as a virus
                 if (!backColorClearTypes.Contains(controlType) && controlType != typeof(PictureBox))
                     control.BackColor = controlType == typeof(Button) ?
                         s_buttonColor : s_secondBackgroundColor;

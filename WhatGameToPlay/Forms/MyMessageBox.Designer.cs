@@ -66,9 +66,9 @@
             this.labelTimer.AutoSize = true;
             this.labelTimer.Location = new System.Drawing.Point(108, 21);
             this.labelTimer.Name = "labelTimer";
-            this.labelTimer.Size = new System.Drawing.Size(19, 13);
+            this.labelTimer.Size = new System.Drawing.Size(13, 13);
             this.labelTimer.TabIndex = 3;
-            this.labelTimer.Text = "10";
+            this.labelTimer.Text = "8";
             this.labelTimer.Visible = false;
             // 
             // buttonNo

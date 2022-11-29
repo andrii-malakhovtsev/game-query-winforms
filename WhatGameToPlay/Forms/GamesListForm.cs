@@ -106,7 +106,7 @@ namespace WhatGameToPlay
             FilesController.AddGameToGameListFile(GetSelectedGameName());
             RefreshListBoxGames();
             GetPlayersLimits();
-            if (!_playerLimitsExist) 
+            if (!_playerLimitsExist)
                 FilesController.AppendGameToPlayersFiles(GetSelectedGameName());
             _messageController.ShowGameAddedToListMessage(GetSelectedGameName());
             SwitchGameButtonsEnables();
@@ -202,7 +202,7 @@ namespace WhatGameToPlay
         private bool SavePlayersLimits()
         {
             bool limitsFit = numericUpDownMax.Value > numericUpDownMin.Value;
-            if (limitsFit) FilesController.WritePlayersLimitsToFile(_currentSelectedGame, 
+            if (limitsFit) FilesController.WritePlayersLimitsToFile(_currentSelectedGame,
                 numericUpDownMin.Value, numericUpDownMax.Value);
             else if (_mainForm.ShowMessages())
                 _messageController.ShowPlayersLimitsErrorMessage();
