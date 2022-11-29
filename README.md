@@ -13,7 +13,7 @@ Add players limits to specific games
 
 ![11](https://user-images.githubusercontent.com/111363234/204443840-8a1a4b0b-20ab-48fa-afe1-62cff1b33b67.png)
 
-Set up players games
+Set up player's games
 
 
 ![2](https://user-images.githubusercontent.com/111363234/204443696-4505e554-81c2-4bbc-a191-912ddb11207e.png)
