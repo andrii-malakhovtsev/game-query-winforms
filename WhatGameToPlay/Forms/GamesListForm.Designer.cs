@@ -139,6 +139,7 @@
             this.checkBoxPlayersNumberLimit.Text = "Players limit";
             this.checkBoxPlayersNumberLimit.UseVisualStyleBackColor = true;
             this.checkBoxPlayersNumberLimit.CheckedChanged += new System.EventHandler(this.CheckBoxPlayersNumberLimit_CheckedChanged);
+            // 
             // numericUpDownMin
             // 
             this.numericUpDownMin.Enabled = false;
@@ -198,6 +199,7 @@
             this.Controls.Add(this.listBoxGames);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "GamesListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Games List";

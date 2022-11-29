@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyMessageBox));
             this.labelMessage = new System.Windows.Forms.Label();
             this.panel = new System.Windows.Forms.Panel();
+            this.labelTimer = new System.Windows.Forms.Label();
             this.buttonNo = new System.Windows.Forms.Button();
             this.buttonYes = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,6 +51,7 @@
             // 
             // panel
             // 
+            this.panel.Controls.Add(this.labelTimer);
             this.panel.Controls.Add(this.buttonNo);
             this.panel.Controls.Add(this.buttonYes);
             this.panel.Controls.Add(this.buttonOK);
@@ -56,6 +60,16 @@
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(229, 46);
             this.panel.TabIndex = 2;
+            // 
+            // labelTimer
+            // 
+            this.labelTimer.AutoSize = true;
+            this.labelTimer.Location = new System.Drawing.Point(108, 21);
+            this.labelTimer.Name = "labelTimer";
+            this.labelTimer.Size = new System.Drawing.Size(19, 13);
+            this.labelTimer.TabIndex = 3;
+            this.labelTimer.Text = "10";
+            this.labelTimer.Visible = false;
             // 
             // buttonNo
             // 
@@ -88,22 +102,30 @@
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.ButtonConfirm_Click);
             // 
+            // timer
+            // 
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
+            // 
             // MyMessageBox
             // 
             this.AcceptButton = this.buttonYes;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.buttonNo;
             this.ClientSize = new System.Drawing.Size(229, 113);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.labelMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MyMessageBox";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Load += new System.EventHandler(this.MyMessageBox_Load);
             this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -115,5 +137,7 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonNo;
         private System.Windows.Forms.Button buttonYes;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Label labelTimer;
     }
 }

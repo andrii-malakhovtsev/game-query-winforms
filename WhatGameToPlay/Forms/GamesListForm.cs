@@ -146,7 +146,7 @@ namespace WhatGameToPlay
             }
             RefreshListBoxGames();
             SwitchGameButtonsEnables();
-            if (!_mainForm.SaveDeletedGamesData)
+            if (!_mainForm.SaveDeletedGamesData())
                 FilesController.DeletePlayersGameData(GetSelectedGameName());
             textBoxGameName.Clear();
             SetNumericUpDownsStandartValues();

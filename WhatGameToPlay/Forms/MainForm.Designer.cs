@@ -48,7 +48,7 @@
             this.ConsiderGamePlayersLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rouletteInsteadProgressbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CelebrateRandomGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveDeletedGamesDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveDeletedGamesDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.whiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -183,7 +183,7 @@
             this.ConsiderGamePlayersLimitsToolStripMenuItem,
             this.rouletteInsteadProgressbarToolStripMenuItem,
             this.CelebrateRandomGameToolStripMenuItem,
-            this.SaveDeletedGamesDataToolStripMenuItem});
+            this.saveDeletedGamesDataToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -231,10 +231,10 @@
             // 
             // SaveDeletedGamesDataToolStripMenuItem
             // 
-            this.SaveDeletedGamesDataToolStripMenuItem.Name = "SaveDeletedGamesDataToolStripMenuItem";
-            this.SaveDeletedGamesDataToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
-            this.SaveDeletedGamesDataToolStripMenuItem.Text = "Save deleted games data";
-            this.SaveDeletedGamesDataToolStripMenuItem.Click += new System.EventHandler(this.SaveDeletedGamesDataToolStripMenuItem_Click);
+            this.saveDeletedGamesDataToolStripMenuItem.Name = "SaveDeletedGamesDataToolStripMenuItem";
+            this.saveDeletedGamesDataToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.saveDeletedGamesDataToolStripMenuItem.Text = "Save deleted games data";
+            this.saveDeletedGamesDataToolStripMenuItem.Click += new System.EventHandler(this.SaveDeletedGamesDataToolStripMenuItem_Click);
             // 
             // themeToolStripMenuItem
             // 
@@ -329,6 +329,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "What game to play?";
@@ -362,7 +363,7 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ToolStripMenuItem rouletteInsteadProgressbarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CelebrateRandomGameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SaveDeletedGamesDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveDeletedGamesDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem whiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;

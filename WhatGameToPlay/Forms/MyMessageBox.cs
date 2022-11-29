@@ -15,6 +15,7 @@ namespace WhatGameToPlay
         {
             buttonYes.DialogResult = DialogResult.Yes;
             buttonNo.DialogResult = DialogResult.Cancel;
+            if (!FilesController.StandartFilesExist()) CenterToScreen();
         }
 
         private void SetButtonsVisibility(bool visible)
@@ -50,8 +51,28 @@ namespace WhatGameToPlay
             {
                 SetButtonLocation(buttonOK);
             }
-            RefreshTheme();
+            if (!FilesController.StandartFilesExist())
+                SetTimerRelatedControlsEnables(enable: true);
+            else RefreshTheme();
             return ShowDialog();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            int secondsLeft = Convert.ToInt32(labelTimer.Text);
+            if (secondsLeft != 0)
+            {
+                secondsLeft--;
+                labelTimer.Text = Convert.ToString(secondsLeft);
+            }
+            else SetTimerRelatedControlsEnables(enable: false);
+        }
+
+        private void SetTimerRelatedControlsEnables(bool enable)
+        {
+            buttonYes.Enabled = !enable;
+            labelTimer.Visible = enable;
+            timer.Enabled = enable;
         }
 
         private void SetButtonLocation(Button button)

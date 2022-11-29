@@ -13,7 +13,6 @@ namespace WhatGameToPlay
         private readonly MessageController _messageController;
         public List<Player> Players { get; set; } = new List<Player>();
         public MyMessageBox MyMessageBox { get; set; }
-        public bool SaveDeletedGamesData { get; set; }
 
         public MainForm()
         {
@@ -23,31 +22,37 @@ namespace WhatGameToPlay
             {
                 if (toolStripMenuItem.DropDownItems.Count != 0)
                 {
-                    bool isToolStripThemeMenuItem = toolStripMenuItem == themeToolStripMenuItem,
-                        isToolStripOptionsMenuItem = toolStripMenuItem == optionsToolStripMenuItem;
                     toolStripMenuItem.DropDownOpening += new EventHandler(MenuToolStripItem_DropDownOpening);
                     toolStripMenuItem.DropDownClosed += new EventHandler(MenuToolStripItem_DropDownClosed);
-                    if (isToolStripThemeMenuItem || isToolStripOptionsMenuItem)
+                    SetToolStripTheme(toolStripMenuItem);
+                }
+            }
+        }
+
+        private void SetToolStripTheme(ToolStripMenuItem toolStripMenuItem)
+        {
+            bool isToolStripThemeMenuItem = toolStripMenuItem == themeToolStripMenuItem,
+                 isToolStripOptionsMenuItem = toolStripMenuItem == optionsToolStripMenuItem;
+            if (isToolStripThemeMenuItem || isToolStripOptionsMenuItem)
+            {
+                foreach (ToolStripMenuItem toolStripItem in toolStripMenuItem.DropDownItems)
+                {
+                    if (isToolStripThemeMenuItem)
                     {
-                        foreach (ToolStripMenuItem toolStripItem in toolStripMenuItem.DropDownItems)
-                        {
-                            if (isToolStripThemeMenuItem)
-                            {
-                                _colorThemeItems.Add(toolStripItem);
-                                toolStripItem.Click += new EventHandler(SetThemeFromToolStrip);
-                            }
-                            else _optionToolStrips.Add(toolStripItem);
-                        }
+                        _colorThemeItems.Add(toolStripItem);
+                        toolStripItem.Click += new EventHandler(SetThemeFromToolStrip);
                     }
+                    else _optionToolStrips.Add(toolStripItem);
                 }
             }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            MyMessageBox = new MyMessageBox();
             if (!FilesController.StandartFilesExist())
             {
-                if (MessageController.ShowFirstMeetingDialog())
+                if (_messageController.ShowFirstMeetingDialog())
                     FilesController.CreateStartingFiles();
                 else Close();
             }
@@ -55,7 +60,6 @@ namespace WhatGameToPlay
             SetSavedOptionsFromFile();
             SetSavedColors();
             ThemeController.SetChosenThemeColors();
-            MyMessageBox = new MyMessageBox();
             RefreshTheme();
         }
 
@@ -79,6 +83,11 @@ namespace WhatGameToPlay
             return showConfirmationMessagesToolStripMenuItem.Checked;
         }
 
+        public bool SaveDeletedGamesData()
+        {
+            return saveDeletedGamesDataToolStripMenuItem.Checked;
+        }
+
         private void SetSavedColors()
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
@@ -91,7 +100,6 @@ namespace WhatGameToPlay
             string[] currentOptions = FilesController.GetOptionsFromFile();
             for (int i = 0; i < currentOptions.Length; i++)
                 _optionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
-            SaveDeletedGamesData = SaveDeletedGamesDataToolStripMenuItem.Checked;
         }
 
         private void RefreshOptionsToFiles()
@@ -247,9 +255,8 @@ namespace WhatGameToPlay
 
         private void SaveDeletedGamesDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveDeletedGamesDataToolStripMenuItem.Checked
-                = !SaveDeletedGamesDataToolStripMenuItem.Checked;
-            SaveDeletedGamesData = SaveDeletedGamesDataToolStripMenuItem.Checked;
+            saveDeletedGamesDataToolStripMenuItem.Checked
+                = !saveDeletedGamesDataToolStripMenuItem.Checked;
             RefreshOptionsToFiles();
         }
 

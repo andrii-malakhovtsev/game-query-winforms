@@ -69,41 +69,45 @@ namespace WhatGameToPlay
             ShowOptionalMainFormMessage(playerName + " is added to the list!");
         }
 
-        public static bool ShowFirstMeetingDialog()
+        private bool ShowDialog(string message)
         {
-            DialogResult dialogResult = MessageBox.Show("Seems like you are using " +
-                "the program for the first time.\nIt does create files in the same path as it is located!" +
-                "\nMake sure it is in the separate folder. Continue?", s_confirmationDialogTitle,
+            DialogResult dialogResult = _mainForm.MyMessageBox.Show(message, s_confirmationDialogTitle,
                 MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }
 
-        private bool ShowDeleteConfirmationDialog(string objectToDelete, string listName)
+        public bool ShowFirstMeetingDialog()
         {
-            DialogResult dialogResult = _mainForm.MyMessageBox.Show("Are you sure you want to delete " +
-                objectToDelete + " from " + listName + " list?",
-                s_confirmationDialogTitle, MessageBoxButtons.YesNo);
-            return dialogResult == DialogResult.Yes;
+            return ShowDialog("Seems like you are using " +
+                "the program for the first time.\nIt does create " +
+                "files in the same path as it is located!" +
+                "\nMake sure it is in the separate folder. Continue?");
+        }
+
+        private bool ShowDeleteDialog(string objectToDelete, string listName)
+        {
+            return ShowDialog("Are you sure you want to delete " +
+                objectToDelete + " from " + listName + " list?");
         }
 
         public bool ShowDeleteAvailableGameDialog(string gameName)
         {
-            return ShowDeleteConfirmationDialog(gameName, listName: "available games");
+            return ShowDeleteDialog(gameName, listName: "available games");
         }
 
         public bool ShowDeleteGameDialog(string gameName)
         {
-            return ShowDeleteConfirmationDialog(gameName, listName: "games");
+            return ShowDeleteDialog(gameName, listName: "games");
         }
 
         public bool ShowDeletePlayersLimitsFileDialog(string gameName)
         {
-            return ShowDeleteConfirmationDialog(gameName, listName: "limits");
+            return ShowDeleteDialog(gameName, listName: "limits");
         }
 
         public bool ShowDeletePlayerFromListDialog(string selectedPlayer)
         {
-            return ShowDeleteConfirmationDialog(selectedPlayer, listName: "player");
+            return ShowDeleteDialog(selectedPlayer, listName: "player");
         }
     }
 }
