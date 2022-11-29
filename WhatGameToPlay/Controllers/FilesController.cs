@@ -14,16 +14,19 @@ namespace WhatGameToPlay
         private static readonly string s_gamesListFileName = "GamesList" + s_textFileExtension;
         private static readonly string s_playersDirectoryName = "Players";
         private static readonly string s_limitsDirectoryName = "Limits";
+        private static readonly char[] s_charactersFilesCantUse = "\\/:*?\"<>|".ToCharArray();
 
         public static bool StandartFilesExist()
         {
             return File.Exists(s_themeFileName);
         }
 
-        public static bool StringSpacesOnly(string @string)
+        public static bool StringContainsBannedSymbols(string @string)
         {
-            return (!@string.Any(letter => char.IsLetter(letter) || char.IsDigit(letter))
-                || @string.Length == 0);
+            foreach (Char @char in s_charactersFilesCantUse){
+                if (@string.Contains(@char)) return true;
+            }
+            return !@string.Any(letter => char.IsLetterOrDigit(letter)) || string.IsNullOrEmpty(@string);
         }
 
         public static bool PlayerFileExist(string checkPlayer)

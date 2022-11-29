@@ -74,7 +74,7 @@ namespace WhatGameToPlay
             }
             checkBoxPlayersNumberLimit.Enabled = selectedGameInList;
             SetGameButtonsEnables(enable: !selectedGameInList);
-            if (FilesController.StringSpacesOnly(selectedGame))
+            if (FilesController.StringContainsBannedSymbols(selectedGame))
                 buttonAddGame.Enabled = false;
             SetPlayersLimitsToNumericUpDowns();
         }

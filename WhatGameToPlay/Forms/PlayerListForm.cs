@@ -50,7 +50,7 @@ namespace WhatGameToPlay
             }
             SetPlayerButtonsEnables(enable: !playerExist);
             checkBoxSelectAll.Enabled = checkedListBoxGamesPlaying.Items.Count != 0;
-            if (FilesController.StringSpacesOnly(selectedPlayer))
+            if (FilesController.StringContainsBannedSymbols(selectedPlayer))
                 buttonAddPlayer.Enabled = false;
         }
 
