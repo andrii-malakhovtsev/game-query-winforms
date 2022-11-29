@@ -19,6 +19,7 @@ Set up players games
 ![2](https://user-images.githubusercontent.com/111363234/204443696-4505e554-81c2-4bbc-a191-912ddb11207e.png)
 
 Check the available game among the ones you can play together
+
 ![3](https://user-images.githubusercontent.com/111363234/204443969-185d4b7f-e9e5-423b-a34b-736c43e47843.png)
 
 If you still can't decide what game you want to play together - press the "Random available game" button!
