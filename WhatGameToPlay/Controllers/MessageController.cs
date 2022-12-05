@@ -5,8 +5,8 @@ namespace WhatGameToPlay
 {
     public class MessageController
     {
+        private const string ConfirmationDialogTitle = "Confirmation";
         private readonly MainForm _mainForm;
-        private readonly static string s_confirmationDialogTitle = "Confirmation";
 
         public MessageController(MainForm mainform)
         {
@@ -71,7 +71,7 @@ namespace WhatGameToPlay
 
         private bool ShowDialog(string message)
         {
-            DialogResult dialogResult = _mainForm.MyMessageBox.Show(message, s_confirmationDialogTitle,
+            DialogResult dialogResult = _mainForm.MyMessageBox.Show(message, ConfirmationDialogTitle,
                 MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }

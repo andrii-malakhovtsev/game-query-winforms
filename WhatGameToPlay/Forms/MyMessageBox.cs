@@ -77,16 +77,15 @@ namespace WhatGameToPlay
 
         private void SetButtonLocation(Button button)
         {
-            int buttonHeight = panel.Height / 2 - 10,
-                lastButtonX = 105, firstButtonX = lastButtonX + 85,
-                buttonWidth = Width;
+            const int lastButtonX = 105, firstButtonX = lastButtonX + 85;
+            int buttonHeight = panel.Height / 2 - 10, buttonWidth = Width;
             buttonWidth -= button == buttonYes ? firstButtonX : lastButtonX;
             button.Location = new Point(buttonWidth, buttonHeight);
         }
 
         private void SetFormDimensions()
         {
-            int widthAfterLabel = 60, heightAfterLabel = 135;
+            const int widthAfterLabel = 60, heightAfterLabel = 135;
             Width = labelMessage.Width + widthAfterLabel;
             Height = labelMessage.Height + heightAfterLabel;
         }

@@ -118,7 +118,7 @@ namespace WhatGameToPlay
 
         private bool FormHasExtraCheckBoxes()
         {
-            int maximumCheckBoxesOnForm = 11;
+            const int maximumCheckBoxesOnForm = 11;
             return Players.Count > maximumCheckBoxesOnForm;
         }
 
@@ -288,7 +288,7 @@ namespace WhatGameToPlay
 
         private void ButtonRandomAvailableGame_Click(object sender, EventArgs e)
         {
-            int defaultTimerInterval = 10;
+            const int defaultTimerInterval = 10;
             if (listBoxAvailableGames.Items.Count > 0)
             {
                 if (rouletteInsteadProgressbarToolStripMenuItem.Checked)
@@ -318,7 +318,7 @@ namespace WhatGameToPlay
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            int progressBarSmallIndent = 2, progressBarBigIndent = 3, timerInterval = 5,
+            const int progressBarSmallIndent = 2, progressBarBigIndent = 3, timerInterval = 5,
                 timerMaximumAccelerationInterval = 45, maximumTimerInterval = 200;
             bool changeProgressbarValue = progressBar.Value < progressBar.Maximum - progressBarBigIndent
                 && rouletteInsteadProgressbarToolStripMenuItem.Checked;
