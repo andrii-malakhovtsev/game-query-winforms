@@ -12,7 +12,7 @@ namespace WhatGameToPlay
         private readonly List<ToolStripMenuItem> _optionToolStrips = new List<ToolStripMenuItem>();
         private readonly MessageController _messageController;
         public List<Player> Players { get; set; } = new List<Player>();
-        public MyMessageBox MyMessageBox { get; set; }
+        public AdvancedMessageBox AdvancedMessageBox { get; set; }
 
         public MainForm()
         {
@@ -49,7 +49,7 @@ namespace WhatGameToPlay
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            MyMessageBox = new MyMessageBox();
+            AdvancedMessageBox = new AdvancedMessageBox();
             if (!FilesController.StandartFilesExist())
             {
                 if (_messageController.ShowFirstMeetingDialog())

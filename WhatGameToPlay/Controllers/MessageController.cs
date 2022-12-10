@@ -15,7 +15,7 @@ namespace WhatGameToPlay
 
         private void ShowMainFormMessage(string message)
         {
-            _mainForm.MyMessageBox.Show(message);
+            _mainForm.AdvancedMessageBox.Show(message);
         }
 
         private void ShowOptionalMainFormMessage(string message)
@@ -71,7 +71,7 @@ namespace WhatGameToPlay
 
         private bool ShowDialog(string message)
         {
-            DialogResult dialogResult = _mainForm.MyMessageBox.Show(message, ConfirmationDialogTitle,
+            DialogResult dialogResult = _mainForm.AdvancedMessageBox.Show(message, ConfirmationDialogTitle,
                 MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes;
         }

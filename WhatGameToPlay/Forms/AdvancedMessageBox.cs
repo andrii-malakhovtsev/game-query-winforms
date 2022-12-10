@@ -4,14 +4,14 @@ using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
-    public partial class MyMessageBox : Form
+    public partial class AdvancedMessageBox : Form
     {
-        public MyMessageBox()
+        public AdvancedMessageBox()
         {
             InitializeComponent();
         }
 
-        private void MyMessageBox_Load(object sender, EventArgs e)
+        private void AdvancedMessageBox_Load(object sender, EventArgs e)
         {
             buttonYes.DialogResult = DialogResult.Yes;
             buttonNo.DialogResult = DialogResult.Cancel;

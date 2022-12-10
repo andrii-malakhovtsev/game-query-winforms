@@ -84,11 +84,11 @@
     <Compile Include="Forms\PlayerListForm.Designer.cs">
       <DependentUpon>PlayerListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MyMessageBox.cs">
+    <Compile Include="Forms\AdvancedMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MyMessageBox.Designer.cs">
-      <DependentUpon>MyMessageBox.cs</DependentUpon>
+    <Compile Include="Forms\AdvancedMessageBox.Designer.cs">
+      <DependentUpon>AdvancedMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
@@ -103,8 +103,8 @@
     <EmbeddedResource Include="Forms\PlayerListForm.resx">
       <DependentUpon>PlayerListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MyMessageBox.resx">
-      <DependentUpon>MyMessageBox.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AdvancedMessageBox.resx">
+      <DependentUpon>AdvancedMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

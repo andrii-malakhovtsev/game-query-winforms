@@ -1,6 +1,6 @@
 ﻿namespace WhatGameToPlay
 {
-    partial class MyMessageBox
+    partial class AdvancedMessageBox
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyMessageBox));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdvancedMessageBox));
             this.labelMessage = new System.Windows.Forms.Label();
             this.panel = new System.Windows.Forms.Panel();
             this.labelTimer = new System.Windows.Forms.Label();
@@ -123,7 +123,7 @@
             this.Name = "MyMessageBox";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Load += new System.EventHandler(this.MyMessageBox_Load);
+            this.Load += new System.EventHandler(this.AdvancedMessageBox_Load);
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
             this.ResumeLayout(false);
