@@ -88,7 +88,10 @@ namespace WhatGameToPlay
         public static void SetBackgroundForeColor(ToolStripMenuItem toolStripMenuItem)
         {
             RefreshCurrentThemeFromFile();
-            if (!CurrentThemeIsStandart()) toolStripMenuItem.ForeColor = s_backgroundColor;
+            if (!CurrentThemeIsStandart())
+            {
+                toolStripMenuItem.ForeColor = s_backgroundColor;
+            }
         }
 
         public static void SetToolStripMenuItemsFullColor(List<ToolStripMenuItem> toolStripMenuItems)
@@ -111,8 +114,11 @@ namespace WhatGameToPlay
 
         public static void SetFormControlsTheme(Form form)
         {
-            List<System.Type> backColorClearTypes = new List<System.Type>() 
-                { typeof(Label), typeof(GroupBox), typeof(CheckBox) };
+            List<System.Type> backColorClearTypes = new List<System.Type>() { 
+                typeof(Label), 
+                typeof(GroupBox), 
+                typeof(CheckBox)
+            };
             form.BackColor = s_backgroundColor;
             foreach (Control control in form.Controls)
             {
@@ -120,8 +126,10 @@ namespace WhatGameToPlay
                 control.ForeColor = s_textColor;
                 // if add typeof(PictureBox) to backColorClearTypes - program detects as a virus
                 if (!backColorClearTypes.Contains(controlType) && controlType != typeof(PictureBox))
+                {
                     control.BackColor = controlType == typeof(Button) ?
                         s_buttonColor : s_secondBackgroundColor;
+                }
             }
             backColorClearTypes.Clear();
         }
