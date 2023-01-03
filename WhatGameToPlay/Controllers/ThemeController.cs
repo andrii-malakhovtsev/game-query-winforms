@@ -6,7 +6,7 @@ namespace WhatGameToPlay
 {
     public static class ThemeController
     {
-        private static readonly string s_standartTheme = "White";
+        private const string StandartTheme = "White";
         private static string s_currentTheme;
         private static Color s_textColor;
         private static Color s_buttonColor;
@@ -25,12 +25,12 @@ namespace WhatGameToPlay
 
         public static string GetStandartThemeName()
         {
-            return s_standartTheme;
+            return StandartTheme;
         }
 
         private static bool CurrentThemeIsStandart()
         {
-            return s_currentTheme == s_standartTheme;
+            return s_currentTheme == StandartTheme;
         }
 
         private static void SetThemeColors(Color textColor, Color buttonColor,

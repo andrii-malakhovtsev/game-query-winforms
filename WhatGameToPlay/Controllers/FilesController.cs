@@ -7,23 +7,23 @@ namespace WhatGameToPlay
 {
     public static class FilesController
     {
-        private static readonly string s_textFileExtension = ".txt";
-        private static readonly string s_allTextFileExtension = "*" + s_textFileExtension;
-        private static readonly string s_themeFileName = "Theme" + s_textFileExtension;
-        private static readonly string s_optionsFileName = "Options" + s_textFileExtension;
-        private static readonly string s_gamesListFileName = "GamesList" + s_textFileExtension;
-        private static readonly string s_playersDirectoryName = "Players";
-        private static readonly string s_limitsDirectoryName = "Limits";
-        private static readonly char[] s_charactersFilesCantUse = "\\/:*?\"<>|".ToCharArray();
+        private const string TextFileExtension = ".txt";
+        private const string AllTextFilesExtension = "*" + TextFileExtension;
+        private const string ThemeFileName = "Theme" + TextFileExtension;
+        private const string OptionsFileName = "Options" + TextFileExtension;
+        private const string GamesListFileName = "GamesList" + TextFileExtension;
+        private const string PlayersDirectoryName = "Players";
+        private const string LimitsDirectoryName = "Limits";
+        private static readonly char[] s_charactersFilesCanNotUse = "\\/:*?\"<>|".ToCharArray();
 
         public static bool StandartFilesExist()
         {
-            return File.Exists(s_themeFileName);
+            return File.Exists(ThemeFileName);
         }
 
         public static bool StringContainsBannedSymbols(string @string)
         {
-            foreach (Char @char in s_charactersFilesCantUse){
+            foreach (char @char in s_charactersFilesCanNotUse){
                 if (@string.Contains(@char)) return true;
             }
             return !@string.Any(letter => char.IsLetterOrDigit(letter)) || string.IsNullOrEmpty(@string);
@@ -48,28 +48,34 @@ namespace WhatGameToPlay
 
         public static void CreateStartingFiles()
         {
-            if (CreateFile(s_themeFileName))
+            if (CreateFile(ThemeFileName))
+            {
                 WriteThemeToFile(ThemeController.GetStandartThemeName());
-            if (CreateFile(s_optionsFileName))
+            }
+            if (CreateFile(OptionsFileName))
             {
                 string[] standartOptions = { "True", "True", "True", "False", "True", "False" };
                 WriteOptionsToFile(standartOptions);
             }
-            if (CreateFile(s_gamesListFileName))
+            if (CreateFile(GamesListFileName))
+            {
                 AddGameToGameListFile("example game");
-            if (CreateDirectory(s_playersDirectoryName))
+            }
+            if (CreateDirectory(PlayersDirectoryName))
+            {
                 CreatePlayerFile("example player");
-            CreateDirectory(s_limitsDirectoryName);
+            }
+            CreateDirectory(LimitsDirectoryName);
         }
 
         private static bool CreateFile(string fileName)
         {
-            if (!File.Exists(fileName))
+            bool fileDoesNotExist = !File.Exists(fileName);
+            if (fileDoesNotExist)
             {
                 File.Create(fileName).Dispose();
-                return true;
             }
-            return false;
+            return fileDoesNotExist;
         }
 
         public static void CreatePlayerFile(string selectedPlayer)
@@ -89,23 +95,23 @@ namespace WhatGameToPlay
 
         private static string GetFullDirectoryFilePath(string directory, string fileName)
         {
-            return directory + "\\" + fileName + s_textFileExtension;
+            return directory + "\\" + fileName + TextFileExtension;
         }
 
         public static string GetCurrentTheme()
         {
-            string[] fileRead = File.ReadAllLines(s_themeFileName);
+            string[] fileRead = File.ReadAllLines(ThemeFileName);
             return fileRead[0];
         }
 
         private static string GetSelectedGamePlayersLimitsFilePath(string gameName)
         {
-            return GetFullDirectoryFilePath(s_limitsDirectoryName, gameName);
+            return GetFullDirectoryFilePath(LimitsDirectoryName, gameName);
         }
 
         private static string GetSelectedPlayerFilePath(string selectedPlayer)
         {
-            return GetFullDirectoryFilePath(s_playersDirectoryName, selectedPlayer);
+            return GetFullDirectoryFilePath(PlayersDirectoryName, selectedPlayer);
         }
 
         public static bool GetPlayersLimitsFromGameFile(string gameName,
@@ -117,7 +123,9 @@ namespace WhatGameToPlay
                 {
                     string[] fileRead = File.ReadAllLines(file.FullName);
                     for (int i = 0; i < limits.Length; i++)
+                    {
                         limits[i] = Convert.ToDecimal(fileRead[i]);
+                    }
                     return true;
                 }
             }
@@ -126,12 +134,12 @@ namespace WhatGameToPlay
 
         public static string[] GetOptionsFromFile()
         {
-            return File.ReadAllLines(s_optionsFileName);
+            return File.ReadAllLines(OptionsFileName);
         }
 
         public static string[] GetGamesFromFile()
         {
-            return File.ReadAllLines(s_gamesListFileName);
+            return File.ReadAllLines(GamesListFileName);
         }
 
         public static string[] GetGamesPlayerDoesntPlay(string selectedPlayer)
@@ -147,17 +155,17 @@ namespace WhatGameToPlay
         private static FileInfo[] GetTextFiles(string directoryName)
         {
             DirectoryInfo directory = new DirectoryInfo(directoryName);
-            return directory.GetFiles(s_allTextFileExtension);
+            return directory.GetFiles(AllTextFilesExtension);
         }
 
         private static FileInfo[] GetPlayersTextFiles()
         {
-            return GetTextFiles(directoryName: s_playersDirectoryName);
+            return GetTextFiles(directoryName: PlayersDirectoryName);
         }
 
         private static FileInfo[] GetPlayersLimitsTextFiles()
         {
-            return GetTextFiles(directoryName: s_limitsDirectoryName);
+            return GetTextFiles(directoryName: LimitsDirectoryName);
         }
 
         public static List<string> GetLimitedGamesFromDirectory(int checkedPlayersCount)
@@ -166,9 +174,12 @@ namespace WhatGameToPlay
             foreach (FileInfo fileInfo in GetPlayersLimitsTextFiles())
             {
                 string[] lines = File.ReadAllLines(fileInfo.FullName);
-                if (checkedPlayersCount < Convert.ToInt32(lines[0]) ||
-                    checkedPlayersCount > Convert.ToInt32(lines[1]))
+                bool playerCountOutsideLimits = checkedPlayersCount < Convert.ToInt32(lines[0]) ||
+                    checkedPlayersCount > Convert.ToInt32(lines[1]);
+                if (playerCountOutsideLimits)
+                {
                     limitedGames.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
+                }
             }
             return limitedGames;
         }
@@ -176,8 +187,10 @@ namespace WhatGameToPlay
         public static List<string> GetGamesListFromFile()
         {
             List<string> games = new List<string>();
-            foreach (string game in File.ReadAllLines(s_gamesListFileName))
+            foreach (string game in File.ReadAllLines(GamesListFileName))
+            {
                 games.Add(game);
+            }
             games.Sort();
             return games;
         }
@@ -189,7 +202,9 @@ namespace WhatGameToPlay
             {
                 List<string> gamesNotPlaying = new List<string>();
                 foreach (string gameDoesntPlay in File.ReadAllLines(fileInfo.FullName))
+                {
                     gamesNotPlaying.Add(gameDoesntPlay);
+                }
                 players.Add(new Player(Path.GetFileNameWithoutExtension(fileInfo.Name), gamesNotPlaying));
             }
             return players;
@@ -198,22 +213,24 @@ namespace WhatGameToPlay
         public static void AppendGameToPlayersFiles(string gameName)
         {
             foreach (FileInfo file in GetPlayersTextFiles())
+            {
                 File.AppendAllText(file.FullName, gameName + "\n");
+            }
         }
 
         public static void AddGameToGameListFile(string gameName)
         {
-            File.AppendAllText(s_gamesListFileName, gameName + Environment.NewLine);
+            File.AppendAllText(GamesListFileName, gameName + Environment.NewLine);
         }
 
         public static void WriteThemeToFile(string theme)
         {
-            File.WriteAllText(s_themeFileName, theme);
+            File.WriteAllText(ThemeFileName, theme);
         }
 
         public static void WriteOptionsToFile(string[] options)
         {
-            File.WriteAllLines(s_optionsFileName, options);
+            File.WriteAllLines(OptionsFileName, options);
         }
 
         public static void WritePlayersLimitsToFile(string gameName, decimal minValue, decimal maxValue)
@@ -233,16 +250,25 @@ namespace WhatGameToPlay
             string path = GetSelectedPlayerFilePath(selectedPlayer);
             CreatePlayerFile(selectedPlayer);
             using (TextWriter textWriter = new StreamWriter(path))
+            {
                 foreach (string gameNotPlaying in gamesNotPlayingList)
+                {
                     textWriter.WriteLine(gameNotPlaying.ToString());
+                }
+            }
         }
 
         public static void DeleteGameFromGameList(string gameToDelete)
         {
             string[] games = GetGamesFromFile();
-            File.WriteAllText(s_gamesListFileName, string.Empty);
+            File.WriteAllText(GamesListFileName, string.Empty);
             foreach (string game in games)
-                if (game != gameToDelete) AddGameToGameListFile(game);
+            {
+                if (game != gameToDelete)
+                {
+                    AddGameToGameListFile(game);
+                }
+            }
         }
 
         private static void DeleteGameFromPlayersFiles(string gameToDelete)
@@ -257,7 +283,10 @@ namespace WhatGameToPlay
         public static void DeletePlayersLimitsFile(string gameName)
         {
             string path = GetSelectedGamePlayersLimitsFilePath(gameName);
-            if (File.Exists(path)) File.Delete(path);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
         }
 
         public static void DeletePlayersGameData(string gameToDelete)
