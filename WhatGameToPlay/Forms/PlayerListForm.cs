@@ -143,6 +143,7 @@ namespace WhatGameToPlay
 
         private void ListBoxPlayers_DoubleClick(object sender, EventArgs e)
         {
+            if (GetSelectedPlayerName() == string.Empty) return;
             DeletePlayer();
         }
 

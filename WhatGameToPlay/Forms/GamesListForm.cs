@@ -133,6 +133,7 @@ namespace WhatGameToPlay
 
         private void ListBoxGames_DoubleClick(object sender, EventArgs e)
         {
+            if (GetSelectedGameName() == string.Empty) return;
             DeleteGame();
         }
 
