@@ -53,8 +53,13 @@ namespace WhatGameToPlay
             if (!FilesController.StandartFilesExist())
             {
                 if (_messageController.ShowFirstMeetingDialog())
+                {
                     FilesController.CreateStartingFiles();
-                else Close();
+                }
+                else
+                {
+                    Close();
+                }
             }
             RefreshPlayersList();
             SetSavedOptionsFromFile();
@@ -91,29 +96,42 @@ namespace WhatGameToPlay
         private void SetSavedColors()
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
+            {
                 if (FilesController.GetCurrentTheme() == colorTheme.Text)
+                {
                     colorTheme.Checked = true;
+                }
+            }
         }
 
         private void SetSavedOptionsFromFile()
         {
             string[] currentOptions = FilesController.GetOptionsFromFile();
             for (int i = 0; i < currentOptions.Length; i++)
+            {
                 _optionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
+            }
         }
 
         private void RefreshOptionsToFiles()
         {
             string[] options = new string[_optionToolStrips.Count];
             for (int i = 0; i < _optionToolStrips.Count; i++)
+            {
                 options[i] = Convert.ToString(_optionToolStrips[i].Checked);
+            }
             FilesController.WriteOptionsToFile(options);
         }
 
         private void RefreshThemeToFile()
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
-                if (colorTheme.Checked) FilesController.WriteThemeToFile(colorTheme.Text);
+            {
+                if (colorTheme.Checked)
+                {
+                    FilesController.WriteThemeToFile(colorTheme.Text);
+                }
+            }
         }
 
         private bool FormHasExtraCheckBoxes()
@@ -192,23 +210,31 @@ namespace WhatGameToPlay
         {
             if (listBoxAvailableGames.SelectedItem == null) return;
             if (!showConfirmationMessagesToolStripMenuItem.Checked ||
-                _messageController.ShowDeleteAvailableGameDialog(
-                    listBoxAvailableGames.SelectedItem.ToString()))
-                        DeleteGameFromListBox();
+                _messageController.ShowDeleteAvailableGameDialog(listBoxAvailableGames.SelectedItem.ToString()))
+            {
+                DeleteGameFromListBox();
+            }
         }
 
         private void DeleteGameFromListBox()
         {
             while (listBoxAvailableGames.SelectedItems.Count > 0)
+            {
                 listBoxAvailableGames.Items.Remove(listBoxAvailableGames.SelectedItems[0]);
+            }
         }
 
         private void ShowConfirmationMessagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (showMessagesToolStripMenuItem.Checked)
+            {
                 _messageController.ShowTurningConfirmationMessagesError();
-            else showConfirmationMessagesToolStripMenuItem.Checked =
+            }
+            else
+            {
+                showConfirmationMessagesToolStripMenuItem.Checked =
                     !showConfirmationMessagesToolStripMenuItem.Checked;
+            }
             RefreshOptionsToFiles();
         }
 
@@ -280,7 +306,9 @@ namespace WhatGameToPlay
             {
                 toolStripMenuItems.Add(toolStripMenuItem);
                 foreach (ToolStripMenuItem toolStripItem in toolStripMenuItem.DropDownItems)
+                {
                     toolStripMenuItems.Add(toolStripItem);
+                }
             }
             ThemeController.SetToolStripMenuItemsFullColor(toolStripMenuItems);
             toolStripMenuItems.Clear();
@@ -292,7 +320,9 @@ namespace WhatGameToPlay
             if (listBoxAvailableGames.Items.Count > 0)
             {
                 if (rouletteInsteadProgressbarToolStripMenuItem.Checked)
+                {
                     progressBar.Visible = true;
+                }
                 progressBar.Value = 0;
                 ThemeController.SetTextBoxForeColor(textBox, win: false);
                 pictureBoxSmile.Hide();
@@ -302,7 +332,9 @@ namespace WhatGameToPlay
                 timer.Interval = defaultTimerInterval;
                 timer.Enabled = true;
                 foreach (CheckBox checkBox in _checkBoxes)
+                {
                     checkBox.Enabled = false;
+                }
             }
             else if (ShowMessages())
             {
@@ -332,7 +364,9 @@ namespace WhatGameToPlay
             Random random = new Random();
             int randomAvailableGame = random.Next(listBoxAvailableGames.Items.Count);
             if (listBoxAvailableGames.Items.Count > 0)
+            {
                 textBox.Text = Convert.ToString(listBoxAvailableGames.Items[randomAvailableGame]);
+            }
             if (timer.Interval == maximumTimerInterval)
             {
                 SetToolStripItemsEnables(enable: true);

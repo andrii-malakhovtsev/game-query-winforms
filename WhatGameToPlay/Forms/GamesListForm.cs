@@ -33,20 +33,29 @@ namespace WhatGameToPlay
         {
             listBoxGames.Items.Clear();
             foreach (string game in FilesController.GetGamesListFromFile())
+            {
                 listBoxGames.Items.Add(game);
+            }
         }
 
         private bool GameInList(string gameToCheck)
         {
             foreach (string game in FilesController.GetGamesListFromFile())
-                if (gameToCheck == game) return true;
+            {
+                if (gameToCheck == game)
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
         private void ListBoxGames_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBoxGames.SelectedItem != null)
+            if (listBoxGames.SelectedItem != null) 
+            {
                 textBoxGameName.Text = listBoxGames.SelectedItem.ToString();
+            }
         }
 
         private void TextBoxGameName_TextChanged(object sender, EventArgs e)
@@ -74,7 +83,9 @@ namespace WhatGameToPlay
             checkBoxPlayersNumberLimit.Enabled = selectedGameInList;
             SetGameButtonsEnables(enable: !selectedGameInList);
             if (FilesController.StringContainsBannedSymbols(selectedGame))
+            {
                 buttonAddGame.Enabled = false;
+            }
             SetPlayersLimitsToNumericUpDowns();
         }
 
@@ -106,7 +117,9 @@ namespace WhatGameToPlay
             RefreshListBoxGames();
             GetPlayersLimits();
             if (!_playerLimitsExist)
+            {
                 FilesController.AppendGameToPlayersFiles(GetSelectedGameName());
+            }
             _messageController.ShowGameAddedToListMessage(GetSelectedGameName());
             SwitchGameButtonsEnables();
             SetGameButtonsEnables(enable: false);
@@ -120,6 +133,7 @@ namespace WhatGameToPlay
 
         private void ListBoxGames_DoubleClick(object sender, EventArgs e)
         {
+            if (GetSelectedGameName() == string.Empty) return;
             DeleteGame();
         }
 
@@ -128,7 +142,9 @@ namespace WhatGameToPlay
             if (_mainForm.ShowConfirmationMessages())
             {
                 if (_messageController.ShowDeleteGameDialog(GetSelectedGameName()))
+                {
                     DeleteGameFromGameList();
+                }
             }
             else DeleteGameFromGameList();
         }
@@ -146,7 +162,9 @@ namespace WhatGameToPlay
             RefreshListBoxGames();
             SwitchGameButtonsEnables();
             if (!_mainForm.SaveDeletedGamesData())
+            {
                 FilesController.DeletePlayersGameData(GetSelectedGameName());
+            }
             textBoxGameName.Clear();
             SetNumericUpDownsStandartValues();
         }
@@ -173,8 +191,13 @@ namespace WhatGameToPlay
             if (_mainForm.ShowConfirmationMessages())
             {
                 if (_messageController.ShowDeletePlayersLimitsFileDialog(selectedGame))
+                {
                     DeletePlayerLimits();
-                else checkBoxPlayersNumberLimit.Checked = true;
+                }
+                else
+                {
+                    checkBoxPlayersNumberLimit.Checked = true;
+                }
             }
             else DeletePlayerLimits();
         }
@@ -200,10 +223,15 @@ namespace WhatGameToPlay
         private bool SavePlayersLimits()
         {
             bool limitsFit = numericUpDownMax.Value > numericUpDownMin.Value;
-            if (limitsFit) FilesController.WritePlayersLimitsToFile(_currentSelectedGame,
+            if (limitsFit)
+            {
+                FilesController.WritePlayersLimitsToFile(_currentSelectedGame,
                 numericUpDownMin.Value, numericUpDownMax.Value);
+            }
             else if (_mainForm.ShowMessages())
+            {
                 _messageController.ShowPlayersLimitsErrorMessage();
+            }
             return limitsFit;
         }
 
