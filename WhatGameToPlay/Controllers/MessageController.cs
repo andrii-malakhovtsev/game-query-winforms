@@ -40,11 +40,11 @@ namespace WhatGameToPlay
             int randomNumber = random.Next(1, 6);
             switch (randomNumber)
             {
-                case 1: return "Let's go to play " + gameToPlay + "!";
-                case 2: return "Yoooo, is it " + gameToPlay + " that we gonna play?";
-                case 3: return "The best choice for today is... " + gameToPlay + "!";
-                case 4: return "No way we are going to play " + gameToPlay + " rn!";
-                case 5: return "Hey chads, we are going to " + gameToPlay + "!";
+                case 1: return $"Let's go play {gameToPlay}!";
+                case 2: return $"Yoooo, is it {gameToPlay} that we gonna play?";
+                case 3: return $"The best choice for today is...  {gameToPlay}!";
+                case 4: return $"No way we are going to play {gameToPlay} rn!";
+                case 5: return $"Hey chads, we are going to {gameToPlay}!";
             }
             return string.Empty;
         }
@@ -61,7 +61,7 @@ namespace WhatGameToPlay
 
         public void ShowGameAddedToListMessage(string gameName)
         {
-            ShowOptionalMainFormMessage("Game " + gameName + " is successfully added!");
+            ShowOptionalMainFormMessage($"Game {gameName} is successfully added!");
         }
 
         public void ShowPlayerAddedToListMessage(string playerName)
@@ -86,8 +86,7 @@ namespace WhatGameToPlay
 
         private bool ShowDeleteDialog(string objectToDelete, string listName)
         {
-            return ShowDialog("Are you sure you want to delete " +
-                objectToDelete + " from " + listName + " list?");
+            return ShowDialog($"Are you sure you want to delete {objectToDelete} from {listName} list?");
         }
 
         public bool ShowDeleteAvailableGameDialog(string gameName)
