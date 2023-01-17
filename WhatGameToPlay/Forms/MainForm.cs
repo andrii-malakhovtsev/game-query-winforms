@@ -20,12 +20,10 @@ namespace WhatGameToPlay
             _messageController = new MessageController(this);
             foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
             {
-                if (toolStripMenuItem.DropDownItems.Count != 0)
-                {
-                    toolStripMenuItem.DropDownOpening += new EventHandler(MenuToolStripItem_DropDownOpening);
-                    toolStripMenuItem.DropDownClosed += new EventHandler(MenuToolStripItem_DropDownClosed);
-                    SetToolStripTheme(toolStripMenuItem);
-                }
+                if (toolStripMenuItem.DropDownItems.Count == 0) continue;
+                toolStripMenuItem.DropDownOpening += new EventHandler(MenuToolStripItem_DropDownOpening);
+                toolStripMenuItem.DropDownClosed += new EventHandler(MenuToolStripItem_DropDownClosed);
+                SetToolStripTheme(toolStripMenuItem);
             }
         }
 
@@ -185,16 +183,28 @@ namespace WhatGameToPlay
             List<string> gamesAvailable = FilesController.GetGamesListFromFile();
             listBoxAvailableGames.Items.Clear();
             foreach (Player player in Players)
-                if (player.CheckBox.Checked)
-                    for (int i = 0; i < gamesAvailable.Count; i++)
-                        foreach (string gameNotPlaying in player.GamesNotPlaying)
-                            gamesAvailable.Remove(gameNotPlaying);
+            {
+                if (!player.CheckBox.Checked) continue;
+                for (int i = 0; i < gamesAvailable.Count; i++)
+                {
+                    foreach (string gameNotPlaying in player.GamesNotPlaying)
+                    {
+                        gamesAvailable.Remove(gameNotPlaying);
+                    }
+                }
+            }
             if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
+            {
                 foreach (string limitedGame in
                     FilesController.GetLimitedGamesFromDirectory(GetCheckedPlayersCount()))
-                        gamesAvailable.Remove(limitedGame);
+                {
+                    gamesAvailable.Remove(limitedGame);
+                }
+            }
             foreach (string game in gamesAvailable)
+            {
                 listBoxAvailableGames.Items.Add(game);
+            }
             if (GetCheckedPlayersCount() == 0) listBoxAvailableGames.Items.Clear();
         }
 
@@ -202,7 +212,12 @@ namespace WhatGameToPlay
         {
             int checkedCheckBoxesCount = 0;
             foreach (CheckBox checkbox in _checkBoxesCopy)
-                if (checkbox.Checked) checkedCheckBoxesCount++;
+            {
+                if (checkbox.Checked)
+                {
+                    checkedCheckBoxesCount++;
+                }
+            }
             return checkedCheckBoxesCount;
         }
 

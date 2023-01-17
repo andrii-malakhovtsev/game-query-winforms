@@ -201,9 +201,9 @@ namespace WhatGameToPlay
             foreach (FileInfo fileInfo in GetPlayersTextFiles())
             {
                 List<string> gamesNotPlaying = new List<string>();
-                foreach (string gameDoesntPlay in File.ReadAllLines(fileInfo.FullName))
+                foreach (string gameDoesNotPlay in File.ReadAllLines(fileInfo.FullName))
                 {
-                    gamesNotPlaying.Add(gameDoesntPlay);
+                    gamesNotPlaying.Add(gameDoesNotPlay);
                 }
                 players.Add(new Player(Path.GetFileNameWithoutExtension(fileInfo.Name), gamesNotPlaying));
             }
