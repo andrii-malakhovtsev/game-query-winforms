@@ -154,14 +154,9 @@ namespace WhatGameToPlay
 
         private void DeletePlayer()
         {
-            if (_mainForm.ShowConfirmationMessages())
-            {
-                if (_messageController.ShowDeletePlayerFromListDialog(GetSelectedPlayerName()))
-                {
-                    DeletePlayerFromList();
-                }
-            }
-            else DeletePlayerFromList();
+            if (_mainForm.ShowConfirmationMessages() 
+                && !_messageController.ShowDeletePlayerFromListDialog(GetSelectedPlayerName())) return;
+            DeletePlayerFromList();
         }
 
         private void DeletePlayerFromList()
