@@ -139,14 +139,8 @@ namespace WhatGameToPlay
 
         private void DeleteGame()
         {
-            if (_mainForm.ShowConfirmationMessages())
-            {
-                if (_messageController.ShowDeleteGameDialog(GetSelectedGameName()))
-                {
-                    DeleteGameFromGameList();
-                }
-            }
-            else DeleteGameFromGameList();
+            if (_mainForm.ShowConfirmationMessages() && !_messageController.ShowDeleteGameDialog(GetSelectedGameName())) return;
+            DeleteGameFromGameList();
         }
 
         private void DeleteGameFromGameList()
