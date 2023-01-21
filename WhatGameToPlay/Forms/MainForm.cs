@@ -48,7 +48,7 @@ namespace WhatGameToPlay
         private void MainForm_Load(object sender, EventArgs e)
         {
             AdvancedMessageBox = new AdvancedMessageBox();
-            if (!FilesController.StandartFilesExist())
+            if (!FilesController.StandartFilesExist)
             {
                 if (_messageController.ShowFirstMeetingDialog())
                 {
@@ -95,7 +95,7 @@ namespace WhatGameToPlay
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
             {
-                if (FilesController.GetCurrentTheme() == colorTheme.Text)
+                if (FilesController.CurrentThemeFromFile == colorTheme.Text)
                 {
                     colorTheme.Checked = true;
                 }
@@ -104,7 +104,7 @@ namespace WhatGameToPlay
 
         private void SetSavedOptionsFromFile()
         {
-            string[] currentOptions = FilesController.GetOptionsFromFile();
+            string[] currentOptions = FilesController.OptionsFromFile;
             for (int i = 0; i < currentOptions.Length; i++)
             {
                 _optionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
@@ -142,7 +142,7 @@ namespace WhatGameToPlay
         {
             Players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
-            Players = FilesController.GetPlayersListFromDirectory();
+            Players = FilesController.GetPlayersFromDirectory();
             _checkBoxesCopy.Clear();
             playersPanel.Visible = FormHasExtraCheckBoxes();
             playersGroupBox.Visible = FormHasExtraCheckBoxes();
@@ -180,7 +180,7 @@ namespace WhatGameToPlay
 
         private void PlayerCheckBoxCheckedChange()
         {
-            List<string> gamesAvailable = FilesController.GetGamesListFromFile();
+            List<string> gamesAvailable = FilesController.GamesListFromFile;
             listBoxAvailableGames.Items.Clear();
             foreach (Player player in Players)
             {

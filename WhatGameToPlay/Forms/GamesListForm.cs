@@ -10,6 +10,7 @@ namespace WhatGameToPlay
         private string _currentSelectedGame;
         private bool _startedLimitsEntering;
         private bool _playerLimitsExist;
+        private string SelectedGameName { get => textBoxGameName.Text;  }
 
         public GamesListForm(MainForm mainForm)
         {
@@ -24,15 +25,10 @@ namespace WhatGameToPlay
             ThemeController.SetFormControlsTheme(form: this);
         }
 
-        private string GetSelectedGameName()
-        {
-            return textBoxGameName.Text;
-        }
-
         private void RefreshListBoxGames()
         {
             listBoxGames.Items.Clear();
-            foreach (string game in FilesController.GetGamesListFromFile())
+            foreach (string game in FilesController.GamesListFromFile)
             {
                 listBoxGames.Items.Add(game);
             }
@@ -40,7 +36,7 @@ namespace WhatGameToPlay
 
         private bool GameInList(string gameToCheck)
         {
-            foreach (string game in FilesController.GetGamesListFromFile())
+            foreach (string game in FilesController.GamesListFromFile)
             {
                 if (gameToCheck == game)
                 {
@@ -67,13 +63,12 @@ namespace WhatGameToPlay
                 listBoxGames.SelectedIndex = listBoxGames.FindString(_currentSelectedGame);
                 return;
             }
-            string selectedGame = GetSelectedGameName();
-            bool selectedGameInList = GameInList(selectedGame);
+            bool selectedGameInList = GameInList(SelectedGameName);
             SetNumericUpDownsStandartValues();
             if (selectedGameInList)
             {
-                _currentSelectedGame = selectedGame;
-                listBoxGames.SelectedIndex = listBoxGames.FindString(selectedGame);
+                _currentSelectedGame = SelectedGameName;
+                listBoxGames.SelectedIndex = listBoxGames.FindString(SelectedGameName);
             }
             else
             {
@@ -82,7 +77,7 @@ namespace WhatGameToPlay
             }
             checkBoxPlayersNumberLimit.Enabled = selectedGameInList;
             SetGameButtonsEnables(enable: !selectedGameInList);
-            if (FilesController.StringContainsBannedSymbols(selectedGame))
+            if (FilesController.StringContainsBannedSymbols(SelectedGameName))
             {
                 buttonAddGame.Enabled = false;
             }
@@ -94,7 +89,7 @@ namespace WhatGameToPlay
             const int limitsCount = 2;
             decimal[] limits = new decimal[limitsCount];
             _playerLimitsExist =
-                FilesController.GetPlayersLimitsFromGameFile(GetSelectedGameName(), ref limits);
+                FilesController.GetPlayersLimitsFromGameFile(SelectedGameName, ref limits);
             return limits;
         }
 
@@ -113,14 +108,14 @@ namespace WhatGameToPlay
 
         private void ButtonAddGame_Click(object sender, EventArgs e)
         {
-            FilesController.AddGameToGameListFile(GetSelectedGameName());
+            FilesController.AddGameToGameListFile(SelectedGameName);
             RefreshListBoxGames();
             GetPlayersLimits();
             if (!_playerLimitsExist)
             {
-                FilesController.AppendGameToPlayersFiles(GetSelectedGameName());
+                FilesController.AppendGameToPlayersFiles(SelectedGameName);
             }
-            _messageController.ShowGameAddedToListMessage(GetSelectedGameName());
+            _messageController.ShowGameAddedToListMessage(SelectedGameName);
             SwitchGameButtonsEnables();
             SetGameButtonsEnables(enable: false);
             checkBoxPlayersNumberLimit.Enabled = true;
@@ -133,23 +128,23 @@ namespace WhatGameToPlay
 
         private void ListBoxGames_DoubleClick(object sender, EventArgs e)
         {
-            if (GetSelectedGameName() == string.Empty) return;
+            if (SelectedGameName == string.Empty) return;
             DeleteGame();
         }
 
         private void DeleteGame()
         {
-            if (_mainForm.ShowConfirmationMessages() && !_messageController.ShowDeleteGameDialog(GetSelectedGameName())) return;
+            if (_mainForm.ShowConfirmationMessages() && !_messageController.ShowDeleteGameDialog(SelectedGameName)) return;
             DeleteGameFromGameList();
         }
 
         private void DeleteGameFromGameList()
         {
-            foreach (string game in FilesController.GetGamesListFromFile())
+            foreach (string game in FilesController.GamesListFromFile)
             {
-                if (game == GetSelectedGameName())
+                if (game == SelectedGameName)
                 {
-                    FilesController.DeleteGameFromGameList(GetSelectedGameName());
+                    FilesController.DeleteGameFromGameList(SelectedGameName);
                     break;
                 }
             }
@@ -157,7 +152,7 @@ namespace WhatGameToPlay
             SwitchGameButtonsEnables();
             if (!_mainForm.SaveDeletedGamesData())
             {
-                FilesController.DeletePlayersGameData(GetSelectedGameName());
+                FilesController.DeletePlayersGameData(SelectedGameName);
             }
             textBoxGameName.Clear();
             SetNumericUpDownsStandartValues();
@@ -177,14 +172,13 @@ namespace WhatGameToPlay
 
         private void CheckBoxPlayersNumberLimit_CheckedChanged(object sender, EventArgs e)
         {
-            string selectedGame = GetSelectedGameName();
             SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
             _startedLimitsEntering = checkBoxPlayersNumberLimit.Checked;
             if (checkBoxPlayersNumberLimit.Checked
-                || !FilesController.PlayersLimitsFileExist(selectedGame)) return;
+                || !FilesController.PlayersLimitsFileExist(SelectedGameName)) return;
             if (_mainForm.ShowConfirmationMessages())
             {
-                if (_messageController.ShowDeletePlayersLimitsFileDialog(selectedGame))
+                if (_messageController.ShowDeletePlayersLimitsFileDialog(SelectedGameName))
                 {
                     DeletePlayerLimits();
                 }
@@ -198,7 +192,7 @@ namespace WhatGameToPlay
 
         private void DeletePlayerLimits()
         {
-            FilesController.DeletePlayersLimitsFile(GetSelectedGameName());
+            FilesController.DeletePlayersLimitsFile(SelectedGameName);
             SetNumericUpDownsStandartValues();
         }
 

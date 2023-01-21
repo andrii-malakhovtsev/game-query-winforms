@@ -11,6 +11,7 @@ namespace WhatGameToPlay
         private readonly MessageController _messageController;
         private string _currentSelectedPlayerName;
         private bool _playerSelected;
+        private string SelectedPlayerName { get => textBoxSelectedPlayer.Text; }
 
         public PlayerListForm(MainForm MainForm)
         {
@@ -21,21 +22,16 @@ namespace WhatGameToPlay
 
         private void FormPlayerList_Load(object sender, EventArgs e)
         {
-            RefreshPlayersListFromFile();
+            RefreshPlayersFromFile();
             ThemeController.SetFormControlsTheme(form: this);
         }
 
-        private void RefreshPlayersListFromFile()
+        private void RefreshPlayersFromFile()
         {
-            foreach (Player player in FilesController.GetPlayersListFromDirectory())
+            foreach (Player player in FilesController.GetPlayersFromDirectory())
             {
                 listBoxPlayers.Items.Add(player.Name);
             }
-        }
-
-        private string GetSelectedPlayerName()
-        {
-            return textBoxSelectedPlayer.Text;
         }
 
         private void TextBox_TextChanged(object sender, EventArgs e)
@@ -44,8 +40,7 @@ namespace WhatGameToPlay
             {
                 SavePlayerGames(_currentSelectedPlayerName);
             }
-            string selectedPlayer = GetSelectedPlayerName();
-            bool playerExist = FilesController.PlayerFileExist(selectedPlayer);
+            bool playerExist = FilesController.PlayerFileExist(SelectedPlayerName);
             _playerSelected = playerExist;
             if (playerExist)
             {
@@ -58,7 +53,7 @@ namespace WhatGameToPlay
             }
             SetPlayerButtonsEnables(enable: !playerExist);
             checkBoxSelectAll.Enabled = checkedListBoxGamesPlaying.Items.Count != 0;
-            if (FilesController.StringContainsBannedSymbols(selectedPlayer))
+            if (FilesController.StringContainsBannedSymbols(SelectedPlayerName))
             {
                 buttonAddPlayer.Enabled = false;
             }
@@ -66,17 +61,17 @@ namespace WhatGameToPlay
 
         private void SelectPlayer()
         {
-            _currentSelectedPlayerName = GetSelectedPlayerName();
-            listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(_currentSelectedPlayerName);
+            _currentSelectedPlayerName = SelectedPlayerName;
+            listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(SelectedPlayerName);
             checkedListBoxGamesPlaying.Items.Clear();
-            List<string> gamesList = FilesController.GetGamesListFromFile();
+            List<string> gamesList = FilesController.GamesListFromFile;
             for (int index = 0; index < gamesList.Count; index++)
             {
                 checkedListBoxGamesPlaying.Items.Add(gamesList[index]);
                 checkedListBoxGamesPlaying.SetItemChecked(index, value: true);
             }
             string[] gamesPlayerDoesNotPlay =
-                FilesController.GetGamesPlayerDoesntPlay(GetSelectedPlayerName());
+                FilesController.GetGamesPlayerDoesntPlay(SelectedPlayerName);
             if (gamesPlayerDoesNotPlay.Length == 0 || gamesPlayerDoesNotPlay == null) return;
             foreach (string gameDoesNotPlay in gamesPlayerDoesNotPlay)
             {
@@ -105,11 +100,11 @@ namespace WhatGameToPlay
 
         private void ButtonAddPlayer_Click(object sender, EventArgs e)
         {
-            FilesController.CreatePlayerFile(GetSelectedPlayerName());
+            FilesController.CreatePlayerFile(SelectedPlayerName);
             listBoxPlayers.Items.Clear();
-            RefreshPlayersListFromFile();
+            RefreshPlayersFromFile();
             SelectPlayer();
-            _messageController.ShowPlayerAddedToListMessage(GetSelectedPlayerName());
+            _messageController.ShowPlayerAddedToListMessage(SelectedPlayerName);
             SetPlayerButtonsEnables(enable: false);
             checkBoxSelectAll.Enabled = true;
         }
@@ -122,7 +117,7 @@ namespace WhatGameToPlay
                 checkedCheckboxes.Add(game.ToString());
             }
             List<string> gamesNotPlayingList =
-                FilesController.GetGamesFromFile().Distinct().Except(checkedCheckboxes).ToList();
+                FilesController.GamesFromFile.Distinct().Except(checkedCheckboxes).ToList();
             FilesController.WriteGamesNotPlayingToFile(playerName, gamesNotPlayingList);
         }
 
@@ -143,7 +138,7 @@ namespace WhatGameToPlay
 
         private void ListBoxPlayers_DoubleClick(object sender, EventArgs e)
         {
-            if (GetSelectedPlayerName() == string.Empty) return;
+            if (SelectedPlayerName == string.Empty) return;
             DeletePlayer();
         }
 
@@ -155,16 +150,16 @@ namespace WhatGameToPlay
         private void DeletePlayer()
         {
             if (_mainForm.ShowConfirmationMessages() 
-                && !_messageController.ShowDeletePlayerFromListDialog(GetSelectedPlayerName())) return;
+                && !_messageController.ShowDeletePlayerFromListDialog(SelectedPlayerName)) return;
             DeletePlayerFromList();
         }
 
         private void DeletePlayerFromList()
         {
             _playerSelected = false;
-            FilesController.DeleteSelectedPlayerFile(GetSelectedPlayerName());
+            FilesController.DeleteSelectedPlayerFile(SelectedPlayerName);
             listBoxPlayers.Items.Clear();
-            RefreshPlayersListFromFile();
+            RefreshPlayersFromFile();
             checkedListBoxGamesPlaying.Items.Clear();
             SetPlayerButtonsEnables(enable: true);
             textBoxSelectedPlayer.Clear();
@@ -172,9 +167,9 @@ namespace WhatGameToPlay
 
         private void PlayerListForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (FilesController.PlayerFileExist(GetSelectedPlayerName()))
+            if (FilesController.PlayerFileExist(SelectedPlayerName))
             {
-                SavePlayerGames(GetSelectedPlayerName());
+                SavePlayerGames(SelectedPlayerName);
             }
             _mainForm.ClearInformation();
         }
