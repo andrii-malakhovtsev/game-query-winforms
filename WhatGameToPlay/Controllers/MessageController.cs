@@ -20,7 +20,7 @@ namespace WhatGameToPlay
 
         private void ShowOptionalMainFormMessage(string message)
         {
-            if (_mainForm.ShowMessages()) ShowMainFormMessage(message);
+            if (_mainForm.ShowMessages) ShowMainFormMessage(message);
         }
 
         public void ShowTurningConfirmationMessagesError()

@@ -263,8 +263,9 @@ namespace WhatGameToPlay
 
         public static void DeleteGameFromGameList(string gameToDelete)
         {
+            string[] games = GamesFromFile;
             File.WriteAllText(GamesListFileName, string.Empty);
-            foreach (string game in GamesFromFile)
+            foreach (string game in games)
             {
                 if (game != gameToDelete)
                 {

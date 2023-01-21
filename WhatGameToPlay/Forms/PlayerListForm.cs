@@ -11,7 +11,6 @@ namespace WhatGameToPlay
         private readonly MessageController _messageController;
         private string _currentSelectedPlayerName;
         private bool _playerSelected;
-        private string SelectedPlayerName { get => textBoxSelectedPlayer.Text; }
 
         public PlayerListForm(MainForm MainForm)
         {
@@ -19,6 +18,8 @@ namespace WhatGameToPlay
             _messageController = new MessageController(_mainForm);
             InitializeComponent();
         }
+
+        private string SelectedPlayerName { get => textBoxSelectedPlayer.Text; }
 
         private void FormPlayerList_Load(object sender, EventArgs e)
         {

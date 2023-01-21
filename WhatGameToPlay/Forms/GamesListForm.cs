@@ -10,7 +10,6 @@ namespace WhatGameToPlay
         private string _currentSelectedGame;
         private bool _startedLimitsEntering;
         private bool _playerLimitsExist;
-        private string SelectedGameName { get => textBoxGameName.Text;  }
 
         public GamesListForm(MainForm mainForm)
         {
@@ -19,6 +18,8 @@ namespace WhatGameToPlay
             InitializeComponent();
             RefreshListBoxGames();
         }
+
+        private string SelectedGameName { get => textBoxGameName.Text; }
 
         private void GamesListForm_Load(object sender, EventArgs e)
         {
@@ -216,7 +217,7 @@ namespace WhatGameToPlay
                 FilesController.WritePlayersLimitsToFile(_currentSelectedGame,
                 numericUpDownMin.Value, numericUpDownMax.Value);
             }
-            else if (_mainForm.ShowMessages())
+            else if (_mainForm.ShowMessages)
             {
                 _messageController.ShowPlayersLimitsErrorMessage();
             }
