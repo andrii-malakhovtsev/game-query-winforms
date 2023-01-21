@@ -6,31 +6,18 @@ namespace WhatGameToPlay
 {
     public static class ThemeController
     {
-        private const string StandartTheme = "White";
-        private static string s_currentTheme;
+        public const string StandartTheme = "White";
         private static Color s_textColor;
         private static Color s_buttonColor;
         private static Color s_backgroundColor;
         private static Color s_secondBackgroundColor;
 
-        private static void RefreshCurrentThemeFromFile()
-        {
-            s_currentTheme = FilesController.GetCurrentTheme();
-        }
+        private static string CurrentTheme { get => FilesController.CurrentThemeFromFile; }
+        private static bool CurrentThemeIsStandart { get => CurrentTheme == StandartTheme; }
 
         public static void SetTextBoxForeColor(TextBox textbox, bool win)
         {
             textbox.ForeColor = win ? Color.Green : s_textColor;
-        }
-
-        public static string GetStandartThemeName()
-        {
-            return StandartTheme;
-        }
-
-        private static bool CurrentThemeIsStandart()
-        {
-            return s_currentTheme == StandartTheme;
         }
 
         private static void SetThemeColors(Color textColor, Color buttonColor,
@@ -44,8 +31,7 @@ namespace WhatGameToPlay
 
         public static void SetChosenThemeColors()
         {
-            RefreshCurrentThemeFromFile();
-            switch (s_currentTheme)
+            switch (CurrentTheme)
             {
                 case "White":
                     SetThemeColors(textColor: Color.Black,
@@ -87,8 +73,7 @@ namespace WhatGameToPlay
 
         public static void SetBackgroundForeColor(ToolStripMenuItem toolStripMenuItem)
         {
-            RefreshCurrentThemeFromFile();
-            if (!CurrentThemeIsStandart())
+            if (!CurrentThemeIsStandart)
             {
                 toolStripMenuItem.ForeColor = s_backgroundColor;
             }

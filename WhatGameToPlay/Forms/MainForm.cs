@@ -11,8 +11,7 @@ namespace WhatGameToPlay
         private readonly List<ToolStripMenuItem> _colorThemeItems = new List<ToolStripMenuItem>();
         private readonly List<ToolStripMenuItem> _optionToolStrips = new List<ToolStripMenuItem>();
         private readonly MessageController _messageController;
-        public List<Player> Players { get; set; } = new List<Player>();
-        public AdvancedMessageBox AdvancedMessageBox { get; set; }
+        private List<Player> _players = new List<Player>();
 
         public MainForm()
         {
@@ -26,6 +25,32 @@ namespace WhatGameToPlay
                 SetToolStripTheme(toolStripMenuItem);
             }
         }
+
+        private bool FormHasExtraCheckBoxes
+        {
+            get
+            {
+                const int maximumCheckBoxesOnForm = 11;
+                return _players.Count > maximumCheckBoxesOnForm;
+            }
+        }
+        public int CheckedPlayerCount
+        {
+            get
+            {
+                int checkedCheckBoxesCount = 0;
+                foreach (CheckBox checkbox in _checkBoxesCopy)
+                {
+                    if (checkbox.Checked)
+                    {
+                        checkedCheckBoxesCount++;
+                    }
+                }
+                return checkedCheckBoxesCount;
+            }
+        }
+        public AdvancedMessageBox AdvancedMessageBox { get; private set; }
+        public bool ShowMessages { get => showMessagesToolStripMenuItem.Checked; }
 
         private void SetToolStripTheme(ToolStripMenuItem toolStripMenuItem)
         {
@@ -48,7 +73,7 @@ namespace WhatGameToPlay
         private void MainForm_Load(object sender, EventArgs e)
         {
             AdvancedMessageBox = new AdvancedMessageBox();
-            if (!FilesController.StandartFilesExist())
+            if (!FilesController.StandartFilesExist)
             {
                 if (_messageController.ShowFirstMeetingDialog())
                 {
@@ -76,11 +101,6 @@ namespace WhatGameToPlay
             ThemeController.SetTextForeColor(sender as ToolStripMenuItem);
         }
 
-        public bool ShowMessages()
-        {
-            return showMessagesToolStripMenuItem.Checked;
-        }
-
         public bool ShowConfirmationMessages()
         {
             return showConfirmationMessagesToolStripMenuItem.Checked;
@@ -95,7 +115,7 @@ namespace WhatGameToPlay
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
             {
-                if (FilesController.GetCurrentTheme() == colorTheme.Text)
+                if (FilesController.CurrentThemeFromFile == colorTheme.Text)
                 {
                     colorTheme.Checked = true;
                 }
@@ -104,7 +124,7 @@ namespace WhatGameToPlay
 
         private void SetSavedOptionsFromFile()
         {
-            string[] currentOptions = FilesController.GetOptionsFromFile();
+            string[] currentOptions = FilesController.OptionsFromFile;
             for (int i = 0; i < currentOptions.Length; i++)
             {
                 _optionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
@@ -132,21 +152,15 @@ namespace WhatGameToPlay
             }
         }
 
-        private bool FormHasExtraCheckBoxes()
-        {
-            const int maximumCheckBoxesOnForm = 11;
-            return Players.Count > maximumCheckBoxesOnForm;
-        }
-
         private void RefreshPlayersList()
         {
-            Players.Clear();
+            _players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
-            Players = FilesController.GetPlayersListFromDirectory();
+            _players = FilesController.GetPlayersFromDirectory();
             _checkBoxesCopy.Clear();
-            playersPanel.Visible = FormHasExtraCheckBoxes();
-            playersGroupBox.Visible = FormHasExtraCheckBoxes();
-            foreach (Player player in Players)
+            playersPanel.Visible = FormHasExtraCheckBoxes;
+            playersGroupBox.Visible = FormHasExtraCheckBoxes;
+            foreach (Player player in _players)
                 AddPlayerCheckBox(player);
             _checkBoxes.AddRange(_checkBoxesCopy);
             pictureBoxFireworks.SendToBack();
@@ -155,8 +169,8 @@ namespace WhatGameToPlay
 
         public void AddPlayerCheckBox(Player player)
         {
-            int topMeasure = FormHasExtraCheckBoxes() ? 5 : 70,
-                leftMeasure = FormHasExtraCheckBoxes() ? 20 : 25;
+            int topMeasure = FormHasExtraCheckBoxes ? 5 : 70,
+                leftMeasure = FormHasExtraCheckBoxes ? 20 : 25;
             CheckBox checkBox = new CheckBox
             {
                 Top = topMeasure + (_checkBoxesCopy.Count * leftMeasure),
@@ -168,8 +182,10 @@ namespace WhatGameToPlay
             checkBox.CheckedChanged += new EventHandler(CheckBox_CheckedChanged);
             player.CheckBox = checkBox;
             checkBox.BringToFront();
-            if (FormHasExtraCheckBoxes()) playersPanel.Controls.Add(checkBox);
-            else Controls.Add(checkBox);
+            if (FormHasExtraCheckBoxes) 
+                playersPanel.Controls.Add(checkBox);
+            else 
+                Controls.Add(checkBox);
             _checkBoxesCopy.Add(checkBox);
         }
 
@@ -180,9 +196,9 @@ namespace WhatGameToPlay
 
         private void PlayerCheckBoxCheckedChange()
         {
-            List<string> gamesAvailable = FilesController.GetGamesListFromFile();
+            List<string> gamesAvailable = FilesController.GamesListFromFile;
             listBoxAvailableGames.Items.Clear();
-            foreach (Player player in Players)
+            foreach (Player player in _players)
             {
                 if (!player.CheckBox.Checked) continue;
                 for (int i = 0; i < gamesAvailable.Count; i++)
@@ -196,7 +212,7 @@ namespace WhatGameToPlay
             if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
             {
                 foreach (string limitedGame in
-                    FilesController.GetLimitedGamesFromDirectory(GetCheckedPlayersCount()))
+                    FilesController.GetLimitedGamesFromDirectory(CheckedPlayerCount))
                 {
                     gamesAvailable.Remove(limitedGame);
                 }
@@ -205,20 +221,7 @@ namespace WhatGameToPlay
             {
                 listBoxAvailableGames.Items.Add(game);
             }
-            if (GetCheckedPlayersCount() == 0) listBoxAvailableGames.Items.Clear();
-        }
-
-        private int GetCheckedPlayersCount()
-        {
-            int checkedCheckBoxesCount = 0;
-            foreach (CheckBox checkbox in _checkBoxesCopy)
-            {
-                if (checkbox.Checked)
-                {
-                    checkedCheckBoxesCount++;
-                }
-            }
-            return checkedCheckBoxesCount;
+            if (CheckedPlayerCount == 0) listBoxAvailableGames.Items.Clear();
         }
 
         private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)
@@ -351,7 +354,7 @@ namespace WhatGameToPlay
                     checkBox.Enabled = false;
                 }
             }
-            else if (ShowMessages())
+            else if (ShowMessages)
             {
                 _messageController.ShowNoGamesToPlayMessage();
             }
