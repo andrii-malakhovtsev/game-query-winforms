@@ -10,13 +10,13 @@ namespace WhatGameToPlay
         private readonly List<CheckBox> _checkBoxesCopy = new List<CheckBox>();
         private readonly List<ToolStripMenuItem> _colorThemeItems = new List<ToolStripMenuItem>();
         private readonly List<ToolStripMenuItem> _optionToolStrips = new List<ToolStripMenuItem>();
-        private readonly MessageController _messageController;
+        private readonly MessageDisplayer _messageDisplayer;
         private List<Player> _players = new List<Player>();
 
         public MainForm()
         {
             InitializeComponent();
-            _messageController = new MessageController(this);
+            _messageDisplayer = new MessageDisplayer(this);
             foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
             {
                 if (toolStripMenuItem.DropDownItems.Count == 0) continue;
@@ -75,7 +75,7 @@ namespace WhatGameToPlay
             AdvancedMessageBox = new AdvancedMessageBox();
             if (!FilesReader.StandartFilesExist)
             {
-                if (_messageController.ShowFirstMeetingDialog())
+                if (_messageDisplayer.ShowFirstMeetingDialog())
                 {
                     FilesController.CreateStartingFiles();
                 }
@@ -228,7 +228,7 @@ namespace WhatGameToPlay
         {
             if (listBoxAvailableGames.SelectedItem == null) return;
             if (!showConfirmationMessagesToolStripMenuItem.Checked ||
-                _messageController.ShowDeleteAvailableGameDialog(listBoxAvailableGames.SelectedItem.ToString()))
+                _messageDisplayer.ShowDeleteAvailableGameDialog(listBoxAvailableGames.SelectedItem.ToString()))
             {
                 DeleteGameFromListBox();
             }
@@ -246,7 +246,7 @@ namespace WhatGameToPlay
         {
             if (showMessagesToolStripMenuItem.Checked)
             {
-                _messageController.ShowTurningConfirmationMessagesError();
+                _messageDisplayer.ShowTurningConfirmationMessagesError();
             }
             else
             {
@@ -356,7 +356,7 @@ namespace WhatGameToPlay
             }
             else if (ShowMessages)
             {
-                _messageController.ShowNoGamesToPlayMessage();
+                _messageDisplayer.ShowNoGamesToPlayMessage();
             }
         }
 
@@ -398,7 +398,7 @@ namespace WhatGameToPlay
                 ThemeController.SetTextBoxForeColor(textBox, win: true);
                 foreach (CheckBox checkBox in _checkBoxes) checkBox.Enabled = true;
                 progressBar.Visible = false;
-                _messageController.ShowGameToPlayMessage(gameToPlay: textBox.Text);
+                _messageDisplayer.ShowGameToPlayMessage(gameToPlay: textBox.Text);
             }
         }
 

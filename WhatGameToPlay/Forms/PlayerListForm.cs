@@ -8,14 +8,14 @@ namespace WhatGameToPlay
     public partial class PlayerListForm : Form
     {
         private readonly MainForm _mainForm;
-        private readonly MessageController _messageController;
+        private readonly MessageDisplayer _messageDisplayer;
         private string _currentSelectedPlayerName;
         private bool _playerSelected;
 
         public PlayerListForm(MainForm MainForm)
         {
             _mainForm = MainForm;
-            _messageController = new MessageController(_mainForm);
+            _messageDisplayer = new MessageDisplayer(_mainForm);
             InitializeComponent();
         }
 
@@ -105,7 +105,7 @@ namespace WhatGameToPlay
             listBoxPlayers.Items.Clear();
             RefreshPlayersFromFile();
             SelectPlayer();
-            _messageController.ShowPlayerAddedToListMessage(SelectedPlayerName);
+            _messageDisplayer.ShowPlayerAddedToListMessage(SelectedPlayerName);
             SetPlayerButtonsEnables(enable: false);
             checkBoxSelectAll.Enabled = true;
         }
@@ -151,7 +151,7 @@ namespace WhatGameToPlay
         private void DeletePlayer()
         {
             if (_mainForm.ShowConfirmationMessages() 
-                && !_messageController.ShowDeletePlayerFromListDialog(SelectedPlayerName)) return;
+                && !_messageDisplayer.ShowDeletePlayerFromListDialog(SelectedPlayerName)) return;
             DeletePlayerFromList();
         }
 

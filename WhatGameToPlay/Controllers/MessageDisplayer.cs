@@ -3,12 +3,12 @@ using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
-    sealed public class MessageController
+    sealed public class MessageDisplayer
     {
         private const string ConfirmationDialogTitle = "Confirmation";
         private readonly MainForm _mainForm;
 
-        public MessageController(MainForm mainform)
+        public MessageDisplayer(MainForm mainform)
         {
             _mainForm = mainform;
         }

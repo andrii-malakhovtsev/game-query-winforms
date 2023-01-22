@@ -6,7 +6,7 @@ namespace WhatGameToPlay
     public partial class GamesListForm : Form
     {
         private readonly MainForm _mainForm;
-        private readonly MessageController _messageController;
+        private readonly MessageDisplayer _messageDisplayer;
         private string _currentSelectedGame;
         private bool _startedLimitsEntering;
         private bool _playerLimitsExist;
@@ -14,7 +14,7 @@ namespace WhatGameToPlay
         public GamesListForm(MainForm mainForm)
         {
             _mainForm = mainForm;
-            _messageController = new MessageController(_mainForm);
+            _messageDisplayer = new MessageDisplayer(_mainForm);
             InitializeComponent();
             RefreshListBoxGames();
         }
@@ -116,7 +116,7 @@ namespace WhatGameToPlay
             {
                 FilesWriter.AppendGameToPlayersFiles(SelectedGameName);
             }
-            _messageController.ShowGameAddedToListMessage(SelectedGameName);
+            _messageDisplayer.ShowGameAddedToListMessage(SelectedGameName);
             SwitchGameButtonsEnables();
             SetGameButtonsEnables(enable: false);
             checkBoxPlayersNumberLimit.Enabled = true;
@@ -135,7 +135,7 @@ namespace WhatGameToPlay
 
         private void DeleteGame()
         {
-            if (_mainForm.ShowConfirmationMessages() && !_messageController.ShowDeleteGameDialog(SelectedGameName)) return;
+            if (_mainForm.ShowConfirmationMessages() && !_messageDisplayer.ShowDeleteGameDialog(SelectedGameName)) return;
             DeleteGameFromGameList();
         }
 
@@ -179,7 +179,7 @@ namespace WhatGameToPlay
                 || !FilesReader.PlayersLimitsFileExist(SelectedGameName)) return;
             if (_mainForm.ShowConfirmationMessages())
             {
-                if (_messageController.ShowDeletePlayersLimitsFileDialog(SelectedGameName))
+                if (_messageDisplayer.ShowDeletePlayersLimitsFileDialog(SelectedGameName))
                 {
                     DeletePlayerLimits();
                 }
@@ -219,7 +219,7 @@ namespace WhatGameToPlay
             }
             else if (_mainForm.ShowMessages)
             {
-                _messageController.ShowPlayersLimitsErrorMessage();
+                _messageDisplayer.ShowPlayersLimitsErrorMessage();
             }
             return limitsFit;
         }
