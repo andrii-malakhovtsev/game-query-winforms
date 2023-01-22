@@ -266,8 +266,8 @@ namespace WhatGameToPlay
 
         private void GamesListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formGamesList = new GamesListForm(this);
-            formGamesList.ShowDialog();
+            var gamesListForm = new GamesListForm(this);
+            gamesListForm.ShowDialog();
         }
 
         private void RouletteInsteadProgressbarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -279,8 +279,8 @@ namespace WhatGameToPlay
 
         private void PlayersListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formPlayerList = new PlayerListForm(this);
-            formPlayerList.ShowDialog();
+            var playerListForm = new PlayerListForm(this);
+            playerListForm.ShowDialog();
         }
 
         private void CelebrateRandomGameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -319,7 +319,7 @@ namespace WhatGameToPlay
         private void RefreshTheme()
         {
             ThemeController.SetFormControlsTheme(form: this);
-            List<ToolStripMenuItem> toolStripMenuItems = new List<ToolStripMenuItem>();
+            var toolStripMenuItems = new List<ToolStripMenuItem>();
             foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
             {
                 toolStripMenuItems.Add(toolStripMenuItem);

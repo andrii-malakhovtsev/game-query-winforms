@@ -65,10 +65,10 @@ namespace WhatGameToPlay
             _currentSelectedPlayerName = SelectedPlayerName;
             listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(SelectedPlayerName);
             checkedListBoxGamesPlaying.Items.Clear();
-            List<string> gamesList = FilesReader.GamesListFromFile;
-            for (int index = 0; index < gamesList.Count; index++)
+            List<string> games = FilesReader.GamesListFromFile;
+            for (int index = 0; index < games.Count; index++)
             {
-                checkedListBoxGamesPlaying.Items.Add(gamesList[index]);
+                checkedListBoxGamesPlaying.Items.Add(games[index]);
                 checkedListBoxGamesPlaying.SetItemChecked(index, value: true);
             }
             string[] gamesPlayerDoesNotPlay =
@@ -76,13 +76,13 @@ namespace WhatGameToPlay
             if (gamesPlayerDoesNotPlay.Length == 0 || gamesPlayerDoesNotPlay == null) return;
             foreach (string gameDoesNotPlay in gamesPlayerDoesNotPlay)
             {
-                UncheckGameNotPlayingCheckBox(gamesList, gameDoesNotPlay);
+                UncheckGameNotPlayingCheckBox(games, gameDoesNotPlay);
             }
         }
 
-        private void UncheckGameNotPlayingCheckBox(List<string> gamesList, string gameDoesNotPlay)
+        private void UncheckGameNotPlayingCheckBox(List<string> games, string gameDoesNotPlay)
         {
-            for (int i = 0; i < gamesList.Count; i++)
+            for (int i = 0; i < games.Count; i++)
             {
                 if (gameDoesNotPlay == checkedListBoxGamesPlaying.Items[i].ToString())
                 {
