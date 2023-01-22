@@ -88,7 +88,7 @@ namespace WhatGameToPlay
         private decimal[] GetPlayersLimits()
         {
             const int limitsCount = 2;
-            decimal[] limits = new decimal[limitsCount];
+            var limits = new decimal[limitsCount];
             _playerLimitsExist =
                 FilesController.GetPlayersLimitsFromGameFile(SelectedGameName, ref limits);
             return limits;

@@ -33,7 +33,7 @@ namespace WhatGameToPlay
         {
             get
             {
-                List<string> games = new List<string>();
+                var games = new List<string>();
                 foreach (string game in File.ReadAllLines(GamesListFileName))
                 {
                     games.Add(game);
@@ -46,10 +46,10 @@ namespace WhatGameToPlay
         {
             get
             {
-                List<Player> players = new List<Player>();
+                var players = new List<Player>();
                 foreach (FileInfo fileInfo in PlayersTextFiles)
                 {
-                    List<string> gamesNotPlaying = new List<string>();
+                    var gamesNotPlaying = new List<string>();
                     foreach (string gameDoesNotPlay in File.ReadAllLines(fileInfo.FullName))
                     {
                         gamesNotPlaying.Add(gameDoesNotPlay);
@@ -178,13 +178,13 @@ namespace WhatGameToPlay
 
         private static FileInfo[] GetTextFiles(string directoryName)
         {
-            DirectoryInfo directory = new DirectoryInfo(directoryName);
+            var directory = new DirectoryInfo(directoryName);
             return directory.GetFiles(AllTextFilesExtension);
         }
 
         public static List<string> GetLimitedGamesFromDirectory(int checkedPlayersCount)
         {
-            List<string> limitedGames = new List<string>();
+            var limitedGames = new List<string>();
             foreach (FileInfo fileInfo in PlayersLimitsTextFiles)
             {
                 string[] lines = File.ReadAllLines(fileInfo.FullName);
@@ -200,10 +200,10 @@ namespace WhatGameToPlay
 
         public static List<Player> GetPlayersFromDirectory()
         {
-            List<Player> players = new List<Player>();
+            var players = new List<Player>();
             foreach (FileInfo fileInfo in PlayersTextFiles)
             {
-                List<string> gamesNotPlaying = new List<string>();
+                var gamesNotPlaying = new List<string>();
                 foreach (string gameDoesNotPlay in File.ReadAllLines(fileInfo.FullName))
                 {
                     gamesNotPlaying.Add(gameDoesNotPlay);

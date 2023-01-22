@@ -20,7 +20,8 @@ namespace WhatGameToPlay
 
         private void ShowOptionalMainFormMessage(string message)
         {
-            if (_mainForm.ShowMessages) ShowMainFormMessage(message);
+            if (_mainForm.ShowMessages) 
+                ShowMainFormMessage(message);
         }
 
         public void ShowTurningConfirmationMessagesError()
@@ -36,7 +37,7 @@ namespace WhatGameToPlay
 
         private string GetRandomGameToPlayPhrase(string gameToPlay)
         {
-            Random random = new Random();
+            var random = new Random();
             int randomNumber = random.Next(1, 6);
             switch (randomNumber)
             {

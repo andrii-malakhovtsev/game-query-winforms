@@ -99,7 +99,7 @@ namespace WhatGameToPlay
 
         public static void SetFormControlsTheme(Form form)
         {
-            List<System.Type> backColorClearTypes = new List<System.Type>() { 
+            var backColorClearTypes = new List<System.Type>() { 
                 typeof(Label), 
                 typeof(GroupBox), 
                 typeof(CheckBox)

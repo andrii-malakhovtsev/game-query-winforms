@@ -112,13 +112,13 @@ namespace WhatGameToPlay
 
         private void SavePlayerGames(string playerName)
         {
-            List<string> checkedCheckboxes = new List<string>();
+            var checkedCheckBoxes = new List<string>();
             foreach (var game in checkedListBoxGamesPlaying.CheckedItems)
             {
-                checkedCheckboxes.Add(game.ToString());
+                checkedCheckBoxes.Add(game.ToString());
             }
             List<string> gamesNotPlayingList =
-                FilesController.GamesFromFile.Distinct().Except(checkedCheckboxes).ToList();
+                FilesController.GamesFromFile.Distinct().Except(checkedCheckBoxes).ToList();
             FilesController.WriteGamesNotPlayingToFile(playerName, gamesNotPlayingList);
         }
 

@@ -133,7 +133,7 @@ namespace WhatGameToPlay
 
         private void RefreshOptionsToFiles()
         {
-            string[] options = new string[_optionToolStrips.Count];
+            var options = new string[_optionToolStrips.Count];
             for (int i = 0; i < _optionToolStrips.Count; i++)
             {
                 options[i] = Convert.ToString(_optionToolStrips[i].Checked);
@@ -171,14 +171,14 @@ namespace WhatGameToPlay
         {
             int topMeasure = FormHasExtraCheckBoxes ? 5 : 70,
                 leftMeasure = FormHasExtraCheckBoxes ? 20 : 25;
-            CheckBox checkBox = new CheckBox
+            var checkBox = new CheckBox
             {
                 Top = topMeasure + (_checkBoxesCopy.Count * leftMeasure),
                 Left = leftMeasure,
                 Name = "checkBox " + player.Name,
-                Text = player.Name
+                Text = player.Name,
+                AutoSize = true
             };
-            checkBox.AutoSize = true;
             checkBox.CheckedChanged += new EventHandler(CheckBox_CheckedChanged);
             player.CheckBox = checkBox;
             checkBox.BringToFront();
@@ -266,7 +266,7 @@ namespace WhatGameToPlay
 
         private void GamesListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GamesListForm formGamesList = new GamesListForm(this);
+            var formGamesList = new GamesListForm(this);
             formGamesList.ShowDialog();
         }
 
@@ -279,7 +279,7 @@ namespace WhatGameToPlay
 
         private void PlayersListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PlayerListForm formPlayerList = new PlayerListForm(this);
+            var formPlayerList = new PlayerListForm(this);
             formPlayerList.ShowDialog();
         }
 
@@ -379,7 +379,7 @@ namespace WhatGameToPlay
             }
             listBoxAvailableGames.Focus();
             timer.Interval += timerInterval;
-            Random random = new Random();
+            var random = new Random();
             int randomAvailableGame = random.Next(listBoxAvailableGames.Items.Count);
             if (listBoxAvailableGames.Items.Count > 0)
             {
