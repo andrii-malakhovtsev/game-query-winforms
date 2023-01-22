@@ -6,19 +6,27 @@ namespace WhatGameToPlay
     public partial class GamesListForm : Form
     {
         private readonly MainForm _mainForm;
-        private readonly MessageController _messageController;
+        private readonly MessageDisplayer _messageDisplayer;
         private string _currentSelectedGame;
         private bool _startedLimitsEntering;
-        private bool _playerLimitsExist;
 
         public GamesListForm(MainForm mainForm)
         {
             _mainForm = mainForm;
-            _messageController = new MessageController(_mainForm);
+            _messageDisplayer = new MessageDisplayer(_mainForm);
             InitializeComponent();
             RefreshListBoxGames();
         }
 
+        private bool PlayerLimitsExist { get => FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out _); }
+        private decimal[] PlayersLimits
+        {
+            get
+            {
+                FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out decimal[] limits);
+                return limits;
+            }
+        }
         private string SelectedGameName { get => textBoxGameName.Text; }
 
         private void GamesListForm_Load(object sender, EventArgs e)
@@ -29,7 +37,7 @@ namespace WhatGameToPlay
         private void RefreshListBoxGames()
         {
             listBoxGames.Items.Clear();
-            foreach (string game in FilesController.GamesListFromFile)
+            foreach (string game in FilesReader.GamesListFromFile)
             {
                 listBoxGames.Items.Add(game);
             }
@@ -37,7 +45,7 @@ namespace WhatGameToPlay
 
         private bool GameInList(string gameToCheck)
         {
-            foreach (string game in FilesController.GamesListFromFile)
+            foreach (string game in FilesReader.GamesListFromFile)
             {
                 if (gameToCheck == game)
                 {
@@ -78,20 +86,11 @@ namespace WhatGameToPlay
             }
             checkBoxPlayersNumberLimit.Enabled = selectedGameInList;
             SetGameButtonsEnables(enable: !selectedGameInList);
-            if (FilesController.StringContainsBannedSymbols(SelectedGameName))
+            if (FilesReader.StringContainsBannedSymbols(SelectedGameName))
             {
                 buttonAddGame.Enabled = false;
             }
             SetPlayersLimitsToNumericUpDowns();
-        }
-
-        private decimal[] GetPlayersLimits()
-        {
-            const int limitsCount = 2;
-            decimal[] limits = new decimal[limitsCount];
-            _playerLimitsExist =
-                FilesController.GetPlayersLimitsFromGameFile(SelectedGameName, ref limits);
-            return limits;
         }
 
         private void SetGameButtonsEnables(bool enable)
@@ -109,14 +108,13 @@ namespace WhatGameToPlay
 
         private void ButtonAddGame_Click(object sender, EventArgs e)
         {
-            FilesController.AddGameToGameListFile(SelectedGameName);
+            FilesWriter.AddGameToGameListFile(SelectedGameName);
             RefreshListBoxGames();
-            GetPlayersLimits();
-            if (!_playerLimitsExist)
+            if (!PlayerLimitsExist)
             {
-                FilesController.AppendGameToPlayersFiles(SelectedGameName);
+                FilesWriter.AppendGameToPlayersFiles(SelectedGameName);
             }
-            _messageController.ShowGameAddedToListMessage(SelectedGameName);
+            _messageDisplayer.ShowGameAddedToListMessage(SelectedGameName);
             SwitchGameButtonsEnables();
             SetGameButtonsEnables(enable: false);
             checkBoxPlayersNumberLimit.Enabled = true;
@@ -135,13 +133,13 @@ namespace WhatGameToPlay
 
         private void DeleteGame()
         {
-            if (_mainForm.ShowConfirmationMessages() && !_messageController.ShowDeleteGameDialog(SelectedGameName)) return;
+            if (_mainForm.ShowConfirmationMessages() && !_messageDisplayer.ShowDeleteGameDialog(SelectedGameName)) return;
             DeleteGameFromGameList();
         }
 
         private void DeleteGameFromGameList()
         {
-            foreach (string game in FilesController.GamesListFromFile)
+            foreach (string game in FilesReader.GamesListFromFile)
             {
                 if (game == SelectedGameName)
                 {
@@ -176,10 +174,10 @@ namespace WhatGameToPlay
             SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
             _startedLimitsEntering = checkBoxPlayersNumberLimit.Checked;
             if (checkBoxPlayersNumberLimit.Checked
-                || !FilesController.PlayersLimitsFileExist(SelectedGameName)) return;
+                || !FilesReader.PlayersLimitsFileExist(SelectedGameName)) return;
             if (_mainForm.ShowConfirmationMessages())
             {
-                if (_messageController.ShowDeletePlayersLimitsFileDialog(SelectedGameName))
+                if (_messageDisplayer.ShowDeletePlayersLimitsFileDialog(SelectedGameName))
                 {
                     DeletePlayerLimits();
                 }
@@ -199,13 +197,11 @@ namespace WhatGameToPlay
 
         private void SetPlayersLimitsToNumericUpDowns()
         {
-            GetPlayersLimits();
-            checkBoxPlayersNumberLimit.Checked = _playerLimitsExist;
-            decimal[] limits = GetPlayersLimits();
-            if (_playerLimitsExist)
+            checkBoxPlayersNumberLimit.Checked = PlayerLimitsExist;
+            if (PlayerLimitsExist)
             {
-                numericUpDownMin.Value = limits[0];
-                numericUpDownMax.Value = limits[1];
+                numericUpDownMin.Value = PlayersLimits[0];
+                numericUpDownMax.Value = PlayersLimits[1];
             }
         }
 
@@ -214,12 +210,12 @@ namespace WhatGameToPlay
             bool limitsFit = numericUpDownMax.Value > numericUpDownMin.Value;
             if (limitsFit)
             {
-                FilesController.WritePlayersLimitsToFile(_currentSelectedGame,
+                FilesWriter.WritePlayersLimitsToFile(_currentSelectedGame,
                 numericUpDownMin.Value, numericUpDownMax.Value);
             }
             else if (_mainForm.ShowMessages)
             {
-                _messageController.ShowPlayersLimitsErrorMessage();
+                _messageDisplayer.ShowPlayersLimitsErrorMessage();
             }
             return limitsFit;
         }

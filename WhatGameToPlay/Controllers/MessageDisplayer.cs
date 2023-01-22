@@ -3,12 +3,12 @@ using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
-    sealed public class MessageController
+    sealed public class MessageDisplayer
     {
         private const string ConfirmationDialogTitle = "Confirmation";
         private readonly MainForm _mainForm;
 
-        public MessageController(MainForm mainform)
+        public MessageDisplayer(MainForm mainform)
         {
             _mainForm = mainform;
         }
@@ -20,7 +20,8 @@ namespace WhatGameToPlay
 
         private void ShowOptionalMainFormMessage(string message)
         {
-            if (_mainForm.ShowMessages) ShowMainFormMessage(message);
+            if (_mainForm.ShowMessages) 
+                ShowMainFormMessage(message);
         }
 
         public void ShowTurningConfirmationMessagesError()
@@ -36,7 +37,7 @@ namespace WhatGameToPlay
 
         private string GetRandomGameToPlayPhrase(string gameToPlay)
         {
-            Random random = new Random();
+            var random = new Random();
             int randomNumber = random.Next(1, 6);
             switch (randomNumber)
             {

@@ -15,7 +15,7 @@ namespace WhatGameToPlay
         {
             buttonYes.DialogResult = DialogResult.Yes;
             buttonNo.DialogResult = DialogResult.Cancel;
-            if (!FilesController.StandartFilesExist) CenterToScreen();
+            if (!FilesReader.StandartFilesExist) CenterToScreen();
         }
 
         private void SetButtonsVisibility(bool visible)
@@ -51,7 +51,7 @@ namespace WhatGameToPlay
             {
                 SetButtonLocation(buttonOK);
             }
-            if (!FilesController.StandartFilesExist)
+            if (!FilesReader.StandartFilesExist)
                 SetTimerRelatedControlsEnables(enable: true);
             else RefreshTheme();
             return ShowDialog();

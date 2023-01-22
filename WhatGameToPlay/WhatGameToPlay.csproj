@@ -64,8 +64,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\MessageController.cs" />
-    <Compile Include="Controllers\FilesController.cs" />
+    <Compile Include="Controllers\Files\FilesReader.cs" />
+    <Compile Include="Controllers\Files\FilesWriter.cs" />
+    <Compile Include="Controllers\MessageDisplayer.cs" />
+    <Compile Include="Controllers\Files\FilesController.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
