@@ -34,7 +34,7 @@ namespace WhatGameToPlay
                 return _players.Count > maximumCheckBoxesOnForm;
             }
         }
-        public int CheckedPlayerCount
+        public int CheckedPlayersCount
         {
             get
             {
@@ -49,8 +49,28 @@ namespace WhatGameToPlay
                 return checkedCheckBoxesCount;
             }
         }
-        public AdvancedMessageBox AdvancedMessageBox { get; private set; }
+        public AdvancedMessageBox AdvancedMessageBox { get; private set; } = new AdvancedMessageBox();
         public bool ShowMessages { get => showMessagesToolStripMenuItem.Checked; }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            if (!FilesReader.StandartFilesExist)
+            {
+                if (_messageDisplayer.ShowFirstMeetingDialog())
+                {
+                    FilesController.CreateStartingFiles();
+                }
+                else
+                {
+                    Close();
+                }
+            }
+            RefreshPlayersList();
+            SetSavedOptionsFromFile();
+            SetSavedColors();
+            ThemeController.SetChosenThemeColors();
+            RefreshTheme();
+        }
 
         private void SetToolStripTheme(ToolStripMenuItem toolStripMenuItem)
         {
@@ -68,27 +88,6 @@ namespace WhatGameToPlay
                     else _optionToolStrips.Add(toolStripItem);
                 }
             }
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            AdvancedMessageBox = new AdvancedMessageBox();
-            if (!FilesReader.StandartFilesExist)
-            {
-                if (_messageDisplayer.ShowFirstMeetingDialog())
-                {
-                    FilesController.CreateStartingFiles();
-                }
-                else
-                {
-                    Close();
-                }
-            }
-            RefreshPlayersList();
-            SetSavedOptionsFromFile();
-            SetSavedColors();
-            ThemeController.SetChosenThemeColors();
-            RefreshTheme();
         }
 
         private void MenuToolStripItem_DropDownOpening(object sender, EventArgs e)
@@ -212,7 +211,7 @@ namespace WhatGameToPlay
             if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
             {
                 foreach (string limitedGame in
-                    FilesReader.GetLimitedGamesFromDirectory(CheckedPlayerCount))
+                    FilesReader.GetLimitedGamesFromDirectory(CheckedPlayersCount))
                 {
                     gamesAvailable.Remove(limitedGame);
                 }
@@ -221,7 +220,7 @@ namespace WhatGameToPlay
             {
                 listBoxAvailableGames.Items.Add(game);
             }
-            if (CheckedPlayerCount == 0) listBoxAvailableGames.Items.Clear();
+            if (CheckedPlayersCount == 0) listBoxAvailableGames.Items.Clear();
         }
 
         private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)

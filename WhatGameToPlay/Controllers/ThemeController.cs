@@ -13,7 +13,6 @@ namespace WhatGameToPlay
         private static Color s_secondBackgroundColor;
 
         private static string CurrentTheme { get => FilesReader.CurrentThemeFromFile; }
-        private static bool CurrentThemeIsStandart { get => CurrentTheme == StandartTheme; }
 
         public static void SetTextBoxForeColor(TextBox textbox, bool win)
         {
@@ -73,7 +72,7 @@ namespace WhatGameToPlay
 
         public static void SetBackgroundForeColor(ToolStripMenuItem toolStripMenuItem)
         {
-            if (!CurrentThemeIsStandart)
+            if (CurrentTheme != StandartTheme)
             {
                 toolStripMenuItem.ForeColor = s_backgroundColor;
             }

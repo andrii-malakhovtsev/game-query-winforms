@@ -7,7 +7,7 @@ namespace WhatGameToPlay
 {
     sealed public class FilesReader : FilesController
     {
-        private const string AllTextFilesExtension = "*" + TextFileExtension;
+        private const string AllTextFilesInDirectory = "*" + TextFileExtension;
         private static readonly char[] s_charactersFilesCanNotUse = "\\/:*?\"<>|".ToCharArray();
 
         public static FileInfo[] PlayersTextFiles { get => GetTextFiles(directoryName: PlayersDirectoryName); }
@@ -88,9 +88,10 @@ namespace WhatGameToPlay
             return GetFullDirectoryFilePath(PlayersDirectoryName, selectedPlayer);
         }
 
-        public static bool GetPlayersLimitsFromGameFile(string gameName,
-            ref decimal[] limits)
+        public static bool GetPlayersLimitsFromGameFile(string gameName, out decimal[] limits)
         {
+            const int limitsCount = 2;
+            limits = new decimal[limitsCount];
             foreach (FileInfo file in PlayersLimitsTextFiles)
             {
                 if (gameName == Path.GetFileNameWithoutExtension(file.Name))
@@ -106,7 +107,7 @@ namespace WhatGameToPlay
             return false;
         }
 
-        public static string[] GetGamesPlayerDoesntPlay(string selectedPlayer)
+        public static string[] GetGamesPlayerDoesNotPlay(string selectedPlayer)
         {
             foreach (FileInfo file in PlayersTextFiles)
             {
@@ -157,7 +158,7 @@ namespace WhatGameToPlay
         private static FileInfo[] GetTextFiles(string directoryName)
         {
             var directory = new DirectoryInfo(directoryName);
-            return directory.GetFiles(AllTextFilesExtension);
+            return directory.GetFiles(AllTextFilesInDirectory);
         }
     }
 }

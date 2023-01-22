@@ -72,7 +72,7 @@ namespace WhatGameToPlay
                 checkedListBoxGamesPlaying.SetItemChecked(index, value: true);
             }
             string[] gamesPlayerDoesNotPlay =
-                FilesReader.GetGamesPlayerDoesntPlay(SelectedPlayerName);
+                FilesReader.GetGamesPlayerDoesNotPlay(SelectedPlayerName);
             if (gamesPlayerDoesNotPlay.Length == 0 || gamesPlayerDoesNotPlay == null) return;
             foreach (string gameDoesNotPlay in gamesPlayerDoesNotPlay)
             {

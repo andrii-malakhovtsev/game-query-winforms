@@ -51,12 +51,12 @@ namespace WhatGameToPlay
 
         private static bool CreateDirectory(string directoryName)
         {
-            if (!Directory.Exists(directoryName))
+            bool directoryDoesNotExist = !Directory.Exists(directoryName);
+            if (directoryDoesNotExist)
             {
                 Directory.CreateDirectory(directoryName);
-                return true;
             }
-            return false;
+            return directoryDoesNotExist;
         }
 
         public static void DeleteGameFromGameList(string gameToDelete)

@@ -9,7 +9,6 @@ namespace WhatGameToPlay
         private readonly MessageDisplayer _messageDisplayer;
         private string _currentSelectedGame;
         private bool _startedLimitsEntering;
-        private bool _playerLimitsExist;
 
         public GamesListForm(MainForm mainForm)
         {
@@ -19,6 +18,15 @@ namespace WhatGameToPlay
             RefreshListBoxGames();
         }
 
+        private bool PlayerLimitsExist { get => FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out _); }
+        private decimal[] PlayersLimits
+        {
+            get
+            {
+                FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out decimal[] limits);
+                return limits;
+            }
+        }
         private string SelectedGameName { get => textBoxGameName.Text; }
 
         private void GamesListForm_Load(object sender, EventArgs e)
@@ -85,15 +93,6 @@ namespace WhatGameToPlay
             SetPlayersLimitsToNumericUpDowns();
         }
 
-        private decimal[] GetPlayersLimits()
-        {
-            const int limitsCount = 2;
-            var limits = new decimal[limitsCount];
-            _playerLimitsExist =
-                FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, ref limits);
-            return limits;
-        }
-
         private void SetGameButtonsEnables(bool enable)
         {
             buttonAddGame.Enabled = enable;
@@ -111,8 +110,7 @@ namespace WhatGameToPlay
         {
             FilesWriter.AddGameToGameListFile(SelectedGameName);
             RefreshListBoxGames();
-            GetPlayersLimits();
-            if (!_playerLimitsExist)
+            if (PlayerLimitsExist)
             {
                 FilesWriter.AppendGameToPlayersFiles(SelectedGameName);
             }
@@ -199,13 +197,11 @@ namespace WhatGameToPlay
 
         private void SetPlayersLimitsToNumericUpDowns()
         {
-            GetPlayersLimits();
-            checkBoxPlayersNumberLimit.Checked = _playerLimitsExist;
-            decimal[] limits = GetPlayersLimits();
-            if (_playerLimitsExist)
+            checkBoxPlayersNumberLimit.Checked = PlayerLimitsExist;
+            if (PlayerLimitsExist)
             {
-                numericUpDownMin.Value = limits[0];
-                numericUpDownMax.Value = limits[1];
+                numericUpDownMin.Value = PlayersLimits[0];
+                numericUpDownMax.Value = PlayersLimits[1];
             }
         }
 
