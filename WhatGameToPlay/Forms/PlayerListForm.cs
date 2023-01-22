@@ -29,7 +29,7 @@ namespace WhatGameToPlay
 
         private void RefreshPlayersFromFile()
         {
-            foreach (Player player in FilesController.GetPlayersFromDirectory())
+            foreach (Player player in FilesReader.GetPlayersFromDirectory())
             {
                 listBoxPlayers.Items.Add(player.Name);
             }
@@ -41,7 +41,7 @@ namespace WhatGameToPlay
             {
                 SavePlayerGames(_currentSelectedPlayerName);
             }
-            bool playerExist = FilesController.PlayerFileExist(SelectedPlayerName);
+            bool playerExist = FilesReader.PlayerFileExist(SelectedPlayerName);
             _playerSelected = playerExist;
             if (playerExist)
             {
@@ -54,7 +54,7 @@ namespace WhatGameToPlay
             }
             SetPlayerButtonsEnables(enable: !playerExist);
             checkBoxSelectAll.Enabled = checkedListBoxGamesPlaying.Items.Count != 0;
-            if (FilesController.StringContainsBannedSymbols(SelectedPlayerName))
+            if (FilesReader.StringContainsBannedSymbols(SelectedPlayerName))
             {
                 buttonAddPlayer.Enabled = false;
             }
@@ -65,14 +65,14 @@ namespace WhatGameToPlay
             _currentSelectedPlayerName = SelectedPlayerName;
             listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(SelectedPlayerName);
             checkedListBoxGamesPlaying.Items.Clear();
-            List<string> gamesList = FilesController.GamesListFromFile;
+            List<string> gamesList = FilesReader.GamesListFromFile;
             for (int index = 0; index < gamesList.Count; index++)
             {
                 checkedListBoxGamesPlaying.Items.Add(gamesList[index]);
                 checkedListBoxGamesPlaying.SetItemChecked(index, value: true);
             }
             string[] gamesPlayerDoesNotPlay =
-                FilesController.GetGamesPlayerDoesntPlay(SelectedPlayerName);
+                FilesReader.GetGamesPlayerDoesntPlay(SelectedPlayerName);
             if (gamesPlayerDoesNotPlay.Length == 0 || gamesPlayerDoesNotPlay == null) return;
             foreach (string gameDoesNotPlay in gamesPlayerDoesNotPlay)
             {
@@ -118,8 +118,8 @@ namespace WhatGameToPlay
                 checkedCheckBoxes.Add(game.ToString());
             }
             List<string> gamesNotPlayingList =
-                FilesController.GamesFromFile.Distinct().Except(checkedCheckBoxes).ToList();
-            FilesController.WriteGamesNotPlayingToFile(playerName, gamesNotPlayingList);
+                FilesReader.GamesFromFile.Distinct().Except(checkedCheckBoxes).ToList();
+            FilesWriter.WriteGamesNotPlayingToFile(playerName, gamesNotPlayingList);
         }
 
         private void SetPlayerButtonsEnables(bool enable)
@@ -168,7 +168,7 @@ namespace WhatGameToPlay
 
         private void PlayerListForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (FilesController.PlayerFileExist(SelectedPlayerName))
+            if (FilesReader.PlayerFileExist(SelectedPlayerName))
             {
                 SavePlayerGames(SelectedPlayerName);
             }

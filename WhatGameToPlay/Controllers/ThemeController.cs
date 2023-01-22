@@ -12,7 +12,7 @@ namespace WhatGameToPlay
         private static Color s_backgroundColor;
         private static Color s_secondBackgroundColor;
 
-        private static string CurrentTheme { get => FilesController.CurrentThemeFromFile; }
+        private static string CurrentTheme { get => FilesReader.CurrentThemeFromFile; }
         private static bool CurrentThemeIsStandart { get => CurrentTheme == StandartTheme; }
 
         public static void SetTextBoxForeColor(TextBox textbox, bool win)

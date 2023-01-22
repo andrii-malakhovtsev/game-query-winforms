@@ -29,7 +29,7 @@ namespace WhatGameToPlay
         private void RefreshListBoxGames()
         {
             listBoxGames.Items.Clear();
-            foreach (string game in FilesController.GamesListFromFile)
+            foreach (string game in FilesReader.GamesListFromFile)
             {
                 listBoxGames.Items.Add(game);
             }
@@ -37,7 +37,7 @@ namespace WhatGameToPlay
 
         private bool GameInList(string gameToCheck)
         {
-            foreach (string game in FilesController.GamesListFromFile)
+            foreach (string game in FilesReader.GamesListFromFile)
             {
                 if (gameToCheck == game)
                 {
@@ -78,7 +78,7 @@ namespace WhatGameToPlay
             }
             checkBoxPlayersNumberLimit.Enabled = selectedGameInList;
             SetGameButtonsEnables(enable: !selectedGameInList);
-            if (FilesController.StringContainsBannedSymbols(SelectedGameName))
+            if (FilesReader.StringContainsBannedSymbols(SelectedGameName))
             {
                 buttonAddGame.Enabled = false;
             }
@@ -90,7 +90,7 @@ namespace WhatGameToPlay
             const int limitsCount = 2;
             var limits = new decimal[limitsCount];
             _playerLimitsExist =
-                FilesController.GetPlayersLimitsFromGameFile(SelectedGameName, ref limits);
+                FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, ref limits);
             return limits;
         }
 
@@ -141,7 +141,7 @@ namespace WhatGameToPlay
 
         private void DeleteGameFromGameList()
         {
-            foreach (string game in FilesController.GamesListFromFile)
+            foreach (string game in FilesReader.GamesListFromFile)
             {
                 if (game == SelectedGameName)
                 {
@@ -176,7 +176,7 @@ namespace WhatGameToPlay
             SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
             _startedLimitsEntering = checkBoxPlayersNumberLimit.Checked;
             if (checkBoxPlayersNumberLimit.Checked
-                || !FilesController.PlayersLimitsFileExist(SelectedGameName)) return;
+                || !FilesReader.PlayersLimitsFileExist(SelectedGameName)) return;
             if (_mainForm.ShowConfirmationMessages())
             {
                 if (_messageController.ShowDeletePlayersLimitsFileDialog(SelectedGameName))
@@ -214,7 +214,7 @@ namespace WhatGameToPlay
             bool limitsFit = numericUpDownMax.Value > numericUpDownMin.Value;
             if (limitsFit)
             {
-                FilesController.WritePlayersLimitsToFile(_currentSelectedGame,
+                FilesWriter.WritePlayersLimitsToFile(_currentSelectedGame,
                 numericUpDownMin.Value, numericUpDownMax.Value);
             }
             else if (_mainForm.ShowMessages)
