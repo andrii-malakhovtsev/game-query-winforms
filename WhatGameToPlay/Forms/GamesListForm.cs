@@ -110,7 +110,7 @@ namespace WhatGameToPlay
         {
             FilesWriter.AddGameToGameListFile(SelectedGameName);
             RefreshListBoxGames();
-            if (PlayerLimitsExist)
+            if (!PlayerLimitsExist)
             {
                 FilesWriter.AppendGameToPlayersFiles(SelectedGameName);
             }
