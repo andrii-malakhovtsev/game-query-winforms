@@ -109,12 +109,12 @@ namespace WhatGameToPlay
 
         private void ButtonAddGame_Click(object sender, EventArgs e)
         {
-            FilesController.AddGameToGameListFile(SelectedGameName);
+            FilesWriter.AddGameToGameListFile(SelectedGameName);
             RefreshListBoxGames();
             GetPlayersLimits();
             if (!_playerLimitsExist)
             {
-                FilesController.AppendGameToPlayersFiles(SelectedGameName);
+                FilesWriter.AppendGameToPlayersFiles(SelectedGameName);
             }
             _messageController.ShowGameAddedToListMessage(SelectedGameName);
             SwitchGameButtonsEnables();

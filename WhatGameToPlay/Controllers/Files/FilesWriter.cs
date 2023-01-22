@@ -40,5 +40,18 @@ namespace WhatGameToPlay
                 }
             }
         }
+
+        public static void AppendGameToPlayersFiles(string gameName)
+        {
+            foreach (FileInfo file in FilesReader.PlayersTextFiles)
+            {
+                File.AppendAllText(file.FullName, gameName + "\n");
+            }
+        }
+
+        public static void AddGameToGameListFile(string gameName)
+        {
+            File.AppendAllText(GamesListFileName, gameName + Environment.NewLine);
+        }
     }
 }

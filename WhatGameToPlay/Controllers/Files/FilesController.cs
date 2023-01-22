@@ -26,7 +26,7 @@ namespace WhatGameToPlay
             }
             if (CreateFile(GamesListFileName))
             {
-                AddGameToGameListFile("example game");
+                FilesWriter.AddGameToGameListFile("example game");
             }
             if (CreateDirectory(PlayersDirectoryName))
             {
@@ -60,19 +60,6 @@ namespace WhatGameToPlay
             return false;
         }
 
-        public static void AppendGameToPlayersFiles(string gameName)
-        {
-            foreach (FileInfo file in FilesReader.PlayersTextFiles)
-            {
-                File.AppendAllText(file.FullName, gameName + "\n");
-            }
-        }
-
-        public static void AddGameToGameListFile(string gameName)
-        {
-            File.AppendAllText(GamesListFileName, gameName + Environment.NewLine);
-        }
-
         public static void DeleteGameFromGameList(string gameToDelete)
         {
             string[] games = FilesReader.GamesFromFile;
@@ -81,7 +68,7 @@ namespace WhatGameToPlay
             {
                 if (game != gameToDelete)
                 {
-                    AddGameToGameListFile(game);
+                    FilesWriter.AddGameToGameListFile(game);
                 }
             }
         }
