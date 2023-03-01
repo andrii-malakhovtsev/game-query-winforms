@@ -378,8 +378,7 @@ namespace WhatGameToPlay
             }
             listBoxAvailableGames.Focus();
             timer.Interval += timerInterval;
-            var random = new Random();
-            int randomAvailableGame = random.Next(listBoxAvailableGames.Items.Count);
+            int randomAvailableGame = Random.Next(listBoxAvailableGames.Items.Count);
             if (listBoxAvailableGames.Items.Count > 0)
             {
                 textBox.Text = Convert.ToString(listBoxAvailableGames.Items[randomAvailableGame]);
