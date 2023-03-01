@@ -7,35 +7,16 @@ namespace WhatGameToPlay
 {
     sealed public class FilesReader : FilesController
     {
-        private const string AllTextFilesInDirectory = "*" + TextFileExtension;
-        private static readonly char[] s_charactersFilesCanNotUse = "\\/:*?\"<>|".ToCharArray();
+        private const string TextFilesInDirectory = "*" + TextFileExtension;
+        private static readonly char[] WindowsFilesBannedCharacters = "\\/:*?\"<>|".ToCharArray();
 
         public static FileInfo[] PlayersTextFiles { get => GetTextFiles(directoryName: PlayersDirectoryName); }
         public static FileInfo[] PlayersLimitsTextFiles { get => GetTextFiles(directoryName: LimitsDirectoryName); }
         public static bool StandartFilesExist { get => File.Exists(ThemeFileName); }
-        public static string CurrentThemeFromFile
-        {
-            get
-            {
-                string[] fileRead = File.ReadAllLines(ThemeFileName);
-                return fileRead[0];
-            }
-        }
+        public static string CurrentThemeFromFile { get => File.ReadAllLines(ThemeFileName)[0]; }
         public static string[] OptionsFromFile { get => File.ReadAllLines(OptionsFileName); }
         public static string[] GamesFromFile { get => File.ReadAllLines(GamesListFileName); }
-        public static List<string> GamesListFromFile
-        {
-            get
-            {
-                var games = new List<string>();
-                foreach (string game in File.ReadAllLines(GamesListFileName))
-                {
-                    games.Add(game);
-                }
-                games.Sort();
-                return games;
-            }
-        }
+        public static List<string> GamesListFromFile { get => File.ReadAllLines(GamesListFileName).OrderBy(s => s).ToList(); }
         public static List<Player> PlayersFromDirectory
         {
             get
@@ -56,7 +37,7 @@ namespace WhatGameToPlay
 
         public static bool StringContainsBannedSymbols(string @string)
         {
-            foreach (char @char in s_charactersFilesCanNotUse)
+            foreach (char @char in WindowsFilesBannedCharacters)
             {
                 if (@string.Contains(@char)) return true;
             }
@@ -133,21 +114,6 @@ namespace WhatGameToPlay
             return limitedGames;
         }
 
-        public static List<Player> GetPlayersFromDirectory()
-        {
-            var players = new List<Player>();
-            foreach (FileInfo fileInfo in PlayersTextFiles)
-            {
-                var gamesNotPlaying = new List<string>();
-                foreach (string gameDoesNotPlay in File.ReadAllLines(fileInfo.FullName))
-                {
-                    gamesNotPlaying.Add(gameDoesNotPlay);
-                }
-                players.Add(new Player(Path.GetFileNameWithoutExtension(fileInfo.Name), gamesNotPlaying));
-            }
-            return players;
-        }
-
         private static bool TextFileExist(FileInfo[] filesCollection, string fileName)
         {
             foreach (FileInfo fileInfo in filesCollection)
@@ -158,7 +124,7 @@ namespace WhatGameToPlay
         private static FileInfo[] GetTextFiles(string directoryName)
         {
             var directory = new DirectoryInfo(directoryName);
-            return directory.GetFiles(AllTextFilesInDirectory);
+            return directory.GetFiles(TextFilesInDirectory);
         }
     }
 }

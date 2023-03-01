@@ -29,7 +29,7 @@ namespace WhatGameToPlay
 
         private void RefreshPlayersFromFile()
         {
-            foreach (Player player in FilesReader.GetPlayersFromDirectory())
+            foreach (Player player in FilesReader.PlayersFromDirectory)
             {
                 listBoxPlayers.Items.Add(player.Name);
             }

@@ -155,7 +155,7 @@ namespace WhatGameToPlay
         {
             _players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
-            _players = FilesReader.GetPlayersFromDirectory();
+            _players = FilesReader.PlayersFromDirectory;
             _checkBoxesCopy.Clear();
             playersPanel.Visible = FormHasExtraCheckBoxes;
             playersGroupBox.Visible = FormHasExtraCheckBoxes;
@@ -378,9 +378,9 @@ namespace WhatGameToPlay
             }
             listBoxAvailableGames.Focus();
             timer.Interval += timerInterval;
-            int randomAvailableGame = Random.Next(listBoxAvailableGames.Items.Count);
             if (listBoxAvailableGames.Items.Count > 0)
             {
+                int randomAvailableGame = new Random().Next(0, listBoxAvailableGames.Items.Count);
                 textBox.Text = Convert.ToString(listBoxAvailableGames.Items[randomAvailableGame]);
             }
             if (timer.Interval == maximumTimerInterval)
