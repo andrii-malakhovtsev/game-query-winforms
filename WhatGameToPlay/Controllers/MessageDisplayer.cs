@@ -37,17 +37,16 @@ namespace WhatGameToPlay
 
         private string GetRandomGameToPlayPhrase(string gameToPlay)
         {
-            var random = new Random();
-            int randomNumber = random.Next(1, 6);
-            switch (randomNumber)
+            string[] gameToPlayPhrases =
             {
-                case 1: return $"Let's go play {gameToPlay}!";
-                case 2: return $"Yoooo, is it {gameToPlay} that we gonna play?";
-                case 3: return $"The best choice for today is...  {gameToPlay}!";
-                case 4: return $"No way we are going to play {gameToPlay} rn!";
-                case 5: return $"Hey chads, we are going to {gameToPlay}!";
-            }
-            return string.Empty;
+                $"Let's go play {gameToPlay}!",
+                $"Yoooo, is it {gameToPlay} that we gonna play?",
+                $"The best choice for today is...  {gameToPlay}!",
+                $"No way we are going to play {gameToPlay} rn!",
+                $"Hey chads, we are going to {gameToPlay}!"
+            };
+            int randomIndex = new Random().Next(0, gameToPlayPhrases.Length);
+            return gameToPlayPhrases[randomIndex];
         }
 
         public void ShowGameToPlayMessage(string gameToPlay)
