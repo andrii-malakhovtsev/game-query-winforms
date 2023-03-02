@@ -16,7 +16,7 @@ namespace WhatGameToPlay
         public static string CurrentThemeFromFile { get => File.ReadAllLines(ThemeFileName)[0]; }
         public static string[] OptionsFromFile { get => File.ReadAllLines(OptionsFileName); }
         public static string[] GamesFromFile { get => File.ReadAllLines(GamesListFileName); }
-        public static List<string> GamesListFromFile { get => File.ReadAllLines(GamesListFileName).OrderBy(s => s).ToList(); }
+        public static List<string> GamesListFromFile { get => File.ReadAllLines(GamesListFileName).OrderBy(game => game).ToList(); }
         public static List<Player> PlayersFromDirectory
         {
             get
@@ -24,11 +24,7 @@ namespace WhatGameToPlay
                 var players = new List<Player>();
                 foreach (FileInfo fileInfo in PlayersTextFiles)
                 {
-                    var gamesNotPlaying = new List<string>();
-                    foreach (string gameDoesNotPlay in File.ReadAllLines(fileInfo.FullName))
-                    {
-                        gamesNotPlaying.Add(gameDoesNotPlay);
-                    }
+                    var gamesNotPlaying = File.ReadAllLines(fileInfo.FullName).ToList();
                     players.Add(new Player(Path.GetFileNameWithoutExtension(fileInfo.Name), gamesNotPlaying));
                 }
                 return players;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace WhatGameToPlay
@@ -34,21 +35,7 @@ namespace WhatGameToPlay
                 return _players.Count > maximumCheckBoxesOnForm;
             }
         }
-        public int CheckedPlayersCount
-        {
-            get
-            {
-                int checkedCheckBoxesCount = 0;
-                foreach (CheckBox checkbox in _checkBoxesCopy)
-                {
-                    if (checkbox.Checked)
-                    {
-                        checkedCheckBoxesCount++;
-                    }
-                }
-                return checkedCheckBoxesCount;
-            }
-        }
+        public int CheckedPlayersCount { get => _checkBoxesCopy.Count(checkBox => checkBox.Checked); }
         public AdvancedMessageBox AdvancedMessageBox { get; private set; } = new AdvancedMessageBox();
         public bool ShowMessages { get => showMessagesToolStripMenuItem.Checked; }
 
@@ -112,13 +99,10 @@ namespace WhatGameToPlay
 
         private void SetSavedColors()
         {
-            foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
-            {
-                if (FilesReader.CurrentThemeFromFile == colorTheme.Text)
-                {
-                    colorTheme.Checked = true;
-                }
-            }
+            _colorThemeItems.OfType<ToolStripMenuItem>()
+                .Where(colorTheme => colorTheme.Text == FilesReader.CurrentThemeFromFile)
+                .ToList()
+                .ForEach(colorTheme => colorTheme.Checked = true);
         }
 
         private void SetSavedOptionsFromFile()
@@ -142,13 +126,10 @@ namespace WhatGameToPlay
 
         private void RefreshThemeToFile()
         {
-            foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
-            {
-                if (colorTheme.Checked)
-                {
-                    FilesWriter.WriteThemeToFile(colorTheme.Text);
-                }
-            }
+            _colorThemeItems.OfType<ToolStripMenuItem>()
+                .Where(colorTheme => colorTheme.Checked == true)
+                .ToList()
+                .ForEach(colorTheme => FilesWriter.WriteThemeToFile(colorTheme.Text));
         }
 
         private void RefreshPlayersList()
@@ -210,8 +191,7 @@ namespace WhatGameToPlay
             }
             if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
             {
-                foreach (string limitedGame in
-                    FilesReader.GetLimitedGamesFromDirectory(CheckedPlayersCount))
+                foreach (string limitedGame in FilesReader.GetLimitedGamesFromDirectory(CheckedPlayersCount))
                 {
                     gamesAvailable.Remove(limitedGame);
                 }

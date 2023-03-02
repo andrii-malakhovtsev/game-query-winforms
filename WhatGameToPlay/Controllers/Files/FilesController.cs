@@ -33,6 +33,10 @@ namespace WhatGameToPlay
             }
             CreateDirectory(LimitsDirectoryName);
         }
+        public static void CreatePlayerFile(string selectedPlayer)
+        {
+            CreateFile(fileName: FilesReader.GetSelectedPlayerFilePath(selectedPlayer));
+        }
 
         protected static bool CreateFile(string fileName)
         {
@@ -42,11 +46,6 @@ namespace WhatGameToPlay
                 File.Create(fileName).Dispose();
             }
             return fileDoesNotExist;
-        }
-
-        public static void CreatePlayerFile(string selectedPlayer)
-        {
-            CreateFile(fileName: FilesReader.GetSelectedPlayerFilePath(selectedPlayer));
         }
 
         private static bool CreateDirectory(string directoryName)
@@ -61,15 +60,10 @@ namespace WhatGameToPlay
 
         public static void DeleteGameFromGameList(string gameToDelete)
         {
-            string[] games = FilesReader.GamesFromFile;
+            string[] gamesExceptGameToDelete = FilesReader.GamesFromFile.Where(game => game != gameToDelete).ToArray();
             File.WriteAllText(GamesListFileName, string.Empty);
-            foreach (string game in games)
-            {
-                if (game != gameToDelete)
-                {
-                    FilesWriter.AddGameToGameListFile(game);
-                }
-            }
+            foreach (string game in gamesExceptGameToDelete)
+                FilesWriter.AddGameToGameListFile(game);
         }
 
         private static void DeleteGameFromPlayersFiles(string gameToDelete)
