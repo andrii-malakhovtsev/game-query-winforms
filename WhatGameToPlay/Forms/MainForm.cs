@@ -35,8 +35,11 @@ namespace WhatGameToPlay
                 return _players.Count > maximumCheckBoxesOnForm;
             }
         }
+
         public int CheckedPlayersCount { get => _checkBoxesCopy.Count(checkBox => checkBox.Checked); }
+
         public AdvancedMessageBox AdvancedMessageBox { get; private set; } = new AdvancedMessageBox();
+
         public bool ShowMessages { get => showMessagesToolStripMenuItem.Checked; }
 
         private void MainForm_Load(object sender, EventArgs e)
