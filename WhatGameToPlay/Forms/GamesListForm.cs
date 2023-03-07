@@ -19,6 +19,7 @@ namespace WhatGameToPlay
         }
 
         private bool PlayerLimitsExist { get => FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out _); }
+
         private decimal[] PlayersLimits
         {
             get
@@ -27,6 +28,7 @@ namespace WhatGameToPlay
                 return limits;
             }
         }
+
         private string SelectedGameName { get => textBoxGameName.Text; }
 
         private void GamesListForm_Load(object sender, EventArgs e)

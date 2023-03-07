@@ -33,6 +33,7 @@ namespace WhatGameToPlay
             }
             CreateDirectory(LimitsDirectoryName);
         }
+
         public static void CreatePlayerFile(string selectedPlayer)
         {
             CreateFile(fileName: FilesReader.GetSelectedPlayerFilePath(selectedPlayer));

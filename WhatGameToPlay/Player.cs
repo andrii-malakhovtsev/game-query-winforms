@@ -12,7 +12,9 @@ namespace WhatGameToPlay
         }
 
         public string Name { get; }
+
         public List<string> GamesNotPlaying { get; }
+
         public CheckBox CheckBox { get; set; }
     }
 }

@@ -11,12 +11,19 @@ namespace WhatGameToPlay
         private static readonly char[] WindowsFilesBannedCharacters = "\\/:*?\"<>|".ToCharArray();
 
         public static FileInfo[] PlayersTextFiles { get => GetTextFiles(directoryName: PlayersDirectoryName); }
+
         public static FileInfo[] PlayersLimitsTextFiles { get => GetTextFiles(directoryName: LimitsDirectoryName); }
+
         public static bool StandartFilesExist { get => File.Exists(ThemeFileName); }
+
         public static string CurrentThemeFromFile { get => File.ReadAllLines(ThemeFileName)[0]; }
+
         public static string[] OptionsFromFile { get => File.ReadAllLines(OptionsFileName); }
+
         public static string[] GamesFromFile { get => File.ReadAllLines(GamesListFileName); }
+
         public static List<string> GamesListFromFile { get => File.ReadAllLines(GamesListFileName).OrderBy(game => game).ToList(); }
+
         public static List<Player> PlayersFromDirectory
         {
             get
