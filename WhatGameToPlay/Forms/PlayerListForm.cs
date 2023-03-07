@@ -29,7 +29,7 @@ namespace WhatGameToPlay
 
         private void RefreshPlayersFromFile()
         {
-            foreach (Player player in FilesReader.GetPlayersFromDirectory())
+            foreach (Player player in FilesReader.PlayersFromDirectory)
             {
                 listBoxPlayers.Items.Add(player.Name);
             }
@@ -112,13 +112,8 @@ namespace WhatGameToPlay
 
         private void SavePlayerGames(string playerName)
         {
-            var checkedCheckBoxes = new List<string>();
-            foreach (var game in checkedListBoxGamesPlaying.CheckedItems)
-            {
-                checkedCheckBoxes.Add(game.ToString());
-            }
-            List<string> gamesNotPlayingList =
-                FilesReader.GamesFromFile.Distinct().Except(checkedCheckBoxes).ToList();
+            List<string> checkedCheckBoxes = checkedListBoxGamesPlaying.CheckedItems.Cast<string>().ToList(),
+                         gamesNotPlayingList = FilesReader.GamesFromFile.Distinct().Except(checkedCheckBoxes).ToList();
             FilesWriter.WriteGamesNotPlayingToFile(playerName, gamesNotPlayingList);
         }
 
