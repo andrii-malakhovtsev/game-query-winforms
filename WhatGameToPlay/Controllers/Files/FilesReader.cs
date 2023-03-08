@@ -10,9 +10,9 @@ namespace WhatGameToPlay
         private const string TextFilesInDirectory = "*" + TextFileExtension;
         private static readonly char[] WindowsFilesBannedCharacters = "\\/:*?\"<>|".ToCharArray();
 
-        public static FileInfo[] PlayersTextFiles { get => GetTextFiles(directoryName: PlayersDirectoryName); }
+        private static FileInfo[] PlayersLimitsTextFiles { get => GetTextFiles(directoryName: LimitsDirectoryName); }
 
-        public static FileInfo[] PlayersLimitsTextFiles { get => GetTextFiles(directoryName: LimitsDirectoryName); }
+        public static FileInfo[] PlayersTextFiles { get => GetTextFiles(directoryName: PlayersDirectoryName); }
 
         public static bool StandartFilesExist { get => File.Exists(ThemeFileName); }
 

@@ -36,9 +36,9 @@ namespace WhatGameToPlay
             }
         }
 
-        public int CheckedPlayersCount { get => _checkBoxesCopy.Count(checkBox => checkBox.Checked); }
+        private int CheckedPlayersCount { get => _checkBoxesCopy.Count(checkBox => checkBox.Checked); }
 
-        public AdvancedMessageBox AdvancedMessageBox { get; private set; } = new AdvancedMessageBox();
+        public AdvancedMessageBox AdvancedMessageBox { get; } = new AdvancedMessageBox();
 
         public bool ShowMessages { get => showMessagesToolStripMenuItem.Checked; }
 
