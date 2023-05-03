@@ -52,6 +52,11 @@ namespace WhatGameToPlay
                 listBoxPlayers.ClearSelected();
                 checkedListBoxGamesPlaying.Items.Clear();
             }
+            SetPlayersPanelEnables(playerExist);
+        }
+
+        private void SetPlayersPanelEnables(bool playerExist)
+        {
             SetPlayerButtonsEnables(enable: !playerExist);
             checkBoxSelectAll.Enabled = checkedListBoxGamesPlaying.Items.Count != 0;
             if (FilesReader.StringContainsBannedSymbols(SelectedPlayerName))
@@ -66,17 +71,21 @@ namespace WhatGameToPlay
             listBoxPlayers.SelectedIndex = listBoxPlayers.FindString(SelectedPlayerName);
             checkedListBoxGamesPlaying.Items.Clear();
             List<string> games = FilesReader.GamesListFromFile;
-            for (int index = 0; index < games.Count; index++)
-            {
-                checkedListBoxGamesPlaying.Items.Add(games[index]);
-                checkedListBoxGamesPlaying.SetItemChecked(index, value: true);
-            }
-            string[] gamesPlayerDoesNotPlay =
-                FilesReader.GetGamesPlayerDoesNotPlay(SelectedPlayerName);
+            SetGamesCheckedListBox(games);
+            string[] gamesPlayerDoesNotPlay = FilesReader.GetGamesPlayerDoesNotPlay(SelectedPlayerName);
             if (gamesPlayerDoesNotPlay.Length == 0 || gamesPlayerDoesNotPlay == null) return;
             foreach (string gameDoesNotPlay in gamesPlayerDoesNotPlay)
             {
                 UncheckGameNotPlayingCheckBox(games, gameDoesNotPlay);
+            }
+        }
+
+        private void SetGamesCheckedListBox(List<string> games)
+        {
+            for (int index = 0; index < games.Count; index++)
+            {
+                checkedListBoxGamesPlaying.Items.Add(games[index]);
+                checkedListBoxGamesPlaying.SetItemChecked(index, value: true);
             }
         }
 

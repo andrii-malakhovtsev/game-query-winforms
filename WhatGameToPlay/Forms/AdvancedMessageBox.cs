@@ -41,6 +41,15 @@ namespace WhatGameToPlay
             Text = caption;
             SetFormDimensions();
             SetButtonsVisibility(visible: yesNoMessageBox);
+            SetFormButtons(yesNoMessageBox);
+            if (!FilesReader.StandartFilesExist)
+                SetTimerRelatedControlsEnables(enable: true);
+            else RefreshTheme();
+            return ShowDialog();
+        }
+
+        private void SetFormButtons(bool yesNoMessageBox)
+        {
             AcceptButton = yesNoMessageBox ? buttonYes : buttonOK;
             if (yesNoMessageBox)
             {
@@ -51,10 +60,6 @@ namespace WhatGameToPlay
             {
                 SetButtonLocation(buttonOK);
             }
-            if (!FilesReader.StandartFilesExist)
-                SetTimerRelatedControlsEnables(enable: true);
-            else RefreshTheme();
-            return ShowDialog();
         }
 
         private void Timer_Tick(object sender, EventArgs e)

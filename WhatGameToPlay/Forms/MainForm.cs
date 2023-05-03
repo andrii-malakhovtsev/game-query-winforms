@@ -66,17 +66,15 @@ namespace WhatGameToPlay
         {
             bool isToolStripThemeMenuItem = toolStripMenuItem == themeToolStripMenuItem,
                  isToolStripOptionsMenuItem = toolStripMenuItem == optionsToolStripMenuItem;
-            if (isToolStripThemeMenuItem || isToolStripOptionsMenuItem)
+            if (!isToolStripThemeMenuItem && !isToolStripOptionsMenuItem) return;
+            foreach (ToolStripMenuItem toolStripItem in toolStripMenuItem.DropDownItems)
             {
-                foreach (ToolStripMenuItem toolStripItem in toolStripMenuItem.DropDownItems)
+                if (isToolStripThemeMenuItem)
                 {
-                    if (isToolStripThemeMenuItem)
-                    {
-                        _colorThemeItems.Add(toolStripItem);
-                        toolStripItem.Click += new EventHandler(SetThemeFromToolStrip);
-                    }
-                    else _optionToolStrips.Add(toolStripItem);
+                    _colorThemeItems.Add(toolStripItem);
+                    toolStripItem.Click += new EventHandler(SetThemeFromToolStrip);
                 }
+                else _optionToolStrips.Add(toolStripItem);
             }
         }
 
@@ -165,9 +163,14 @@ namespace WhatGameToPlay
             checkBox.CheckedChanged += new EventHandler(CheckBox_CheckedChanged);
             player.CheckBox = checkBox;
             checkBox.BringToFront();
-            if (FormHasExtraCheckBoxes) 
+            AddCheckBoxToControls(checkBox);
+        }
+
+        private void AddCheckBoxToControls(CheckBox checkBox)
+        {
+            if (FormHasExtraCheckBoxes)
                 playersPanel.Controls.Add(checkBox);
-            else 
+            else
                 Controls.Add(checkBox);
             _checkBoxesCopy.Add(checkBox);
         }
@@ -181,6 +184,28 @@ namespace WhatGameToPlay
         {
             List<string> gamesAvailable = FilesReader.GamesListFromFile;
             listBoxAvailableGames.Items.Clear();
+            RemoveGamesPlayerDoesNotPlayFromGamesList(gamesAvailable);
+            RemoveLimitedGamesFromGamesList(gamesAvailable);
+            foreach (string game in gamesAvailable)
+            {
+                listBoxAvailableGames.Items.Add(game);
+            }
+            if (CheckedPlayersCount == 0) listBoxAvailableGames.Items.Clear();
+        }
+
+        private void RemoveLimitedGamesFromGamesList(List<string> gamesAvailable)
+        {
+            if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
+            {
+                foreach (string limitedGame in FilesReader.GetLimitedGamesFromDirectory(CheckedPlayersCount))
+                {
+                    gamesAvailable.Remove(limitedGame);
+                }
+            }
+        }
+
+        private void RemoveGamesPlayerDoesNotPlayFromGamesList(List<string> gamesAvailable)
+        {
             foreach (Player player in _players)
             {
                 if (!player.CheckBox.Checked) continue;
@@ -192,18 +217,6 @@ namespace WhatGameToPlay
                     }
                 }
             }
-            if (ConsiderGamePlayersLimitsToolStripMenuItem.Checked)
-            {
-                foreach (string limitedGame in FilesReader.GetLimitedGamesFromDirectory(CheckedPlayersCount))
-                {
-                    gamesAvailable.Remove(limitedGame);
-                }
-            }
-            foreach (string game in gamesAvailable)
-            {
-                listBoxAvailableGames.Items.Add(game);
-            }
-            if (CheckedPlayersCount == 0) listBoxAvailableGames.Items.Clear();
         }
 
         private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)
@@ -301,6 +314,11 @@ namespace WhatGameToPlay
         private void RefreshTheme()
         {
             ThemeController.SetFormControlsTheme(form: this);
+            ThemeController.SetToolStripMenuItemsFullColor(GetAllToolStripMenuItems());
+        }
+
+        private List<ToolStripMenuItem> GetAllToolStripMenuItems()
+        {
             var toolStripMenuItems = new List<ToolStripMenuItem>();
             foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
             {
@@ -310,35 +328,21 @@ namespace WhatGameToPlay
                     toolStripMenuItems.Add(toolStripItem);
                 }
             }
-            ThemeController.SetToolStripMenuItemsFullColor(toolStripMenuItems);
-            toolStripMenuItems.Clear();
+            return toolStripMenuItems;
         }
 
         private void ButtonRandomAvailableGame_Click(object sender, EventArgs e)
         {
-            const int defaultTimerInterval = 10;
-            if (listBoxAvailableGames.Items.Count > 0)
+            StartRandomGameRoulette();
+        }
+
+        private void SetActiveFormControlsEnables(bool enable)
+        {
+            buttonRandomAvailableGame.Enabled = enable;
+            SetToolStripItemsEnables(enable: enable);
+            foreach (CheckBox checkBox in _checkBoxes)
             {
-                if (rouletteInsteadProgressbarToolStripMenuItem.Checked)
-                {
-                    progressBar.Visible = true;
-                }
-                progressBar.Value = 0;
-                ThemeController.SetTextBoxForeColor(textBox, win: false);
-                pictureBoxSmile.Hide();
-                pictureBoxFireworks.Hide();
-                buttonRandomAvailableGame.Enabled = false;
-                SetToolStripItemsEnables(enable: false);
-                timer.Interval = defaultTimerInterval;
-                timer.Enabled = true;
-                foreach (CheckBox checkBox in _checkBoxes)
-                {
-                    checkBox.Enabled = false;
-                }
-            }
-            else if (ShowMessages)
-            {
-                _messageDisplayer.ShowNoGamesToPlayMessage();
+                checkBox.Enabled = enable;
             }
         }
 
@@ -368,18 +372,56 @@ namespace WhatGameToPlay
             }
             if (timer.Interval == maximumTimerInterval)
             {
-                SetToolStripItemsEnables(enable: true);
-                buttonRandomAvailableGame.Enabled = true;
-                timer.Enabled = false;
-                if (CelebrateRandomGameToolStripMenuItem.Checked)
+                StopRandomGameRoulette();
+            }
+        }
+        private void StartRandomGameRoulette()
+        {
+            const int defaultTimerInterval = 10;
+            if (listBoxAvailableGames.Items.Count > 0)
+            {
+                if (rouletteInsteadProgressbarToolStripMenuItem.Checked)
                 {
-                    pictureBoxSmile.Show();
-                    pictureBoxFireworks.Show(); pictureBoxFireworks.SendToBack();
+                    progressBar.Visible = true;
+                    progressBar.Value = 0;
                 }
-                ThemeController.SetTextBoxForeColor(textBox, win: true);
-                foreach (CheckBox checkBox in _checkBoxes) checkBox.Enabled = true;
-                progressBar.Visible = false;
-                _messageDisplayer.ShowGameToPlayMessage(gameToPlay: textBox.Text);
+                ThemeController.SetTextBoxForeColor(textBox, win: false);
+                SetPictureBoxesVisibility(visible: false);
+                SetActiveFormControlsEnables(enable: false);
+                timer.Interval = defaultTimerInterval;
+                timer.Enabled = true;
+            }
+            else if (ShowMessages)
+            {
+                _messageDisplayer.ShowNoGamesToPlayMessage();
+            }
+        }
+
+        private void StopRandomGameRoulette()
+        {
+            SetActiveFormControlsEnables(enable: true);
+            timer.Enabled = false;
+            progressBar.Visible = false;
+            if (CelebrateRandomGameToolStripMenuItem.Checked)
+            {
+                SetPictureBoxesVisibility(visible: true);
+            }
+            ThemeController.SetTextBoxForeColor(textBox, win: true);
+            _messageDisplayer.ShowGameToPlayMessage(gameToPlay: textBox.Text);
+        }
+
+        private void SetPictureBoxesVisibility(bool visible)
+        {
+            if (visible)
+            {
+                pictureBoxSmile.Show();
+                pictureBoxFireworks.Show();
+                pictureBoxFireworks.SendToBack();
+            }
+            else
+            {
+                pictureBoxSmile.Hide();
+                pictureBoxFireworks.Hide();
             }
         }
 
