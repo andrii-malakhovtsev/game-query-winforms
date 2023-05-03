@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Files\FileNames.cs" />
     <Compile Include="Controllers\Files\FilesReader.cs" />
     <Compile Include="Controllers\Files\FilesWriter.cs" />
     <Compile Include="Controllers\MessageDisplayer.cs" />

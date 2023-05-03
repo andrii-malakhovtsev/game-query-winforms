@@ -3,35 +3,28 @@ using System.Linq;
 
 namespace WhatGameToPlay
 {
-    public class FilesController
+    static public class FilesController
     {
-        protected const string TextFileExtension = ".txt";
-        protected const string ThemeFileName = "Theme" + TextFileExtension;
-        protected const string OptionsFileName = "Options" + TextFileExtension;
-        protected const string GamesListFileName = "GamesList" + TextFileExtension;
-        protected const string PlayersDirectoryName = "Players";
-        protected const string LimitsDirectoryName = "Limits";
-
         public static void CreateStartingFiles()
         {
-            if (CreateFile(ThemeFileName))
+            if (CreateFile(FileNames.ThemeFileName))
             {
                 FilesWriter.WriteThemeToFile(ThemeController.StandartTheme);
             }
-            if (CreateFile(OptionsFileName))
+            if (CreateFile(FileNames.OptionsFileName))
             {
                 string[] standartOptions = { "True", "True", "True", "False", "True", "False" };
                 FilesWriter.WriteOptionsToFile(standartOptions);
             }
-            if (CreateFile(GamesListFileName))
+            if (CreateFile(FileNames.GamesListFileName))
             {
                 FilesWriter.AddGameToGameListFile("example game");
             }
-            if (CreateDirectory(PlayersDirectoryName))
+            if (CreateDirectory(FileNames.PlayersDirectoryName))
             {
                 CreatePlayerFile("example player");
             }
-            CreateDirectory(LimitsDirectoryName);
+            CreateDirectory(FileNames.LimitsDirectoryName);
         }
 
         public static void CreatePlayerFile(string selectedPlayer)
@@ -39,7 +32,7 @@ namespace WhatGameToPlay
             CreateFile(fileName: FilesReader.GetSelectedPlayerFilePath(selectedPlayer));
         }
 
-        protected static bool CreateFile(string fileName)
+        public static bool CreateFile(string fileName)
         {
             bool fileDoesNotExist = !File.Exists(fileName);
             if (fileDoesNotExist)
@@ -62,7 +55,7 @@ namespace WhatGameToPlay
         public static void DeleteGameFromGameList(string gameToDelete)
         {
             string[] gamesExceptGameToDelete = FilesReader.GamesFromFile.Where(game => game != gameToDelete).ToArray();
-            File.WriteAllText(GamesListFileName, string.Empty);
+            File.WriteAllText(FileNames.GamesListFileName, string.Empty);
             foreach (string game in gamesExceptGameToDelete)
                 FilesWriter.AddGameToGameListFile(game);
         }

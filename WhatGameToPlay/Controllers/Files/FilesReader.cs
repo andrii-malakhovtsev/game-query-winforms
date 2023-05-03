@@ -5,24 +5,24 @@ using System.Linq;
 
 namespace WhatGameToPlay
 {
-    sealed public class FilesReader : FilesController
+    static public class FilesReader
     {
-        private const string TextFilesInDirectory = "*" + TextFileExtension;
+        private const string TextFilesInDirectory = "*" + FileNames.TextFileExtension;
         private static readonly char[] WindowsFilesBannedCharacters = "\\/:*?\"<>|".ToCharArray();
 
-        private static FileInfo[] PlayersLimitsTextFiles { get => GetTextFiles(directoryName: LimitsDirectoryName); }
+        private static FileInfo[] PlayersLimitsTextFiles { get => GetTextFiles(directoryName: FileNames.LimitsDirectoryName); }
 
-        public static FileInfo[] PlayersTextFiles { get => GetTextFiles(directoryName: PlayersDirectoryName); }
+        public static FileInfo[] PlayersTextFiles { get => GetTextFiles(directoryName: FileNames.PlayersDirectoryName); }
 
-        public static bool StandartFilesExist { get => File.Exists(ThemeFileName); }
+        public static bool StandartFilesExist { get => File.Exists(FileNames.ThemeFileName); }
 
-        public static string CurrentThemeFromFile { get => File.ReadAllLines(ThemeFileName)[0]; }
+        public static string CurrentThemeFromFile { get => File.ReadAllLines(FileNames.ThemeFileName)[0]; }
 
-        public static string[] OptionsFromFile { get => File.ReadAllLines(OptionsFileName); }
+        public static string[] OptionsFromFile { get => File.ReadAllLines(FileNames.OptionsFileName); }
 
-        public static string[] GamesFromFile { get => File.ReadAllLines(GamesListFileName); }
+        public static string[] GamesFromFile { get => File.ReadAllLines(FileNames.GamesListFileName); }
 
-        public static List<string> GamesListFromFile { get => File.ReadAllLines(GamesListFileName).OrderBy(game => game).ToList(); }
+        public static List<string> GamesListFromFile { get => File.ReadAllLines(FileNames.GamesListFileName).OrderBy(game => game).ToList(); }
 
         public static List<Player> PlayersFromDirectory
         {
@@ -59,17 +59,17 @@ namespace WhatGameToPlay
 
         private static string GetFullDirectoryFilePath(string directory, string fileName)
         {
-            return directory + "\\" + fileName + TextFileExtension;
+            return directory + "\\" + fileName + FileNames.TextFileExtension;
         }
 
         public static string GetSelectedGamePlayersLimitsFilePath(string gameName)
         {
-            return GetFullDirectoryFilePath(LimitsDirectoryName, gameName);
+            return GetFullDirectoryFilePath(FileNames.LimitsDirectoryName, gameName);
         }
 
         public static string GetSelectedPlayerFilePath(string selectedPlayer)
         {
-            return GetFullDirectoryFilePath(PlayersDirectoryName, selectedPlayer);
+            return GetFullDirectoryFilePath(FileNames.PlayersDirectoryName, selectedPlayer);
         }
 
         public static bool GetPlayersLimitsFromGameFile(string gameName, out decimal[] limits)
@@ -107,7 +107,8 @@ namespace WhatGameToPlay
             foreach (FileInfo fileInfo in PlayersLimitsTextFiles)
             {
                 string[] lines = File.ReadAllLines(fileInfo.FullName);
-                bool playerCountOutsideLimits = checkedPlayersCount < Convert.ToInt32(lines[0]) ||
+                bool playerCountOutsideLimits = 
+                    checkedPlayersCount < Convert.ToInt32(lines[0]) ||
                     checkedPlayersCount > Convert.ToInt32(lines[1]);
                 if (playerCountOutsideLimits)
                 {

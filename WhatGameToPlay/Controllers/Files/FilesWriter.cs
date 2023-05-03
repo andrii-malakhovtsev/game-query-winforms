@@ -4,22 +4,22 @@ using System.IO;
 
 namespace WhatGameToPlay
 {
-    sealed public class FilesWriter : FilesController
+    static public class FilesWriter
     {
         public static void WriteThemeToFile(string theme)
         {
-            File.WriteAllText(ThemeFileName, theme);
+            File.WriteAllText(FileNames.ThemeFileName, theme);
         }
 
         public static void WriteOptionsToFile(string[] options)
         {
-            File.WriteAllLines(OptionsFileName, options);
+            File.WriteAllLines(FileNames.OptionsFileName, options);
         }
 
         public static void WritePlayersLimitsToFile(string gameName, decimal minValue, decimal maxValue)
         {
             string path = FilesReader.GetSelectedGamePlayersLimitsFilePath(gameName);
-            CreateFile(path);
+            FilesController.CreateFile(path);
             using (TextWriter textWriter = new StreamWriter(path))
             {
                 textWriter.WriteLine(Convert.ToString(minValue));
@@ -31,7 +31,7 @@ namespace WhatGameToPlay
             List<string> gamesNotPlayingList)
         {
             string path = FilesReader.GetSelectedPlayerFilePath(selectedPlayer);
-            CreatePlayerFile(selectedPlayer);
+            FilesController.CreatePlayerFile(selectedPlayer);
             using (TextWriter textWriter = new StreamWriter(path))
             {
                 foreach (string gameNotPlaying in gamesNotPlayingList)
@@ -51,7 +51,7 @@ namespace WhatGameToPlay
 
         public static void AddGameToGameListFile(string gameName)
         {
-            File.AppendAllText(GamesListFileName, gameName + Environment.NewLine);
+            File.AppendAllText(FileNames.GamesListFileName, gameName + Environment.NewLine);
         }
     }
 }
