@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace WhatGameToPlay
@@ -64,13 +63,8 @@ namespace WhatGameToPlay
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            int secondsLeft = Convert.ToInt32(labelTimer.Text);
-            if (secondsLeft != 0)
-            {
-                secondsLeft--;
-                labelTimer.Text = Convert.ToString(secondsLeft);
-            }
-            else SetTimerRelatedControlsEnables(enable: false);
+            if (!AdvancedMessageBoxModel.TimerTick(ref labelTimer))
+                SetTimerRelatedControlsEnables(enable: false);
         }
 
         private void SetTimerRelatedControlsEnables(bool enable)
@@ -82,17 +76,13 @@ namespace WhatGameToPlay
 
         private void SetButtonLocation(Button button)
         {
-            const int lastButtonX = 105, firstButtonX = lastButtonX + 85;
-            int buttonHeight = panel.Height / 2 - 10, buttonWidth = Width;
-            buttonWidth -= button == buttonYes ? firstButtonX : lastButtonX;
-            button.Location = new Point(buttonWidth, buttonHeight);
+            AdvancedMessageBoxModel.SetButtonLocation(ref button, buttonYes, panel.Height, Width);
         }
 
         private void SetFormDimensions()
         {
-            const int widthAfterLabel = 60, heightAfterLabel = 135;
-            Width = labelMessage.Width + widthAfterLabel;
-            Height = labelMessage.Height + heightAfterLabel;
+            Width = AdvancedMessageBoxModel.GetFormWidth(labelMessage.Width);
+            Height = AdvancedMessageBoxModel.GetFormHeight(labelMessage.Height);
         }
 
         private void RefreshTheme()

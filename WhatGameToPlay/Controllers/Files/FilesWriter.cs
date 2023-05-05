@@ -8,12 +8,12 @@ namespace WhatGameToPlay
     {
         public static void WriteThemeToFile(string theme)
         {
-            File.WriteAllText(FileNames.ThemeFileName, theme);
+            File.WriteAllText(FilesNames.ThemeFileName, theme);
         }
 
         public static void WriteOptionsToFile(string[] options)
         {
-            File.WriteAllLines(FileNames.OptionsFileName, options);
+            File.WriteAllLines(FilesNames.OptionsFileName, options);
         }
 
         public static void WritePlayersLimitsToFile(string gameName, decimal minValue, decimal maxValue)
@@ -51,7 +51,7 @@ namespace WhatGameToPlay
 
         public static void AddGameToGameListFile(string gameName)
         {
-            File.AppendAllText(FileNames.GamesListFileName, gameName + Environment.NewLine);
+            File.AppendAllText(FilesNames.GamesListFileName, gameName + Environment.NewLine);
         }
     }
 }

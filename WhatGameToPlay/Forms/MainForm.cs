@@ -40,6 +40,8 @@ namespace WhatGameToPlay
 
         public AdvancedMessageBox AdvancedMessageBox { get; } = new AdvancedMessageBox();
 
+        public MessageDisplayer MessageDisplayer { get => _messageDisplayer; }
+
         public bool ShowMessages { get => showMessagesToolStripMenuItem.Checked; }
 
         private void MainForm_Load(object sender, EventArgs e)

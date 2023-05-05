@@ -7,24 +7,24 @@ namespace WhatGameToPlay
     {
         public static void CreateStartingFiles()
         {
-            if (CreateFile(FileNames.ThemeFileName))
+            if (CreateFile(FilesNames.ThemeFileName))
             {
                 FilesWriter.WriteThemeToFile(ThemeController.StandartTheme);
             }
-            if (CreateFile(FileNames.OptionsFileName))
+            if (CreateFile(FilesNames.OptionsFileName))
             {
                 string[] standartOptions = { "True", "True", "True", "False", "True", "False" };
                 FilesWriter.WriteOptionsToFile(standartOptions);
             }
-            if (CreateFile(FileNames.GamesListFileName))
+            if (CreateFile(FilesNames.GamesListFileName))
             {
                 FilesWriter.AddGameToGameListFile("example game");
             }
-            if (CreateDirectory(FileNames.PlayersDirectoryName))
+            if (CreateDirectory(FilesNames.PlayersDirectoryName))
             {
                 CreatePlayerFile("example player");
             }
-            CreateDirectory(FileNames.LimitsDirectoryName);
+            CreateDirectory(FilesNames.LimitsDirectoryName);
         }
 
         public static void CreatePlayerFile(string selectedPlayer)
@@ -55,7 +55,7 @@ namespace WhatGameToPlay
         public static void DeleteGameFromGameList(string gameToDelete)
         {
             string[] gamesExceptGameToDelete = FilesReader.GamesFromFile.Where(game => game != gameToDelete).ToArray();
-            File.WriteAllText(FileNames.GamesListFileName, string.Empty);
+            File.WriteAllText(FilesNames.GamesListFileName, string.Empty);
             foreach (string game in gamesExceptGameToDelete)
                 FilesWriter.AddGameToGameListFile(game);
         }
