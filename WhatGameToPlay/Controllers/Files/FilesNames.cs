@@ -1,6 +1,6 @@
 ﻿namespace WhatGameToPlay
 {
-    public static class FileNames
+    public static class FilesNames
     {
         public const string TextFileExtension = ".txt";
         public const string ThemeFileName = "Theme" + TextFileExtension;

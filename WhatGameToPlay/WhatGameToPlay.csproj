@@ -64,21 +64,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Files\FileNames.cs" />
+    <Compile Include="Controllers\Files\FilesNames.cs" />
     <Compile Include="Controllers\Files\FilesReader.cs" />
     <Compile Include="Controllers\Files\FilesWriter.cs" />
     <Compile Include="Controllers\MessageDisplayer.cs" />
     <Compile Include="Controllers\Files\FilesController.cs" />
+    <Compile Include="Forms\AdvancedMessageBox\AdvancedMessageBoxModel.cs" />
+    <Compile Include="Forms\GamesListForm\GamesListFormModel.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GamesListForm.cs">
+    <Compile Include="Forms\GamesListForm\GamesListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GamesListForm.Designer.cs">
+    <Compile Include="Forms\GamesListForm\GamesListForm.Designer.cs">
       <DependentUpon>GamesListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\PlayerListForm.cs">
@@ -87,10 +89,10 @@
     <Compile Include="Forms\PlayerListForm.Designer.cs">
       <DependentUpon>PlayerListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AdvancedMessageBox.cs">
+    <Compile Include="Forms\AdvancedMessageBox\AdvancedMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AdvancedMessageBox.Designer.cs">
+    <Compile Include="Forms\AdvancedMessageBox\AdvancedMessageBox.Designer.cs">
       <DependentUpon>AdvancedMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Player.cs" />
@@ -100,13 +102,13 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GamesListForm.resx">
+    <EmbeddedResource Include="Forms\GamesListForm\GamesListForm.resx">
       <DependentUpon>GamesListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PlayerListForm.resx">
       <DependentUpon>PlayerListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AdvancedMessageBox.resx">
+    <EmbeddedResource Include="Forms\AdvancedMessageBox\AdvancedMessageBox.resx">
       <DependentUpon>AdvancedMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
