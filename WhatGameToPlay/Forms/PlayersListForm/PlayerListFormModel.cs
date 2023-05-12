@@ -88,11 +88,11 @@ namespace WhatGameToPlay
             }
         }
 
-        public void CheckBoxSelectAllCheckedChanged()
+        public void CheckBoxSelectAllCheckedChanged(bool selectAll)
         {
             for (int i = 0; i < _playerListForm.CheckBoxListGamesPlaying.Items.Count; i++)
             {
-                _playerListForm.CheckBoxListGamesPlaying.SetItemChecked(i, _playerListForm.CheckBoxSelectAllChecked);
+                _playerListForm.CheckBoxListGamesPlaying.SetItemChecked(i, selectAll);
             }
         }
 

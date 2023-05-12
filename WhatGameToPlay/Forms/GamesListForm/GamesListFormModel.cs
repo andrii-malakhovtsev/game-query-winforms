@@ -18,10 +18,7 @@ namespace WhatGameToPlay
         private ListBox ListBoxGames 
         { 
             get => _gamesListForm.ListBoxGames; 
-            set 
-            { 
-                _gamesListForm.ListBoxGames = value; 
-            } 
+            set => _gamesListForm.ListBoxGames = value; 
         }
 
         public decimal[] PlayersLimits
@@ -37,7 +34,7 @@ namespace WhatGameToPlay
 
         public bool PlayerLimitsExist { get => FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out _); }
 
-        public bool StartedLimitsEntering { set { _startedLimitsEntering = value; } }
+        public bool StartedLimitsEntering { set => _startedLimitsEntering = value; }
 
         private static bool GameInList(string gameToCheck)
         {

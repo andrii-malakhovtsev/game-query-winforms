@@ -14,9 +14,9 @@ namespace WhatGameToPlay
             _gamesListFormModel.RefreshListBoxGames();
         }
 
-        public ListBox ListBoxGames { get => listBoxGames; set { listBoxGames = value; } }
+        public ListBox ListBoxGames { get => listBoxGames; set => listBoxGames = value; }
 
-        public string TextBoxGameNameText { get => textBoxGameName.Text; set { textBoxGameName.Text = value; } }
+        public string TextBoxGameNameText {  get => textBoxGameName.Text; set => textBoxGameName.Text = value;  }
 
         public decimal NumericUpDownMaxValue { get => numericUpDownMax.Value; }
 
@@ -25,19 +25,13 @@ namespace WhatGameToPlay
         public bool CheckBoxPlayersNumberLimitEnabled
         {
             get => checkBoxPlayersNumberLimit.Enabled;
-            set 
-            { 
-                checkBoxPlayersNumberLimit.Enabled = value; 
-            } 
+            set => checkBoxPlayersNumberLimit.Enabled = value; 
         }
 
         public bool CheckBoxPlayersNumberLimitChecked
         {
             get => checkBoxPlayersNumberLimit.Checked;
-            set
-            {
-                checkBoxPlayersNumberLimit.Checked = value;
-            }
+            set => checkBoxPlayersNumberLimit.Checked = value;
         }
 
         private void GamesListForm_Load(object sender, EventArgs e)
