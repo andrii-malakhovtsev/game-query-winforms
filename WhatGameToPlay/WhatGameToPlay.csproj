@@ -83,11 +83,12 @@
     <Compile Include="Forms\GamesListForm\GamesListForm.Designer.cs">
       <DependentUpon>GamesListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PlayerListForm.cs">
+    <Compile Include="Forms\PlayersListForm\PlayerListFormModel.cs" />
+    <Compile Include="Forms\PlayersListForm\PlayersListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PlayerListForm.Designer.cs">
-      <DependentUpon>PlayerListForm.cs</DependentUpon>
+    <Compile Include="Forms\PlayersListForm\PlayersListForm.Designer.cs">
+      <DependentUpon>PlayersListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AdvancedMessageBox\AdvancedMessageBox.cs">
       <SubType>Form</SubType>
@@ -105,8 +106,8 @@
     <EmbeddedResource Include="Forms\GamesListForm\GamesListForm.resx">
       <DependentUpon>GamesListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PlayerListForm.resx">
-      <DependentUpon>PlayerListForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\PlayersListForm\PlayersListForm.resx">
+      <DependentUpon>PlayersListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AdvancedMessageBox\AdvancedMessageBox.resx">
       <DependentUpon>AdvancedMessageBox.cs</DependentUpon>

@@ -1,6 +1,6 @@
 ﻿namespace WhatGameToPlay
 {
-    partial class PlayerListForm
+    partial class PlayersListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerListForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayersListForm));
             this.labelPlayerList = new System.Windows.Forms.Label();
             this.listBoxPlayers = new System.Windows.Forms.ListBox();
             this.labelGamesPlaying = new System.Windows.Forms.Label();

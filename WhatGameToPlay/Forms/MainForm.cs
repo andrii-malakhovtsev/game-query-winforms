@@ -276,7 +276,7 @@ namespace WhatGameToPlay
 
         private void PlayersListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var playerListForm = new PlayerListForm(this);
+            var playerListForm = new PlayersListForm(this);
             playerListForm.ShowDialog();
         }
 
