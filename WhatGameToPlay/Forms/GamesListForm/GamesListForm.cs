@@ -14,15 +14,13 @@ namespace WhatGameToPlay
             _gamesListFormModel.RefreshListBoxGames();
         }
 
-        public string TextBoxGameNameText { get => textBoxGameName.Text; }
-
         public ListBox ListBoxGames { get => listBoxGames; set { listBoxGames = value; } }
+
+        public string TextBoxGameNameText { get => textBoxGameName.Text; set { textBoxGameName.Text = value; } }
 
         public decimal NumericUpDownMaxValue { get => numericUpDownMax.Value; }
 
         public decimal NumericUpDownMinValue { get => numericUpDownMin.Value; }
-
-        public string TextBoxGameName { set { textBoxGameName.Text = value; } }
 
         public bool CheckBoxPlayersNumberLimitEnabled
         {

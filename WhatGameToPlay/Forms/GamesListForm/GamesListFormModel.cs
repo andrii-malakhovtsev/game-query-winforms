@@ -15,13 +15,14 @@ namespace WhatGameToPlay
             _mainForm = mainForm;
         }
 
-        public bool PlayerLimitsExist { get => FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out _); }
-
-        public bool StartedLimitsEntering { set { _startedLimitsEntering = value; } }
-
-        public string SelectedGameName { get => _gamesListForm.TextBoxGameNameText; }
-
-        private ListBox ListBoxGames { get => _gamesListForm.ListBoxGames; set { _gamesListForm.ListBoxGames = value; } }
+        private ListBox ListBoxGames 
+        { 
+            get => _gamesListForm.ListBoxGames; 
+            set 
+            { 
+                _gamesListForm.ListBoxGames = value; 
+            } 
+        }
 
         public decimal[] PlayersLimits
         {
@@ -31,6 +32,12 @@ namespace WhatGameToPlay
                 return limits;
             }
         }
+
+        public string SelectedGameName { get => _gamesListForm.TextBoxGameNameText; }
+
+        public bool PlayerLimitsExist { get => FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out _); }
+
+        public bool StartedLimitsEntering { set { _startedLimitsEntering = value; } }
 
         private static bool GameInList(string gameToCheck)
         {
@@ -46,7 +53,7 @@ namespace WhatGameToPlay
 
         public void DeleteGameConfirmation()
         {
-            if (_mainForm.ShowConfirmationMessages() && !_mainForm.MessageDisplayer.ShowDeleteGameDialog(SelectedGameName)) return;
+            if (_mainForm.ShowConfirmationMessages && !_mainForm.MessageDisplayer.ShowDeleteGameDialog(SelectedGameName)) return;
             DeleteGameFromGameList();
         }
 
@@ -55,11 +62,11 @@ namespace WhatGameToPlay
             DeleteGameFromGameListFile();
             RefreshListBoxGames();
             _gamesListForm.SwitchGameButtonsEnables();
-            if (!_mainForm.SaveDeletedGamesData())
+            if (!_mainForm.SaveDeletedGamesData)
             {
                 FilesController.DeletePlayersGameData(SelectedGameName);
             }
-            _gamesListForm.TextBoxGameName = string.Empty;
+            _gamesListForm.TextBoxGameNameText = string.Empty;
             _gamesListForm.SetNumericUpDownsStandartValues();
         }
 
@@ -109,7 +116,7 @@ namespace WhatGameToPlay
             if (_startedLimitsEntering && !SavePlayersLimits())
             {
                 _startedLimitsEntering = false;
-                _gamesListForm.TextBoxGameName = _currentSelectedGame;
+                _gamesListForm.TextBoxGameNameText = _currentSelectedGame;
                 ListBoxGames.SelectedIndex = ListBoxGames.FindString(_currentSelectedGame);
                 return;
             }
@@ -165,7 +172,7 @@ namespace WhatGameToPlay
 
         public void DeletePlayerLimitsDialog()
         {
-            if (_mainForm.ShowConfirmationMessages())
+            if (_mainForm.ShowConfirmationMessages)
             {
                 if (_mainForm.MessageDisplayer.ShowDeletePlayersLimitsFileDialog(SelectedGameName))
                 {
