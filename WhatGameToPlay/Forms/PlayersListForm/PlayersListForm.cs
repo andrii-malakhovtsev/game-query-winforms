@@ -13,7 +13,9 @@ namespace WhatGameToPlay
             InitializeComponent();
         }
 
-        public bool CheckBoxSelectAllChecked { get => checkBoxSelectAll.Checked; }
+        public CheckedListBox CheckBoxListGamesPlaying { get => checkedListBoxGamesPlaying; }
+
+        public ListBox ListBoxPlayers { get => listBoxPlayers; }
 
         public string TextBoxSelectedPlayerText 
         { 
@@ -24,9 +26,7 @@ namespace WhatGameToPlay
             } 
         }
 
-        public ListBox ListBoxPlayers { get => listBoxPlayers; }
-
-        public CheckedListBox CheckBoxListGamesPlaying { get => checkedListBoxGamesPlaying; }
+        public bool CheckBoxSelectAllChecked { get => checkBoxSelectAll.Checked; }
 
         private void FormPlayerList_Load(object sender, EventArgs e)
         {
