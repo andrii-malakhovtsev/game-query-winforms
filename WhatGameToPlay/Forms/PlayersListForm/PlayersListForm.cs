@@ -20,13 +20,8 @@ namespace WhatGameToPlay
         public string TextBoxSelectedPlayerText 
         { 
             get => textBoxSelectedPlayer.Text; 
-            set 
-            { 
-                textBoxSelectedPlayer.Text = value; 
-            } 
+            set => textBoxSelectedPlayer.Text = value; 
         }
-
-        public bool CheckBoxSelectAllChecked { get => checkBoxSelectAll.Checked; }
 
         private void FormPlayerList_Load(object sender, EventArgs e)
         {
@@ -58,7 +53,7 @@ namespace WhatGameToPlay
 
         private void CheckBoxSelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            _playerListFormModel.CheckBoxSelectAllCheckedChanged();
+            _playerListFormModel.CheckBoxSelectAllCheckedChanged(selectAll: checkBoxSelectAll.Checked);
         }
 
         private void ButtonAddPlayer_Click(object sender, EventArgs e)

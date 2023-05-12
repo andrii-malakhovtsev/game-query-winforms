@@ -9,22 +9,15 @@ namespace WhatGameToPlay
         private readonly MessageDisplayer _messageDisplayer;
         private List<Player> _players = new List<Player>();
 
-        public MessageDisplayer MessageDisplayer { get => _messageDisplayer; }
-
         public MainFormModel(MainForm mainForm)
         {
             _mainForm = mainForm;
             _messageDisplayer = new MessageDisplayer(mainForm);
         }
 
-        public List<Player> Players 
-        { 
-            get => _players; 
-            set 
-            {
-                _players = value;
-            }
-        }
+        public List<Player> Players { get => _players; set => _players = value; }
+
+        public MessageDisplayer MessageDisplayer { get => _messageDisplayer; }
 
         public AdvancedMessageBox AdvancedMessageBox { get; } = new AdvancedMessageBox();
 
