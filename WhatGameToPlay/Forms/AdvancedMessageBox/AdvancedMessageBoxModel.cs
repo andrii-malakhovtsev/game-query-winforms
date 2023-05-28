@@ -22,9 +22,9 @@ namespace WhatGameToPlay
         public static void SetButtonLocation(ref Button button, Button buttonYes, int panelHeight, int formWidth)
         {
             const int lastButtonX = 105, firstButtonX = lastButtonX + 85;
-            int buttonHeight = panelHeight / 2 - 10, buttonWidth = formWidth;
-            buttonWidth -= button == buttonYes ? firstButtonX : lastButtonX;
-            button.Location = new Point(buttonWidth, buttonHeight);
+            int buttonY = panelHeight / 2 - 10, buttonX = formWidth;
+            buttonX -= button == buttonYes ? firstButtonX : lastButtonX;
+            button.Location = new Point(buttonX, buttonY);
         }
 
         public static bool TimerTick(ref Label labelTimer)
