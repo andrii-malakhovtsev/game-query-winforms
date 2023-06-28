@@ -14,9 +14,17 @@ namespace WhatGameToPlay
             _gamesListFormModel.RefreshListBoxGames();
         }
 
-        public ListBox ListBoxGames { get => listBoxGames; set => listBoxGames = value; }
+        public ListBox ListBoxGames 
+        { 
+            get => listBoxGames; 
+            set => listBoxGames = value; 
+        }
 
-        public string TextBoxGameNameText {  get => textBoxGameName.Text; set => textBoxGameName.Text = value;  }
+        public string TextBoxGameNameText 
+        { 
+            get => textBoxGameName.Text; 
+            set => textBoxGameName.Text = value;  
+        }
 
         public decimal NumericUpDownMaxValue => numericUpDownMax.Value;
 
@@ -35,7 +43,7 @@ namespace WhatGameToPlay
         }
 
         private void GamesListForm_Load(object sender, EventArgs e)
-            => ThemeController.SetFormControlsTheme(form: this);
+            => FormsTheme.ColorControls(form: this);
 
         public void UnableButtonAddgame() => buttonAddGame.Enabled = false;
 
@@ -89,7 +97,7 @@ namespace WhatGameToPlay
             SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
             _gamesListFormModel.StartedLimitsEntering = checkBoxPlayersNumberLimit.Checked;
             if (checkBoxPlayersNumberLimit.Checked
-                || !FilesReader.PlayersLimitsFileExist(_gamesListFormModel.SelectedGameName)) return;
+                || !FilesReader.PlayersLimitsFileExist(_gamesListFormModel.SelectedGame)) return;
             _gamesListFormModel.DeletePlayerLimitsDialog();
         }
 

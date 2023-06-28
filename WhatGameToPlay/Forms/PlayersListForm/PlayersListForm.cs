@@ -26,7 +26,7 @@ namespace WhatGameToPlay
         private void FormPlayerList_Load(object sender, EventArgs e)
         {
             _playerListFormModel.RefreshPlayersFromFile();
-            ThemeController.SetFormControlsTheme(form: this);
+            FormsTheme.ColorControls(form: this);
         }
 
         private void TextBox_TextChanged(object sender, EventArgs e)

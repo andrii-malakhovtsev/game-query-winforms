@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
-    public static class ThemeController
+    public static class FormsTheme
     {
         private static Theme _theme = Theme.Standart;
         private static string CurrentThemeName => FilesReader.CurrentThemeFromFile;
@@ -34,10 +34,10 @@ namespace WhatGameToPlay
               secondBackgroundColor: Color.FromArgb(24, 24, 24))
         };
 
-        public static void SetTextBoxForeColor(TextBox textbox, bool win)
+        public static void ColorTextBox(TextBox textbox, bool win)
             => textbox.ForeColor = win ? Color.Green : _theme.TextColor;
 
-        public static void SetTextForeColor(ToolStripMenuItem toolStripMenuItem)
+        public static void ColorToolStripMenuItemDropDowns(ToolStripMenuItem toolStripMenuItem)
            => toolStripMenuItem.ForeColor = _theme.TextColor;
 
         public static void SetChosenThemeColors() 
@@ -49,7 +49,7 @@ namespace WhatGameToPlay
             }
         }
 
-        public static void SetBackgroundForeColor(ToolStripMenuItem toolStripMenuItem)
+        public static void ColorToolStripMenuItem(ToolStripMenuItem toolStripMenuItem)
         {
             if (CurrentThemeName != Theme.Standart.Name)
             {
@@ -57,16 +57,16 @@ namespace WhatGameToPlay
             }
         }
 
-        public static void SetToolStripMenuItemsFullColor(List<ToolStripMenuItem> toolStripMenuItems)
+        public static void ColorToolStripMenuItems(List<ToolStripMenuItem> toolStripMenuItems)
         {
             foreach (ToolStripMenuItem toolStripMenuItem in toolStripMenuItems)
             {
-                SetTextForeColor(toolStripMenuItem);
+                ColorToolStripMenuItemDropDowns(toolStripMenuItem);
                 toolStripMenuItem.BackColor = _theme.SecondBackgroundColor;
             }
         }
 
-        public static void SetButtonsFullColor(Button[] buttons)
+        public static void ColorButtons(Button[] buttons)
         {
             foreach (Button button in buttons)
             {
@@ -75,10 +75,10 @@ namespace WhatGameToPlay
             }
         }
 
-        public static void SetFormControlsTheme(Form form)
+        public static void ColorControls(Form form)
         {
             var backColorClearTypes = new List<System.Type>() { 
-                typeof(Label), 
+                typeof(Label),
                 typeof(GroupBox), 
                 typeof(CheckBox)
             };

@@ -78,13 +78,13 @@ namespace WhatGameToPlay
 
         private void RefreshTheme()
         {
-            ThemeController.SetFormControlsTheme(form: this);
+            FormsTheme.ColorControls(form: this);
             Button[] allButtons = {
                 buttonOK,
                 buttonYes,
                 buttonNo
             };
-            ThemeController.SetButtonsFullColor(allButtons);
+            FormsTheme.ColorButtons(allButtons);
         }
 
         private void ButtonConfirm_Click(object sender, EventArgs e) => Close();

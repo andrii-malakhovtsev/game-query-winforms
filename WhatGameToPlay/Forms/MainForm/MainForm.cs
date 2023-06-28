@@ -46,6 +46,7 @@ namespace WhatGameToPlay
         public List<ToolStripMenuItem> OptionToolStrips  => _optionToolStrips;
 
         public ListBox ListBoxAvailableGames => listBoxAvailableGames;
+
         public AdvancedMessageBox AdvancedMessageBox => _mainFormModel.AdvancedMessageBox;
 
         public MessageDisplayer MessageDisplayer => _mainFormModel.MessageDisplayer;
@@ -102,10 +103,10 @@ namespace WhatGameToPlay
         }
 
         private void MenuToolStripItem_DropDownOpening(object sender, EventArgs e)
-            => ThemeController.SetBackgroundForeColor(sender as ToolStripMenuItem);
+            => FormsTheme.ColorToolStripMenuItem(sender as ToolStripMenuItem);
 
         private void MenuToolStripItem_DropDownClosed(object sender, EventArgs e)
-            => ThemeController.SetTextForeColor(sender as ToolStripMenuItem);
+            => FormsTheme.ColorToolStripMenuItemDropDowns(sender as ToolStripMenuItem);
 
         public void SetSavedColors()
         {
@@ -220,7 +221,7 @@ namespace WhatGameToPlay
                 colorTheme.Checked = false;
             ((ToolStripMenuItem)sender).Checked = true;
             RefreshThemeToFile();
-            ThemeController.SetChosenThemeColors();
+            FormsTheme.SetChosenThemeColors();
             _mainFormModel.RefreshTheme();
         }
 
