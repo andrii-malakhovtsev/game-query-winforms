@@ -72,7 +72,7 @@ namespace WhatGameToPlay
             => ShowDialog($"Are you sure you want to delete {objectToDelete} from {listName} list?");
 
         public bool ShowDeleteAvailableGameDialog(string gameName)
-            => ShowDeleteDialog(gameName, listName: "available games");
+            => ShowDeleteDialog(gameName, listName: "available games"); // should be separated by classes with list.Name
 
         public bool ShowDeleteGameDialog(string gameName)
             => ShowDeleteDialog(gameName, listName: "games");

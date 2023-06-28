@@ -8,8 +8,7 @@ namespace WhatGameToPlay
     {
         private static Theme _theme = Theme.Standart;
         private static string CurrentThemeName => FilesReader.CurrentThemeFromFile;
-
-        public static HashSet<Theme> Themes { get; private set; } = new HashSet<Theme>()
+        private static HashSet<Theme> Themes { get; } = new HashSet<Theme>()
         {
             Theme.Standart,
             new Theme(name: "Dark",
