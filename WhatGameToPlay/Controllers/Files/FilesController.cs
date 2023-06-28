@@ -9,7 +9,7 @@ namespace WhatGameToPlay
         {
             if (CreateFile(FilesNames.ThemeFileName))
             {
-                FilesWriter.WriteThemeToFile(ThemeController.StandartTheme);
+                FilesWriter.WriteThemeToFile(Theme.Standart.Name);
             }
             if (CreateFile(FilesNames.OptionsFileName))
             {
