@@ -6,15 +6,10 @@ namespace WhatGameToPlay
 {
     static public class FilesWriter
     {
-        public static void WriteThemeToFile(string theme)
-        {
-            File.WriteAllText(FilesNames.ThemeFileName, theme);
-        }
+        public static void WriteThemeToFile(string theme) => File.WriteAllText(FilesNames.ThemeFileName, theme); 
+        // polymorphism can be used
 
-        public static void WriteOptionsToFile(string[] options)
-        {
-            File.WriteAllLines(FilesNames.OptionsFileName, options);
-        }
+        public static void WriteOptionsToFile(string[] options) => File.WriteAllLines(FilesNames.OptionsFileName, options);
 
         public static void WritePlayersLimitsToFile(string gameName, decimal minValue, decimal maxValue)
         {
@@ -50,8 +45,6 @@ namespace WhatGameToPlay
         }
 
         public static void AddGameToGameListFile(string gameName)
-        {
-            File.AppendAllText(FilesNames.GamesListFileName, gameName + Environment.NewLine);
-        }
+            => File.AppendAllText(FilesNames.GamesListFileName, gameName + Environment.NewLine);
     }
 }

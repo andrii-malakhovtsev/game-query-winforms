@@ -17,13 +17,13 @@ namespace WhatGameToPlay
 
         public List<Player> Players { get => _players; set => _players = value; }
 
-        public MessageDisplayer MessageDisplayer { get => _messageDisplayer; }
+        public MessageDisplayer MessageDisplayer  => _messageDisplayer; 
 
         public AdvancedMessageBox AdvancedMessageBox { get; } = new AdvancedMessageBox();
 
-        public int CheckBoxTopMeasure { get => FormHasExtraCheckBoxes ? 5 : 70; }
+        public int CheckBoxTopMeasure => FormHasExtraCheckBoxes ? 5 : 70;
 
-        public int CheckBoxLeftMeasure { get => FormHasExtraCheckBoxes ? 20 : 25; }
+        public int CheckBoxLeftMeasure => FormHasExtraCheckBoxes ? 20 : 25;
 
         public bool FormHasExtraCheckBoxes
         {
@@ -50,7 +50,7 @@ namespace WhatGameToPlay
             _mainForm.RefreshPlayersList();
             SetSavedOptionsFromFile();
             _mainForm.SetSavedColors();
-            ThemeController.SetChosenThemeColors();
+            FormsTheme.SetChosenThemeColors();
             RefreshTheme();
         }
 
@@ -65,8 +65,8 @@ namespace WhatGameToPlay
 
         public void RefreshTheme()
         {
-            ThemeController.SetFormControlsTheme(form: _mainForm);
-            ThemeController.SetToolStripMenuItemsFullColor(_mainForm.AllToolStripMenuItems);
+            FormsTheme.ColorControls(form: _mainForm);
+            FormsTheme.ColorToolStripMenuItems(_mainForm.AllToolStripMenuItems);
         }
 
         public void RefreshOptionsToFiles()
@@ -182,7 +182,7 @@ namespace WhatGameToPlay
                     _mainForm.ProgressBar.Visible = true;
                     _mainForm.ProgressBar.Value = 0;
                 }
-                ThemeController.SetTextBoxForeColor(_mainForm.TextBox, win: false);
+                FormsTheme.ColorTextBox(_mainForm.TextBox, win: false);
                 _mainForm.SetPictureBoxesVisibility(visible: false);
                 _mainForm.SetActiveFormControlsEnables(enable: false);
                 _mainForm.Timer.Interval = defaultTimerInterval;
@@ -203,7 +203,7 @@ namespace WhatGameToPlay
             {
                 _mainForm.SetPictureBoxesVisibility(visible: true);
             }
-            ThemeController.SetTextBoxForeColor(_mainForm.TextBox, win: true);
+            FormsTheme.ColorTextBox(_mainForm.TextBox, win: true);
             _messageDisplayer.ShowGameToPlayMessage(gameToPlay: _mainForm.TextBox.Text);
         }
     }

@@ -9,7 +9,7 @@ namespace WhatGameToPlay
         {
             if (CreateFile(FilesNames.ThemeFileName))
             {
-                FilesWriter.WriteThemeToFile(ThemeController.StandartTheme);
+                FilesWriter.WriteThemeToFile(Theme.Standart.Name);
             }
             if (CreateFile(FilesNames.OptionsFileName))
             {
@@ -27,10 +27,8 @@ namespace WhatGameToPlay
             CreateDirectory(FilesNames.LimitsDirectoryName);
         }
 
-        public static void CreatePlayerFile(string selectedPlayer)
-        {
-            CreateFile(fileName: FilesReader.GetSelectedPlayerFilePath(selectedPlayer));
-        }
+        public static void CreatePlayerFile(string selectedPlayer) 
+            => CreateFile(fileName: FilesReader.GetSelectedPlayerFilePath(selectedPlayer));
 
         public static bool CreateFile(string fileName)
         {
@@ -85,8 +83,6 @@ namespace WhatGameToPlay
         }
 
         public static void DeleteSelectedPlayerFile(string selectedPlayer)
-        {
-            File.Delete(FilesReader.GetSelectedPlayerFilePath(selectedPlayer));
-        }
+            => File.Delete(FilesReader.GetSelectedPlayerFilePath(selectedPlayer));
     }
 }

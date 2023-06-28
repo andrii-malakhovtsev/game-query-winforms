@@ -9,15 +9,9 @@ namespace WhatGameToPlay
         private const int WidthAfterLabel = 60;
         private const int HeightAfterLabel = 135;
 
-        public static int GetFormWidth(int labelMessageWidth)
-        {
-            return labelMessageWidth + WidthAfterLabel;
-        }
+        public static int GetFormWidth(int labelMessageWidth) => labelMessageWidth + WidthAfterLabel;
 
-        public static int GetFormHeight(int labelMessageHeight)
-        {
-            return labelMessageHeight + HeightAfterLabel;
-        }
+        public static int GetFormHeight(int labelMessageHeight) => labelMessageHeight + HeightAfterLabel;
 
         public static void SetButtonLocation(ref Button button, Button buttonYes, int panelHeight, int formWidth)
         {

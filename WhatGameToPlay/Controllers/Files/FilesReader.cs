@@ -10,19 +10,19 @@ namespace WhatGameToPlay
         private const string TextFilesInDirectory = "*" + FilesNames.TextFileExtension;
         private static readonly char[] WindowsFilesBannedCharacters = "\\/:*?\"<>|".ToCharArray();
 
-        private static FileInfo[] PlayersLimitsTextFiles { get => GetTextFiles(directoryName: FilesNames.LimitsDirectoryName); }
+        private static FileInfo[] PlayersLimitsTextFiles => GetTextFiles(directoryName: FilesNames.LimitsDirectoryName); 
 
-        public static FileInfo[] PlayersTextFiles { get => GetTextFiles(directoryName: FilesNames.PlayersDirectoryName); }
+        public static FileInfo[] PlayersTextFiles => GetTextFiles(directoryName: FilesNames.PlayersDirectoryName); 
 
-        public static bool StandartFilesExist { get => File.Exists(FilesNames.ThemeFileName); }
+        public static bool StandartFilesExist  => File.Exists(FilesNames.ThemeFileName);
 
-        public static string CurrentThemeFromFile { get => File.ReadAllLines(FilesNames.ThemeFileName)[0]; }
+        public static string CurrentThemeFromFile => File.ReadAllLines(FilesNames.ThemeFileName)[0];
 
-        public static string[] OptionsFromFile { get => File.ReadAllLines(FilesNames.OptionsFileName); }
+        public static string[] OptionsFromFile => File.ReadAllLines(FilesNames.OptionsFileName);
 
-        public static string[] GamesFromFile { get => File.ReadAllLines(FilesNames.GamesListFileName); }
+        public static string[] GamesFromFile => File.ReadAllLines(FilesNames.GamesListFileName);
 
-        public static List<string> GamesListFromFile { get => File.ReadAllLines(FilesNames.GamesListFileName).OrderBy(game => game).ToList(); }
+        public static List<string> GamesListFromFile => File.ReadAllLines(FilesNames.GamesListFileName).OrderBy(game => game).ToList();
 
         public static List<Player> PlayersFromDirectory
         {
@@ -52,30 +52,20 @@ namespace WhatGameToPlay
             return !@string.Any(letter => char.IsLetterOrDigit(letter)) || string.IsNullOrEmpty(@string);
         }
 
-        public static bool PlayerFileExist(string checkPlayer)
-        {
-            return TextFileExist(PlayersTextFiles, checkPlayer);
-        }
+        public static bool PlayerFileExist(string checkPlayer) 
+            => TextFileExist(PlayersTextFiles, checkPlayer);
 
-        public static bool PlayersLimitsFileExist(string checkGame)
-        {
-            return TextFileExist(PlayersLimitsTextFiles, checkGame);
-        }
+        public static bool PlayersLimitsFileExist(string checkGame) 
+            => TextFileExist(PlayersLimitsTextFiles, checkGame);
 
-        private static string GetFullDirectoryFilePath(string directory, string fileName)
-        {
-            return directory + "\\" + fileName + FilesNames.TextFileExtension;
-        }
+        private static string GetFullDirectoryFilePath(string directory, string fileName) 
+            => directory + "\\" + fileName + FilesNames.TextFileExtension;
 
         public static string GetSelectedGamePlayersLimitsFilePath(string gameName)
-        {
-            return GetFullDirectoryFilePath(FilesNames.LimitsDirectoryName, gameName);
-        }
+            => GetFullDirectoryFilePath(FilesNames.LimitsDirectoryName, gameName);
 
         public static string GetSelectedPlayerFilePath(string selectedPlayer)
-        {
-            return GetFullDirectoryFilePath(FilesNames.PlayersDirectoryName, selectedPlayer);
-        }
+            => GetFullDirectoryFilePath(FilesNames.PlayersDirectoryName, selectedPlayer);
 
         public static bool GetPlayersLimitsFromGameFile(string gameName, out decimal[] limits)
         {

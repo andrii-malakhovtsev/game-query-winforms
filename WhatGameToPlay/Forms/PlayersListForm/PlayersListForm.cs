@@ -13,9 +13,9 @@ namespace WhatGameToPlay
             InitializeComponent();
         }
 
-        public CheckedListBox CheckBoxListGamesPlaying { get => checkedListBoxGamesPlaying; }
+        public CheckedListBox CheckBoxListGamesPlaying => checkedListBoxGamesPlaying;
 
-        public ListBox ListBoxPlayers { get => listBoxPlayers; }
+        public ListBox ListBoxPlayers => listBoxPlayers;
 
         public string TextBoxSelectedPlayerText 
         { 
@@ -26,13 +26,11 @@ namespace WhatGameToPlay
         private void FormPlayerList_Load(object sender, EventArgs e)
         {
             _playerListFormModel.RefreshPlayersFromFile();
-            ThemeController.SetFormControlsTheme(form: this);
+            FormsTheme.ColorControls(form: this);
         }
 
         private void TextBox_TextChanged(object sender, EventArgs e)
-        {
-            _playerListFormModel.TextBoxTextChanged();
-        }
+            => _playerListFormModel.TextBoxTextChanged();
 
         public void SetPlayersPanelEnables(bool playerExist)
         {
@@ -52,19 +50,13 @@ namespace WhatGameToPlay
         }
 
         private void CheckBoxSelectAll_CheckedChanged(object sender, EventArgs e)
-        {
-            _playerListFormModel.CheckBoxSelectAllCheckedChanged(selectAll: checkBoxSelectAll.Checked);
-        }
+            => _playerListFormModel.CheckBoxSelectAllCheckedChanged(selectAll: checkBoxSelectAll.Checked);
 
         private void ButtonAddPlayer_Click(object sender, EventArgs e)
-        {
-            _playerListFormModel.AddPlayer();
-        }
+            => _playerListFormModel.AddPlayer();
 
         private void ListBoxPlayers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _playerListFormModel.ListBoxPlayersSelectedIndexChanged();
-        }
+            => _playerListFormModel.ListBoxPlayersSelectedIndexChanged();
 
         private void ListBoxPlayers_DoubleClick(object sender, EventArgs e)
         {
@@ -73,13 +65,9 @@ namespace WhatGameToPlay
         }
 
         private void ButtonDeletePlayer_Click(object sender, EventArgs e)
-        {
-            _playerListFormModel.DeletePlayer();
-        }
+            => _playerListFormModel.DeletePlayer();
 
         private void PlayerListForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _playerListFormModel.PlayersListFormClosing();
-        }
+            => _playerListFormModel.PlayersListFormClosing();
     }
 }

@@ -43,36 +43,33 @@ namespace WhatGameToPlay
             }
         }
 
-        public List<ToolStripMenuItem> OptionToolStrips { get => _optionToolStrips; }
+        public List<ToolStripMenuItem> OptionToolStrips  => _optionToolStrips;
 
-        public ListBox ListBoxAvailableGames { get => listBoxAvailableGames; }
+        public ListBox ListBoxAvailableGames => listBoxAvailableGames;
 
-        public AdvancedMessageBox AdvancedMessageBox { get => _mainFormModel.AdvancedMessageBox; }
+        public AdvancedMessageBox AdvancedMessageBox => _mainFormModel.AdvancedMessageBox;
 
-        public MessageDisplayer MessageDisplayer { get => _mainFormModel.MessageDisplayer; }
+        public MessageDisplayer MessageDisplayer => _mainFormModel.MessageDisplayer;
 
-        public Timer Timer { get => timer; }
+        public Timer Timer => timer;
 
-        public ProgressBar ProgressBar { get => progressBar; }
+        public ProgressBar ProgressBar => progressBar;
 
-        public TextBox TextBox { get => textBox; }
+        public TextBox TextBox => textBox;
 
-        public int CheckedPlayersCount { get => _checkBoxesCopy.Count(checkBox => checkBox.Checked); }
+        public int CheckedPlayersCount => _checkBoxesCopy.Count(checkBox => checkBox.Checked);
 
-        public bool ShowMessages { get => showMessagesToolStripMenuItem.Checked; }
+        public bool ShowMessages => showMessagesToolStripMenuItem.Checked;
 
-        public bool SaveDeletedGamesData { get => saveDeletedGamesDataToolStripMenuItem.Checked; }
+        public bool SaveDeletedGamesData => saveDeletedGamesDataToolStripMenuItem.Checked;
 
-        public bool ShowConfirmationMessages { get => showConfirmationMessagesToolStripMenuItem.Checked; }
+        public bool ShowConfirmationMessages => showConfirmationMessagesToolStripMenuItem.Checked;
 
-        public bool ConsiderGamePlayersLimits { get => ConsiderGamePlayersLimitsToolStripMenuItem.Checked; }
+        public bool ConsiderGamePlayersLimits => ConsiderGamePlayersLimitsToolStripMenuItem.Checked;
 
-        public bool CelebrateRandomGame { get => CelebrateRandomGameToolStripMenuItem.Checked; }
+        public bool CelebrateRandomGame => CelebrateRandomGameToolStripMenuItem.Checked;
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            _mainFormModel.MainFormLoad();
-        }
+        private void MainForm_Load(object sender, EventArgs e) => _mainFormModel.MainFormLoad();
 
         public void RefreshPlayersList()
         {
@@ -106,14 +103,10 @@ namespace WhatGameToPlay
         }
 
         private void MenuToolStripItem_DropDownOpening(object sender, EventArgs e)
-        {
-            ThemeController.SetBackgroundForeColor(sender as ToolStripMenuItem);
-        }
+            => FormsTheme.ColorToolStripMenuItem(sender as ToolStripMenuItem);
 
         private void MenuToolStripItem_DropDownClosed(object sender, EventArgs e)
-        {
-            ThemeController.SetTextForeColor(sender as ToolStripMenuItem);
-        }
+            => FormsTheme.ColorToolStripMenuItemDropDowns(sender as ToolStripMenuItem);
 
         public void SetSavedColors()
         {
@@ -159,14 +152,10 @@ namespace WhatGameToPlay
         }
 
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            _mainFormModel.PlayerCheckBoxCheckedChange();
-        }
+            => _mainFormModel.PlayerCheckBoxCheckedChange();
 
         private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)
-        {
-            _mainFormModel.ListBoxAvailableGamesDoubleClick();
-        }
+            => _mainFormModel.ListBoxAvailableGamesDoubleClick();
 
         private void ShowConfirmationMessagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -191,9 +180,7 @@ namespace WhatGameToPlay
         }
 
         private void GamesListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _mainFormModel.CreateNewGamesListForm();
-        }
+            => _mainFormModel.CreateNewGamesListForm();
 
         private void RouletteInsteadProgressbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -203,9 +190,7 @@ namespace WhatGameToPlay
         }
 
         private void PlayersListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _mainFormModel.CreateNewPlayersListForm();
-        }
+            => _mainFormModel.CreateNewPlayersListForm();
 
         private void CelebrateRandomGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -236,14 +221,12 @@ namespace WhatGameToPlay
                 colorTheme.Checked = false;
             ((ToolStripMenuItem)sender).Checked = true;
             RefreshThemeToFile();
-            ThemeController.SetChosenThemeColors();
+            FormsTheme.SetChosenThemeColors();
             _mainFormModel.RefreshTheme();
         }
 
         private void ButtonRandomAvailableGame_Click(object sender, EventArgs e)
-        {
-            _mainFormModel.StartRandomGameRoulette(rouletteInsteadProgressbarToolStripMenuItem.Checked);
-        }
+            => _mainFormModel.StartRandomGameRoulette(rouletteInsteadProgressbarToolStripMenuItem.Checked);
 
         public void SetActiveFormControlsEnables(bool enable)
         {
@@ -262,9 +245,7 @@ namespace WhatGameToPlay
         }
 
         private void Timer_Tick(object sender, EventArgs e)
-        {
-            _mainFormModel.TimerTick(rouletteInsteadProgressbar: rouletteInsteadProgressbarToolStripMenuItem.Checked);
-        }
+            => _mainFormModel.TimerTick(rouletteInsteadProgressbar: rouletteInsteadProgressbarToolStripMenuItem.Checked);
 
         public void SetPictureBoxesVisibility(bool visible)
         {
@@ -295,9 +276,6 @@ namespace WhatGameToPlay
             pictureBoxSmile.Visible = false;
         }
 
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Close();
     }
 }
