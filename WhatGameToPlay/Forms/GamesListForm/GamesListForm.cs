@@ -18,9 +18,9 @@ namespace WhatGameToPlay
 
         public string TextBoxGameNameText {  get => textBoxGameName.Text; set => textBoxGameName.Text = value;  }
 
-        public decimal NumericUpDownMaxValue { get => numericUpDownMax.Value; }
+        public decimal NumericUpDownMaxValue => numericUpDownMax.Value;
 
-        public decimal NumericUpDownMinValue { get => numericUpDownMin.Value; }
+        public decimal NumericUpDownMinValue => numericUpDownMin.Value;
 
         public bool CheckBoxPlayersNumberLimitEnabled
         {
@@ -35,14 +35,9 @@ namespace WhatGameToPlay
         }
 
         private void GamesListForm_Load(object sender, EventArgs e)
-        {
-            ThemeController.SetFormControlsTheme(form: this);
-        }
+            => ThemeController.SetFormControlsTheme(form: this);
 
-        public void UnableButtonAddgame()
-        {
-            buttonAddGame.Enabled = false;
-        }
+        public void UnableButtonAddgame() => buttonAddGame.Enabled = false;
 
         private void ListBoxGames_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -53,9 +48,7 @@ namespace WhatGameToPlay
         }
 
         private void TextBoxGameName_TextChanged(object sender, EventArgs e)
-        {
-            _gamesListFormModel.TextBoxGameNameTextChanged();
-        }
+            => _gamesListFormModel.TextBoxGameNameTextChanged();
 
         private void SetGameButtonsEnables(bool enable)
         {
@@ -71,19 +64,13 @@ namespace WhatGameToPlay
         }
 
         private void ButtonAddGame_Click(object sender, EventArgs e)
-        {
-            _gamesListFormModel.AddGame();
-        }
+            => _gamesListFormModel.AddGame();
 
         private void ButtonDeleteGame_Click(object sender, EventArgs e)
-        {
-            _gamesListFormModel.DeleteGameConfirmation();
-        }
+            => _gamesListFormModel.DeleteGameConfirmation();
 
         private void ListBoxGames_DoubleClick(object sender, EventArgs e)
-        {
-            _gamesListFormModel.DeleteGameFromListBox();
-        }
+            => _gamesListFormModel.DeleteGameFromListBox();
 
         public void SetNumericUpDownsEnables(bool enable)
         {
@@ -123,8 +110,6 @@ namespace WhatGameToPlay
         }
 
         private void GamesListForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _gamesListFormModel.GamesListFormClosing();
-        }
+            => _gamesListFormModel.GamesListFormClosing();
     }
 }

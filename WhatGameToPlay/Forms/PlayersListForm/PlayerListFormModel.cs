@@ -16,7 +16,7 @@ namespace WhatGameToPlay
             _mainForm = mainForm;
         }
 
-        public string SelectedPlayerName { get => _playerListForm.TextBoxSelectedPlayerText; }
+        public string SelectedPlayerName => _playerListForm.TextBoxSelectedPlayerText;
 
         public void RefreshPlayersFromFile()
         {

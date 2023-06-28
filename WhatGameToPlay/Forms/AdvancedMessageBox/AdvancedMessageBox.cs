@@ -5,10 +5,7 @@ namespace WhatGameToPlay
 {
     public partial class AdvancedMessageBox : Form
     {
-        public AdvancedMessageBox()
-        {
-            InitializeComponent();
-        }
+        public AdvancedMessageBox() => InitializeComponent();
 
         private void AdvancedMessageBox_Load(object sender, EventArgs e)
         {
@@ -24,15 +21,11 @@ namespace WhatGameToPlay
             buttonOK.Visible = !visible;
         }
 
-        public DialogResult Show(string text)
-        {
-            return SetMessageBox(text, "", yesNoMessageBox: false);
-        }
+        public DialogResult Show(string text) 
+            => SetMessageBox(text, "", yesNoMessageBox: false);
 
         public DialogResult Show(string text, string caption, MessageBoxButtons YesNo)
-        {
-            return SetMessageBox(text, caption, yesNoMessageBox: true);
-        }
+            => SetMessageBox(text, caption, yesNoMessageBox: true);
 
         private DialogResult SetMessageBox(string text, string caption, bool yesNoMessageBox)
         {
@@ -75,9 +68,7 @@ namespace WhatGameToPlay
         }
 
         private void SetButtonLocation(Button button)
-        {
-            AdvancedMessageBoxModel.SetButtonLocation(ref button, buttonYes, panel.Height, Width);
-        }
+            => AdvancedMessageBoxModel.SetButtonLocation(ref button, buttonYes, panel.Height, Width);
 
         private void SetFormDimensions()
         {
@@ -96,9 +87,6 @@ namespace WhatGameToPlay
             ThemeController.SetButtonsFullColor(allButtons);
         }
 
-        private void ButtonConfirm_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void ButtonConfirm_Click(object sender, EventArgs e) => Close();
     }
 }

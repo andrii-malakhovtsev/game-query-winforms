@@ -8,15 +8,9 @@ namespace WhatGameToPlay
         private const string ConfirmationDialogTitle = "Confirmation";
         private readonly MainForm _mainForm;
 
-        public MessageDisplayer(MainForm mainform)
-        {
-            _mainForm = mainform;
-        }
+        public MessageDisplayer(MainForm mainform) => _mainForm = mainform;
 
-        private void ShowMainFormMessage(string message)
-        {
-            _mainForm.AdvancedMessageBox.Show(message);
-        }
+        private void ShowMainFormMessage(string message) => _mainForm.AdvancedMessageBox.Show(message);
 
         private void ShowOptionalMainFormMessage(string message)
         {
@@ -31,9 +25,7 @@ namespace WhatGameToPlay
         }
 
         public void ShowNoGamesToPlayMessage()
-        {
-            ShowMainFormMessage("You don't have games to play (Bad ending)");
-        }
+            => ShowMainFormMessage("You don't have games to play (Bad ending)");
 
         private string GetRandomGameToPlayPhrase(string gameToPlay)
         {
@@ -50,24 +42,16 @@ namespace WhatGameToPlay
         }
 
         public void ShowGameToPlayMessage(string gameToPlay)
-        {
-            ShowMainFormMessage(GetRandomGameToPlayPhrase(gameToPlay));
-        }
+            => ShowMainFormMessage(GetRandomGameToPlayPhrase(gameToPlay));
 
         public void ShowPlayersLimitsErrorMessage()
-        {
-            ShowMainFormMessage("The Min value must not exceed the Max value");
-        }
+            => ShowMainFormMessage("The Min value must not exceed the Max value");
 
         public void ShowGameAddedToListMessage(string gameName)
-        {
-            ShowOptionalMainFormMessage($"Game {gameName} is successfully added!");
-        }
+            => ShowOptionalMainFormMessage($"Game {gameName} is successfully added!");
 
         public void ShowPlayerAddedToListMessage(string playerName)
-        {
-            ShowOptionalMainFormMessage(playerName + " is added to the list!");
-        }
+            => ShowOptionalMainFormMessage(playerName + " is added to the list!");
 
         private bool ShowDialog(string message)
         {
@@ -85,28 +69,18 @@ namespace WhatGameToPlay
         }
 
         private bool ShowDeleteDialog(string objectToDelete, string listName)
-        {
-            return ShowDialog($"Are you sure you want to delete {objectToDelete} from {listName} list?");
-        }
+            => ShowDialog($"Are you sure you want to delete {objectToDelete} from {listName} list?");
 
         public bool ShowDeleteAvailableGameDialog(string gameName)
-        {
-            return ShowDeleteDialog(gameName, listName: "available games");
-        }
+            => ShowDeleteDialog(gameName, listName: "available games");
 
         public bool ShowDeleteGameDialog(string gameName)
-        {
-            return ShowDeleteDialog(gameName, listName: "games");
-        }
+            => ShowDeleteDialog(gameName, listName: "games");
 
         public bool ShowDeletePlayersLimitsFileDialog(string gameName)
-        {
-            return ShowDeleteDialog(gameName, listName: "limits");
-        }
+            => ShowDeleteDialog(gameName, listName: "limits");
 
         public bool ShowDeletePlayerFromListDialog(string selectedPlayer)
-        {
-            return ShowDeleteDialog(selectedPlayer, listName: "player");
-        }
+            => ShowDeleteDialog(selectedPlayer, listName: "player");
     }
 }

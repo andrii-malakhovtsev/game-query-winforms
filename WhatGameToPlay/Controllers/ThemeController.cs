@@ -12,12 +12,10 @@ namespace WhatGameToPlay
         private static Color s_backgroundColor;
         private static Color s_secondBackgroundColor;
 
-        private static string CurrentTheme { get => FilesReader.CurrentThemeFromFile; }
+        private static string CurrentTheme  => FilesReader.CurrentThemeFromFile;
 
         public static void SetTextBoxForeColor(TextBox textbox, bool win)
-        {
-            textbox.ForeColor = win ? Color.Green : s_textColor;
-        }
+            => textbox.ForeColor = win ? Color.Green : s_textColor;
 
         private static void SetThemeColors(Color textColor, Color buttonColor,
             Color backgroundColor, Color secondBackgroundColor)
@@ -28,7 +26,7 @@ namespace WhatGameToPlay
             s_secondBackgroundColor = secondBackgroundColor;
         }
 
-        public static void SetChosenThemeColors()
+        public static void SetChosenThemeColors() // MB use separate Theme class
         {
             switch (CurrentTheme)
             {
@@ -66,9 +64,7 @@ namespace WhatGameToPlay
         }
 
         public static void SetTextForeColor(ToolStripMenuItem toolStripMenuItem)
-        {
-            toolStripMenuItem.ForeColor = s_textColor;
-        }
+           => toolStripMenuItem.ForeColor = s_textColor;
 
         public static void SetBackgroundForeColor(ToolStripMenuItem toolStripMenuItem)
         {

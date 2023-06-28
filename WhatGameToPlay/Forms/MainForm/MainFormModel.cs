@@ -17,13 +17,13 @@ namespace WhatGameToPlay
 
         public List<Player> Players { get => _players; set => _players = value; }
 
-        public MessageDisplayer MessageDisplayer { get => _messageDisplayer; }
+        public MessageDisplayer MessageDisplayer  => _messageDisplayer; 
 
         public AdvancedMessageBox AdvancedMessageBox { get; } = new AdvancedMessageBox();
 
-        public int CheckBoxTopMeasure { get => FormHasExtraCheckBoxes ? 5 : 70; }
+        public int CheckBoxTopMeasure => FormHasExtraCheckBoxes ? 5 : 70;
 
-        public int CheckBoxLeftMeasure { get => FormHasExtraCheckBoxes ? 20 : 25; }
+        public int CheckBoxLeftMeasure => FormHasExtraCheckBoxes ? 20 : 25;
 
         public bool FormHasExtraCheckBoxes
         {

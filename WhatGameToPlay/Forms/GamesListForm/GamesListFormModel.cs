@@ -30,9 +30,9 @@ namespace WhatGameToPlay
             }
         }
 
-        public string SelectedGameName { get => _gamesListForm.TextBoxGameNameText; }
+        public string SelectedGameName => _gamesListForm.TextBoxGameNameText;
 
-        public bool PlayerLimitsExist { get => FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out _); }
+        public bool PlayerLimitsExist => FilesReader.GetPlayersLimitsFromGameFile(SelectedGameName, out _);
 
         public bool StartedLimitsEntering { set => _startedLimitsEntering = value; }
 
