@@ -50,7 +50,7 @@ namespace WhatGameToPlay
 
         public void DeleteGameConfirmation()
         {
-            if (_mainForm.ShowConfirmationMessages && !_mainForm.MessageDisplayer.ShowDeleteGameDialog(SelectedGame)) return;
+            if (_mainForm.ShowConfirmationMessages && !_mainForm.DialogDisplayer.ShowDeleteGameDialog(SelectedGame)) return;
             DeleteGameFromGameList();
         }
 
@@ -171,7 +171,7 @@ namespace WhatGameToPlay
         {
             if (_mainForm.ShowConfirmationMessages)
             {
-                if (_mainForm.MessageDisplayer.ShowDeletePlayersLimitsFileDialog(SelectedGame))
+                if (_mainForm.DialogDisplayer.ShowDeletePlayersLimitsFileDialog(SelectedGame))
                 {
                     DeletePlayerLimits();
                 }

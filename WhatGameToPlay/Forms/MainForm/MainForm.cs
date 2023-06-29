@@ -49,6 +49,8 @@ namespace WhatGameToPlay
 
         public AdvancedMessageBox AdvancedMessageBox => _mainFormModel.AdvancedMessageBox;
 
+        public DialogDisplayer DialogDisplayer => _mainFormModel.DialogDisplayer;
+
         public MessageDisplayer MessageDisplayer => _mainFormModel.MessageDisplayer;
 
         public Timer Timer => timer;

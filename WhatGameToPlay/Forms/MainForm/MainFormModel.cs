@@ -6,18 +6,19 @@ namespace WhatGameToPlay
     public class MainFormModel
     {
         private readonly MainForm _mainForm;
-        private readonly MessageDisplayer _messageDisplayer;
-        private List<Player> _players = new List<Player>();
 
         public MainFormModel(MainForm mainForm)
         {
             _mainForm = mainForm;
-            _messageDisplayer = new MessageDisplayer(mainForm);
+            DialogDisplayer = new DialogDisplayer(mainForm);
+            MessageDisplayer = new MessageDisplayer(mainForm);
         }
 
-        public List<Player> Players { get => _players; set => _players = value; }
+        public List<Player> Players { get; set; } = new List<Player>();
 
-        public MessageDisplayer MessageDisplayer  => _messageDisplayer; 
+        public MessageDisplayer MessageDisplayer { get; }
+
+        public DialogDisplayer DialogDisplayer { get; }
 
         public AdvancedMessageBox AdvancedMessageBox { get; } = new AdvancedMessageBox();
 
@@ -30,7 +31,7 @@ namespace WhatGameToPlay
             get
             {
                 const int maximumCheckBoxesOnForm = 11;
-                return _players.Count > maximumCheckBoxesOnForm;
+                return Players.Count > maximumCheckBoxesOnForm;
             }
         }
 
@@ -38,7 +39,7 @@ namespace WhatGameToPlay
         {
             if (!FilesReader.StandartFilesExist)
             {
-                if (_messageDisplayer.ShowFirstMeetingDialog())
+                if (DialogDisplayer.ShowFirstMeetingDialog())
                 {
                     FilesController.CreateStartingFiles();
                 }
@@ -105,7 +106,7 @@ namespace WhatGameToPlay
 
         private void RemoveGamesPlayerDoesNotPlayFromGamesList(List<string> gamesAvailable)
         {
-            foreach (Player player in _players)
+            foreach (Player player in Players)
             {
                 if (!player.CheckBox.Checked) continue;
                 for (int i = 0; i < gamesAvailable.Count; i++)
@@ -122,7 +123,7 @@ namespace WhatGameToPlay
         {
             if (_mainForm.ListBoxAvailableGames.SelectedItem == null) return;
             if (!_mainForm.ShowConfirmationMessages ||
-                _messageDisplayer.ShowDeleteAvailableGameDialog(_mainForm.ListBoxAvailableGames.SelectedItem.ToString()))
+                DialogDisplayer.ShowDeleteAvailableGameDialog(_mainForm.ListBoxAvailableGames.SelectedItem.ToString()))
             {
                 DeleteGameFromListBox();
             }
@@ -190,7 +191,7 @@ namespace WhatGameToPlay
             }
             else if (_mainForm.ShowMessages)
             {
-                _messageDisplayer.ShowNoGamesToPlayMessage();
+                MessageDisplayer.ShowNoGamesToPlayMessage();
             }
         }
 
@@ -204,7 +205,7 @@ namespace WhatGameToPlay
                 _mainForm.SetPictureBoxesVisibility(visible: true);
             }
             FormsTheme.ColorTextBox(_mainForm.TextBox, win: true);
-            _messageDisplayer.ShowGameToPlayMessage(gameToPlay: _mainForm.TextBox.Text);
+            MessageDisplayer.ShowGameToPlayMessage(gameToPlay: _mainForm.TextBox.Text);
         }
     }
 }
