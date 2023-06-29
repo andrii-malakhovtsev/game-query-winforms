@@ -3,7 +3,7 @@ using System.IO;
 
 namespace WhatGameToPlay
 {
-    public static class FilesCreater
+    public static class FilesCreator
     {
         public static void CreateStartingFiles()
         {

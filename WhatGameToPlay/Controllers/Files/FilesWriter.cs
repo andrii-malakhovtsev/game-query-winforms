@@ -13,7 +13,7 @@ namespace WhatGameToPlay
         public static void WritePlayersLimitsToFile(string gameName, decimal minValue, decimal maxValue)
         {
             string path = FilesReader.GetSelectedGamePlayersLimitsFilePath(gameName);
-            FilesCreater.CreateFile(path);
+            FilesCreator.CreateFile(path);
             using (TextWriter textWriter = new StreamWriter(path))
             {
                 textWriter.WriteLine(Convert.ToString(minValue));
@@ -25,7 +25,7 @@ namespace WhatGameToPlay
             List<string> gamesNotPlayingList)
         {
             string path = FilesReader.GetSelectedPlayerFilePath(selectedPlayer);
-            FilesCreater.CreatePlayerFile(selectedPlayer);
+            FilesCreator.CreatePlayerFile(selectedPlayer);
             using (TextWriter textWriter = new StreamWriter(path))
             {
                 foreach (string gameNotPlaying in gamesNotPlayingList)
