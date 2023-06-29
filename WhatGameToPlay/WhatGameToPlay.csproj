@@ -64,12 +64,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Files\Controller\FilesDeleter.cs" />
+    <Compile Include="Controllers\Files\Reader\DirectoryReader.cs" />
     <Compile Include="Controllers\Files\FilesNames.cs" />
-    <Compile Include="Controllers\Files\FilesReader.cs" />
+    <Compile Include="Controllers\Files\Reader\FilesReader.cs" />
     <Compile Include="Controllers\Files\FilesWriter.cs" />
+    <Compile Include="Controllers\Messages\DialogDisplayer.cs" />
     <Compile Include="Controllers\Theme\Theme.cs" />
-    <Compile Include="Controllers\MessageDisplayer.cs" />
-    <Compile Include="Controllers\Files\FilesController.cs" />
+    <Compile Include="Controllers\Messages\MessageDisplayer.cs" />
+    <Compile Include="Controllers\Files\Controller\FilesCreater.cs" />
     <Compile Include="Forms\AdvancedMessageBox\AdvancedMessageBoxModel.cs" />
     <Compile Include="Forms\GamesListForm\GamesListFormModel.cs" />
     <Compile Include="Forms\MainForm\MainForm.cs">

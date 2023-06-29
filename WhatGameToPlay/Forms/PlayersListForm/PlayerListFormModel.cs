@@ -20,7 +20,7 @@ namespace WhatGameToPlay
 
         public void RefreshPlayersFromFile()
         {
-            foreach (Player player in FilesReader.PlayersFromDirectory)
+            foreach (Player player in DirectoryReader.PlayersFromDirectory)
             {
                 _playerListForm.ListBoxPlayers.Items.Add(player.Name);
             }
@@ -32,6 +32,7 @@ namespace WhatGameToPlay
             {
                 SavePlayerGames(_currentSelectedPlayerName);
             }
+
             bool playerExist = FilesReader.PlayerFileExist(SelectedPlayerName);
             _playerSelected = playerExist;
             if (playerExist)
@@ -58,9 +59,11 @@ namespace WhatGameToPlay
             _currentSelectedPlayerName = SelectedPlayerName;
             _playerListForm.ListBoxPlayers.SelectedIndex = _playerListForm.ListBoxPlayers.FindString(SelectedPlayerName);
             _playerListForm.CheckBoxListGamesPlaying.Items.Clear();
+
             List<string> games = FilesReader.GamesListFromFile;
             SetGamesCheckedListBox(games);
-            string[] gamesPlayerDoesNotPlay = FilesReader.GetGamesPlayerDoesNotPlay(SelectedPlayerName);
+
+            string[] gamesPlayerDoesNotPlay = DirectoryReader.GetGamesPlayerDoesNotPlay(SelectedPlayerName);
             if (gamesPlayerDoesNotPlay.Length == 0 || gamesPlayerDoesNotPlay == null) return;
             foreach (string gameDoesNotPlay in gamesPlayerDoesNotPlay)
             {
@@ -106,10 +109,12 @@ namespace WhatGameToPlay
 
         public void AddPlayer()
         {
-            FilesController.CreatePlayerFile(SelectedPlayerName);
+            FilesCreater.CreatePlayerFile(SelectedPlayerName);
             _playerListForm.ListBoxPlayers.Items.Clear();
+
             RefreshPlayersFromFile();
             SelectPlayer();
+
             _mainForm.MessageDisplayer.ShowPlayerAddedToListMessage(SelectedPlayerName);
             _playerListForm.SetPlayerButtonsEnables(enable: false);
             _playerListForm.CheckBoxListGamesPlaying.Enabled = true;
@@ -118,14 +123,15 @@ namespace WhatGameToPlay
         public void DeletePlayer()
         {
             if (_mainForm.ShowConfirmationMessages
-                && !_mainForm.MessageDisplayer.ShowDeletePlayerFromListDialog(SelectedPlayerName)) return;
+                && !_mainForm.DialogDisplayer.ShowDeletePlayerFromListDialog(SelectedPlayerName)) return;
+
             DeletePlayerFromList();
         }
 
         private void DeletePlayerFromList()
         {
             _playerSelected = false;
-            FilesController.DeleteSelectedPlayerFile(SelectedPlayerName);
+            FilesDeleter.DeleteSelectedPlayerFile(SelectedPlayerName);
             _playerListForm.ListBoxPlayers.Items.Clear();
             RefreshPlayersFromFile();
             _playerListForm.CheckBoxListGamesPlaying.Items.Clear();

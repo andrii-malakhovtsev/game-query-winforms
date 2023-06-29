@@ -17,6 +17,11 @@ namespace WhatGameToPlay
         {
             InitializeComponent();
             _mainFormModel = new MainFormModel(this);
+            InitializeToolStripMenuItems();
+        }
+
+        private void InitializeToolStripMenuItems()
+        {
             foreach (ToolStripMenuItem toolStripMenuItem in menuStrip.Items)
             {
                 if (toolStripMenuItem.DropDownItems.Count == 0) continue;
@@ -49,6 +54,8 @@ namespace WhatGameToPlay
 
         public AdvancedMessageBox AdvancedMessageBox => _mainFormModel.AdvancedMessageBox;
 
+        public DialogDisplayer DialogDisplayer => _mainFormModel.DialogDisplayer;
+
         public MessageDisplayer MessageDisplayer => _mainFormModel.MessageDisplayer;
 
         public Timer Timer => timer;
@@ -75,12 +82,16 @@ namespace WhatGameToPlay
         {
             _mainFormModel.Players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
-            _mainFormModel.Players = FilesReader.PlayersFromDirectory;
+
+            _mainFormModel.Players = DirectoryReader.PlayersFromDirectory;
             _checkBoxesCopy.Clear();
+
             playersPanel.Visible = _mainFormModel.FormHasExtraCheckBoxes;
             playersGroupBox.Visible = _mainFormModel.FormHasExtraCheckBoxes;
+
             foreach (Player player in _mainFormModel.Players)
                 AddPlayerCheckBox(player);
+
             _checkBoxes.AddRange(_checkBoxesCopy);
             pictureBoxFireworks.SendToBack();
             _mainFormModel.RefreshTheme();
@@ -91,6 +102,7 @@ namespace WhatGameToPlay
             bool isToolStripThemeMenuItem = toolStripMenuItem == themeToolStripMenuItem,
                  isToolStripOptionsMenuItem = toolStripMenuItem == optionsToolStripMenuItem;
             if (!isToolStripThemeMenuItem && !isToolStripOptionsMenuItem) return;
+
             foreach (ToolStripMenuItem toolStripItem in toolStripMenuItem.DropDownItems)
             {
                 if (isToolStripThemeMenuItem)
@@ -128,6 +140,7 @@ namespace WhatGameToPlay
         {
             int topMeasure = _mainFormModel.CheckBoxTopMeasure,
                 leftMeasure = _mainFormModel.CheckBoxLeftMeasure;
+
             var checkBox = new CheckBox
             {
                 Top = topMeasure + (_checkBoxesCopy.Count * leftMeasure),
@@ -136,6 +149,7 @@ namespace WhatGameToPlay
                 Text = player.Name,
                 AutoSize = true
             };
+
             checkBox.CheckedChanged += new EventHandler(CheckBox_CheckedChanged);
             player.CheckBox = checkBox;
             checkBox.BringToFront();
@@ -219,7 +233,9 @@ namespace WhatGameToPlay
         {
             foreach (ToolStripMenuItem colorTheme in _colorThemeItems)
                 colorTheme.Checked = false;
+
             ((ToolStripMenuItem)sender).Checked = true;
+
             RefreshThemeToFile();
             FormsTheme.SetChosenThemeColors();
             _mainFormModel.RefreshTheme();

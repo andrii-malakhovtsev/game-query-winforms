@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace WhatGameToPlay
@@ -31,12 +32,15 @@ namespace WhatGameToPlay
         {
             labelMessage.Text = text;
             Text = caption;
+
             SetFormDimensions();
             SetButtonsVisibility(visible: yesNoMessageBox);
             SetFormButtons(yesNoMessageBox);
+
             if (!FilesReader.StandartFilesExist)
                 SetTimerRelatedControlsEnables(enable: true);
             else RefreshTheme();
+
             return ShowDialog();
         }
 
@@ -79,12 +83,26 @@ namespace WhatGameToPlay
         private void RefreshTheme()
         {
             FormsTheme.ColorControls(form: this);
-            Button[] allButtons = {
-                buttonOK,
-                buttonYes,
-                buttonNo
-            };
+
+            var allButtons = new List<Button>();
+            GetAllButtons(Controls, allButtons);
             FormsTheme.ColorButtons(allButtons);
+        }
+
+        private void GetAllButtons(Control.ControlCollection controls, List<Button> buttonList)
+        {
+            foreach (Control control in controls)
+            {
+                if (control is Button button)
+                {
+                    buttonList.Add(button);
+                }
+
+                if (control.HasChildren)
+                {
+                    GetAllButtons(control.Controls, buttonList);
+                }
+            }
         }
 
         private void ButtonConfirm_Click(object sender, EventArgs e) => Close();

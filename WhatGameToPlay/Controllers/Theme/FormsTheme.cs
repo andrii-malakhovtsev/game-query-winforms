@@ -7,9 +7,10 @@ namespace WhatGameToPlay
     public static class FormsTheme
     {
         private static Theme _theme = Theme.Standart;
+
         private static string CurrentThemeName => FilesReader.CurrentThemeFromFile;
 
-        public static HashSet<Theme> Themes { get; private set; } = new HashSet<Theme>()
+        private static HashSet<Theme> Themes { get; } = new HashSet<Theme>()
         {
             Theme.Standart,
             new Theme(name: "Dark",
@@ -57,7 +58,7 @@ namespace WhatGameToPlay
             }
         }
 
-        public static void ColorToolStripMenuItems(List<ToolStripMenuItem> toolStripMenuItems)
+        public static void ColorToolStripMenuItems(IEnumerable<ToolStripMenuItem> toolStripMenuItems)
         {
             foreach (ToolStripMenuItem toolStripMenuItem in toolStripMenuItems)
             {
@@ -66,7 +67,7 @@ namespace WhatGameToPlay
             }
         }
 
-        public static void ColorButtons(Button[] buttons)
+        public static void ColorButtons(IEnumerable<Button> buttons)
         {
             foreach (Button button in buttons)
             {
@@ -77,12 +78,14 @@ namespace WhatGameToPlay
 
         public static void ColorControls(Form form)
         {
-            var backColorClearTypes = new List<System.Type>() { 
+            form.BackColor = _theme.BackgroundColor;
+
+            var backColorClearTypes = new List<System.Type>()
+            {
                 typeof(Label),
-                typeof(GroupBox), 
+                typeof(GroupBox),
                 typeof(CheckBox)
             };
-            form.BackColor = _theme.BackgroundColor;
             foreach (Control control in form.Controls)
             {
                 System.Type controlType = control.GetType();

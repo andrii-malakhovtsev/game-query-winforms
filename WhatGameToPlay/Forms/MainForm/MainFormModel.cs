@@ -6,18 +6,19 @@ namespace WhatGameToPlay
     public class MainFormModel
     {
         private readonly MainForm _mainForm;
-        private readonly MessageDisplayer _messageDisplayer;
-        private List<Player> _players = new List<Player>();
 
         public MainFormModel(MainForm mainForm)
         {
             _mainForm = mainForm;
-            _messageDisplayer = new MessageDisplayer(mainForm);
+            DialogDisplayer = new DialogDisplayer(mainForm);
+            MessageDisplayer = new MessageDisplayer(mainForm);
         }
 
-        public List<Player> Players { get => _players; set => _players = value; }
+        public List<Player> Players { get; set; } = new List<Player>();
 
-        public MessageDisplayer MessageDisplayer  => _messageDisplayer; 
+        public MessageDisplayer MessageDisplayer { get; }
+
+        public DialogDisplayer DialogDisplayer { get; }
 
         public AdvancedMessageBox AdvancedMessageBox { get; } = new AdvancedMessageBox();
 
@@ -30,7 +31,7 @@ namespace WhatGameToPlay
             get
             {
                 const int maximumCheckBoxesOnForm = 11;
-                return _players.Count > maximumCheckBoxesOnForm;
+                return Players.Count > maximumCheckBoxesOnForm;
             }
         }
 
@@ -38,17 +39,19 @@ namespace WhatGameToPlay
         {
             if (!FilesReader.StandartFilesExist)
             {
-                if (_messageDisplayer.ShowFirstMeetingDialog())
+                if (DialogDisplayer.ShowFirstMeetingDialog())
                 {
-                    FilesController.CreateStartingFiles();
+                    FilesCreater.CreateStartingFiles();
                 }
                 else
                 {
                     _mainForm.Close();
                 }
             }
+
             _mainForm.RefreshPlayersList();
             SetSavedOptionsFromFile();
+
             _mainForm.SetSavedColors();
             FormsTheme.SetChosenThemeColors();
             RefreshTheme();
@@ -81,14 +84,16 @@ namespace WhatGameToPlay
 
         public void PlayerCheckBoxCheckedChange()
         {
-            List<string> gamesAvailable = FilesReader.GamesListFromFile;
             _mainForm.ListBoxAvailableGames.Items.Clear();
+
+            List<string> gamesAvailable = FilesReader.GamesListFromFile;
             RemoveGamesPlayerDoesNotPlayFromGamesList(gamesAvailable);
             RemoveLimitedGamesFromGamesList(gamesAvailable);
             foreach (string game in gamesAvailable)
             {
                 _mainForm.ListBoxAvailableGames.Items.Add(game);
             }
+
             if (_mainForm.CheckedPlayersCount == 0) _mainForm.ListBoxAvailableGames.Items.Clear();
         }
 
@@ -96,7 +101,7 @@ namespace WhatGameToPlay
         {
             if (_mainForm.ConsiderGamePlayersLimits)
             {
-                foreach (string limitedGame in FilesReader.GetLimitedGamesFromDirectory(_mainForm.CheckedPlayersCount))
+                foreach (string limitedGame in DirectoryReader.GetLimitedGamesFromDirectory(_mainForm.CheckedPlayersCount))
                 {
                     gamesAvailable.Remove(limitedGame);
                 }
@@ -105,7 +110,7 @@ namespace WhatGameToPlay
 
         private void RemoveGamesPlayerDoesNotPlayFromGamesList(List<string> gamesAvailable)
         {
-            foreach (Player player in _players)
+            foreach (Player player in Players)
             {
                 if (!player.CheckBox.Checked) continue;
                 for (int i = 0; i < gamesAvailable.Count; i++)
@@ -121,8 +126,9 @@ namespace WhatGameToPlay
         public void ListBoxAvailableGamesDoubleClick()
         {
             if (_mainForm.ListBoxAvailableGames.SelectedItem == null) return;
+
             if (!_mainForm.ShowConfirmationMessages ||
-                _messageDisplayer.ShowDeleteAvailableGameDialog(_mainForm.ListBoxAvailableGames.SelectedItem.ToString()))
+                DialogDisplayer.ShowDeleteAvailableGameDialog(_mainForm.ListBoxAvailableGames.SelectedItem.ToString()))
             {
                 DeleteGameFromListBox();
             }
@@ -152,20 +158,25 @@ namespace WhatGameToPlay
         {
             const int progressBarSmallIndent = 2, progressBarBigIndent = 3, timerInterval = 5,
                 timerMaximumAccelerationInterval = 45, maximumTimerInterval = 200;
+
             bool changeProgressbarValue = _mainForm.ProgressBar.Value < _mainForm.ProgressBar.Maximum - progressBarBigIndent
                 && rouletteInsteadProgressbar;
+
             if (changeProgressbarValue)
             {
                 _mainForm.ProgressBar.Value += _mainForm.Timer.Interval < timerMaximumAccelerationInterval ?
                     progressBarSmallIndent : progressBarBigIndent;
             }
+
             _mainForm.ListBoxAvailableGames.Focus();
             _mainForm.Timer.Interval += timerInterval;
+
             if (_mainForm.ListBoxAvailableGames.Items.Count > 0)
             {
                 int randomAvailableGame = new Random().Next(0, _mainForm.ListBoxAvailableGames.Items.Count);
                 _mainForm.TextBox.Text = Convert.ToString(_mainForm.ListBoxAvailableGames.Items[randomAvailableGame]);
             }
+
             if (_mainForm.Timer.Interval == maximumTimerInterval)
             {
                 StopRandomGameRoulette();
@@ -174,7 +185,6 @@ namespace WhatGameToPlay
 
         public void StartRandomGameRoulette(bool rouletteInsteadProgressbar)
         {
-            const int defaultTimerInterval = 10;
             if (_mainForm.ListBoxAvailableGames.Items.Count > 0)
             {
                 if (rouletteInsteadProgressbar)
@@ -185,12 +195,13 @@ namespace WhatGameToPlay
                 FormsTheme.ColorTextBox(_mainForm.TextBox, win: false);
                 _mainForm.SetPictureBoxesVisibility(visible: false);
                 _mainForm.SetActiveFormControlsEnables(enable: false);
+                const int defaultTimerInterval = 10;
                 _mainForm.Timer.Interval = defaultTimerInterval;
                 _mainForm.Timer.Enabled = true;
             }
             else if (_mainForm.ShowMessages)
             {
-                _messageDisplayer.ShowNoGamesToPlayMessage();
+                MessageDisplayer.ShowNoGamesToPlayMessage();
             }
         }
 
@@ -203,8 +214,9 @@ namespace WhatGameToPlay
             {
                 _mainForm.SetPictureBoxesVisibility(visible: true);
             }
+
             FormsTheme.ColorTextBox(_mainForm.TextBox, win: true);
-            _messageDisplayer.ShowGameToPlayMessage(gameToPlay: _mainForm.TextBox.Text);
+            MessageDisplayer.ShowGameToPlayMessage(gameToPlay: _mainForm.TextBox.Text);
         }
     }
 }
