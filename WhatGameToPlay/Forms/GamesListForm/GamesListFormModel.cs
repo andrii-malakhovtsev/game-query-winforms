@@ -61,7 +61,7 @@ namespace WhatGameToPlay
             _gamesListForm.SwitchGameButtonsEnables();
             if (!_mainForm.SaveDeletedGamesData)
             {
-                FilesController.DeletePlayersGameData(SelectedGame);
+                FilesDeleter.DeletePlayersGameData(SelectedGame);
             }
             _gamesListForm.TextBoxGameNameText = string.Empty;
             _gamesListForm.SetNumericUpDownsStandartValues();
@@ -69,7 +69,7 @@ namespace WhatGameToPlay
 
         private void DeletePlayerLimits()
         {
-            FilesController.DeletePlayersLimitsFile(SelectedGame);
+            FilesDeleter.DeletePlayersLimitsFile(SelectedGame);
             _gamesListForm.SetNumericUpDownsStandartValues();
         }
 
@@ -79,7 +79,7 @@ namespace WhatGameToPlay
             {
                 if (game == SelectedGame)
                 {
-                    FilesController.DeleteGameFromGameList(SelectedGame);
+                    FilesDeleter.DeleteGameFromGameList(SelectedGame);
                     break;
                 }
             }
@@ -122,10 +122,12 @@ namespace WhatGameToPlay
 
         private void SelectGameInListBoxFormReaction()
         {
-            bool selectedGameInList = GameInList(SelectedGame);
             _gamesListForm.SetNumericUpDownsStandartValues();
+
+            bool selectedGameInList = GameInList(SelectedGame);
             SelectGameInListBox(selectedGameInList);
             _gamesListForm.SetGameRelatedControlsEnables(enable: !selectedGameInList);
+
             if (FilesReader.StringContainsBannedSymbols(SelectedGame))
             {
                 _gamesListForm.UnableButtonAddgame();
@@ -137,10 +139,12 @@ namespace WhatGameToPlay
         {
             FilesWriter.AddGameToGameListFile(SelectedGame);
             RefreshListBoxGames();
+
             if (!PlayerLimitsExist)
             {
                 FilesWriter.AppendGameToPlayersFiles(SelectedGame);
             }
+
             _mainForm.MessageDisplayer.ShowGameAddedToListMessage(SelectedGame);
             _gamesListForm.SwitchGameButtonsEnables();
             _gamesListForm.SetGameRelatedControlsEnables(enable: false);

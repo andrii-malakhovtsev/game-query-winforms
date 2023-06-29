@@ -36,6 +36,7 @@ namespace WhatGameToPlay
         {
             SetPlayerButtonsEnables(enable: !playerExist);
             checkBoxSelectAll.Enabled = checkedListBoxGamesPlaying.Items.Count != 0;
+
             if (FilesReader.StringContainsBannedSymbols(TextBoxSelectedPlayerText))
             {
                 buttonAddPlayer.Enabled = false;
