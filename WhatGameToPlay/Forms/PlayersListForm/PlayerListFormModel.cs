@@ -109,7 +109,7 @@ namespace WhatGameToPlay
 
         public void AddPlayer()
         {
-            FilesCreater.CreatePlayerFile(SelectedPlayerName);
+            FilesCreator.CreatePlayerFile(SelectedPlayerName);
             _playerListForm.ListBoxPlayers.Items.Clear();
 
             RefreshPlayersFromFile();

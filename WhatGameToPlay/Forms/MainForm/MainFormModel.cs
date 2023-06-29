@@ -41,7 +41,7 @@ namespace WhatGameToPlay
             {
                 if (DialogDisplayer.ShowFirstMeetingDialog())
                 {
-                    FilesCreater.CreateStartingFiles();
+                    FilesCreator.CreateStartingFiles();
                 }
                 else
                 {
