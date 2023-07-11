@@ -20,7 +20,7 @@ namespace WhatGameToPlay
 
         public void RefreshPlayersFromFile()
         {
-            foreach (Player player in DirectoryReader.PlayersFromDirectory)
+            foreach (Player player in _mainForm.Model.Directories.Players.PlayersList)
             {
                 _playerListForm.ListBoxPlayers.Items.Add(player.Name);
             }
@@ -33,7 +33,7 @@ namespace WhatGameToPlay
                 SavePlayerGames(_currentSelectedPlayerName);
             }
 
-            bool playerExist = FilesReader.PlayerFileExist(SelectedPlayerName);
+            bool playerExist = _mainForm.Model.Directories.Players.PlayerFileExists(SelectedPlayerName);
             _playerSelected = playerExist;
             if (playerExist)
             {
@@ -50,8 +50,9 @@ namespace WhatGameToPlay
         private void SavePlayerGames(string playerName)
         {
             List<string> checkedCheckBoxes = _playerListForm.CheckBoxListGamesPlaying.CheckedItems.Cast<string>().ToList(),
-                         gamesNotPlayingList = FilesReader.GamesFromFile.Distinct().Except(checkedCheckBoxes).ToList();
-            FilesWriter.WriteGamesNotPlayingToFile(playerName, gamesNotPlayingList);
+                         gamesNotPlayingList = _mainForm.Model.Files.GamesList.
+                            CurrentGames.Distinct().Except(checkedCheckBoxes).ToList();
+            _mainForm.Model.Directories.Players.WriteGamesNotPlayingToFile(playerName, gamesNotPlayingList);
         }
 
         private void SelectPlayer()
@@ -60,10 +61,10 @@ namespace WhatGameToPlay
             _playerListForm.ListBoxPlayers.SelectedIndex = _playerListForm.ListBoxPlayers.FindString(SelectedPlayerName);
             _playerListForm.CheckBoxListGamesPlaying.Items.Clear();
 
-            List<string> games = FilesReader.GamesListFromFile;
+            List<string> games = _mainForm.Model.Files.GamesList.CurrentGamesList;
             SetGamesCheckedListBox(games);
 
-            string[] gamesPlayerDoesNotPlay = DirectoryReader.GetGamesPlayerDoesNotPlay(SelectedPlayerName);
+            string[] gamesPlayerDoesNotPlay = _mainForm.Model.Directories.Players.GetGamesPlayerDoesNotPlay(SelectedPlayerName);
             if (gamesPlayerDoesNotPlay.Length == 0 || gamesPlayerDoesNotPlay == null) return;
             foreach (string gameDoesNotPlay in gamesPlayerDoesNotPlay)
             {
@@ -109,7 +110,7 @@ namespace WhatGameToPlay
 
         public void AddPlayer()
         {
-            FilesCreator.CreatePlayerFile(SelectedPlayerName);
+            new PlayerFile(SelectedPlayerName, directory: _mainForm.Model.Directories.Players);
             _playerListForm.ListBoxPlayers.Items.Clear();
 
             RefreshPlayersFromFile();
@@ -131,7 +132,8 @@ namespace WhatGameToPlay
         private void DeletePlayerFromList()
         {
             _playerSelected = false;
-            FilesDeleter.DeleteSelectedPlayerFile(SelectedPlayerName);
+            new PlayerFile(SelectedPlayerName, directory: _mainForm.Model.Directories.Players).Delete(); 
+            // mb change later to list of playerFiles from some model to not create PlayerFiles and search by name
             _playerListForm.ListBoxPlayers.Items.Clear();
             RefreshPlayersFromFile();
             _playerListForm.CheckBoxListGamesPlaying.Items.Clear();
@@ -141,7 +143,7 @@ namespace WhatGameToPlay
 
         public void PlayersListFormClosing()
         {
-            if (FilesReader.PlayerFileExist(SelectedPlayerName))
+            if (_mainForm.Model.Directories.Players.PlayerFileExists(SelectedPlayerName))
             {
                 SavePlayerGames(SelectedPlayerName);
             }

@@ -9,10 +9,23 @@ namespace WhatGameToPlay
 
         public MainFormModel(MainForm mainForm)
         {
-            _mainForm = mainForm;
+            _mainForm = mainForm; // mb all of those initializations to separate class
+            Files = new Files();
+            Directories = new Directories();
+            FilesReader = new FilesReader(this);
+            AdvancedMessageBox = new AdvancedMessageBox(FilesReader);
             DialogDisplayer = new DialogDisplayer(mainForm);
             MessageDisplayer = new MessageDisplayer(mainForm);
+            FormsTheme = new FormsTheme(this);
         }
+
+        public Files Files { get; }
+
+        public Directories Directories { get; }
+
+        private FilesReader FilesReader { get; } // change later
+
+        public FormsTheme FormsTheme { get; }
 
         public List<Player> Players { get; set; } = new List<Player>();
 
@@ -20,7 +33,7 @@ namespace WhatGameToPlay
 
         public DialogDisplayer DialogDisplayer { get; }
 
-        public AdvancedMessageBox AdvancedMessageBox { get; } = new AdvancedMessageBox();
+        public AdvancedMessageBox AdvancedMessageBox { get; }
 
         public int CheckBoxTopMeasure => FormHasExtraCheckBoxes ? 5 : 70;
 
@@ -41,7 +54,7 @@ namespace WhatGameToPlay
             {
                 if (DialogDisplayer.ShowFirstMeetingDialog())
                 {
-                    FilesCreator.CreateStartingFiles();
+                    CreateStartingFiles();
                 }
                 else
                 {
@@ -57,9 +70,21 @@ namespace WhatGameToPlay
             RefreshTheme();
         }
 
+        private void CreateStartingFiles()
+        {
+            var files = (HashSet<StorageItem>)Files;
+            var directories = (HashSet<StorageItem>)Directories;
+            files.UnionWith(directories);
+
+            FilesCreator.CreateStartingFiles(files);
+
+            files.Clear();
+            directories.Clear();
+        }
+
         private void SetSavedOptionsFromFile()
         {
-            string[] currentOptions = FilesReader.OptionsFromFile;
+            string[] currentOptions = Files.Options.CurrentOptions;
             for (int i = 0; i < currentOptions.Length; i++)
             {
                 _mainForm.OptionToolStrips[i].Checked = Convert.ToBoolean(currentOptions[i]);
@@ -79,14 +104,14 @@ namespace WhatGameToPlay
             {
                 options[i] = Convert.ToString(_mainForm.OptionToolStrips[i].Checked);
             }
-            FilesWriter.WriteOptionsToFile(options);
+            Files.Options.WriteToFile(options);
         }
 
         public void PlayerCheckBoxCheckedChange()
         {
             _mainForm.ListBoxAvailableGames.Items.Clear();
 
-            List<string> gamesAvailable = FilesReader.GamesListFromFile;
+            List<string> gamesAvailable = Files.GamesList.CurrentGamesList;
             RemoveGamesPlayerDoesNotPlayFromGamesList(gamesAvailable);
             RemoveLimitedGamesFromGamesList(gamesAvailable);
             foreach (string game in gamesAvailable)
@@ -101,7 +126,7 @@ namespace WhatGameToPlay
         {
             if (_mainForm.ConsiderGamePlayersLimits)
             {
-                foreach (string limitedGame in DirectoryReader.GetLimitedGamesFromDirectory(_mainForm.CheckedPlayersCount))
+                foreach (string limitedGame in Directories.PlayersLimits.GetLimitedGamesList(_mainForm.CheckedPlayersCount))
                 {
                     gamesAvailable.Remove(limitedGame);
                 }

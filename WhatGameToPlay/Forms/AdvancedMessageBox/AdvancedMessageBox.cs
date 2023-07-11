@@ -6,13 +6,19 @@ namespace WhatGameToPlay
 {
     public partial class AdvancedMessageBox : Form
     {
-        public AdvancedMessageBox() => InitializeComponent();
+        private readonly FilesReader _filesReader;
+
+        public AdvancedMessageBox(FilesReader filesReader)
+        {
+            InitializeComponent();
+            _filesReader = filesReader;
+        }
 
         private void AdvancedMessageBox_Load(object sender, EventArgs e)
         {
             buttonYes.DialogResult = DialogResult.Yes;
             buttonNo.DialogResult = DialogResult.Cancel;
-            if (!FilesReader.StandartFilesExist) CenterToScreen();
+            if (!_filesReader.StandartFilesExist) CenterToScreen();
         }
 
         private void SetButtonsVisibility(bool visible)
@@ -37,7 +43,7 @@ namespace WhatGameToPlay
             SetButtonsVisibility(visible: yesNoMessageBox);
             SetFormButtons(yesNoMessageBox);
 
-            if (!FilesReader.StandartFilesExist)
+            if (!_filesReader.StandartFilesExist)
                 SetTimerRelatedControlsEnables(enable: true);
             else RefreshTheme();
 

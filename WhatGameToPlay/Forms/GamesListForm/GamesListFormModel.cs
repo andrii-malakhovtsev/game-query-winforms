@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
@@ -15,7 +16,7 @@ namespace WhatGameToPlay
             _mainForm = mainForm;
         }
 
-        private ListBox ListBoxGames 
+        private ListBox ListBoxGames
         { 
             get => _gamesListForm.ListBoxGames; 
             set => _gamesListForm.ListBoxGames = value; 
@@ -25,20 +26,24 @@ namespace WhatGameToPlay
         {
             get
             {
-                FilesReader.GetPlayersLimitsFromGameFile(SelectedGame, out decimal[] limits);
+                _mainForm.Model.Directories.PlayersLimits.GetPlayersLimits(SelectedGame, out decimal[] limits);
                 return limits;
             }
         }
 
         public string SelectedGame => _gamesListForm.TextBoxGameNameText;
 
-        public bool PlayerLimitsExist => FilesReader.GetPlayersLimitsFromGameFile(SelectedGame, out _);
+        public bool PlayerLimitsExist => _mainForm.Model.Directories.PlayersLimits.GetPlayersLimits(SelectedGame, out _);
+
+        public bool PlayerLimitsFileExists => _mainForm.Model.Directories.PlayersLimits.PlayersLimitsFileExist(SelectedGame);
 
         public bool StartedLimitsEntering { set => _startedLimitsEntering = value; }
 
-        private static bool GameInList(string gameToCheck)
+        private List<string> CurrentGamesList => _mainForm.Model.Files.GamesList.CurrentGamesList;
+
+        private bool GameInList(string gameToCheck)
         {
-            foreach (string game in FilesReader.GamesListFromFile)
+            foreach (string game in CurrentGamesList)
             {
                 if (gameToCheck == game)
                 {
@@ -48,38 +53,25 @@ namespace WhatGameToPlay
             return false;
         }
 
-        public void DeleteGameConfirmation()
-        {
-            if (_mainForm.ShowConfirmationMessages && !_mainForm.DialogDisplayer.ShowDeleteGameDialog(SelectedGame)) return;
-            DeleteGameFromGameList();
-        }
-
-        private void DeleteGameFromGameList()
-        {
-            DeleteGameFromGameListFile();
-            RefreshListBoxGames();
-            _gamesListForm.SwitchGameButtonsEnables();
-            if (!_mainForm.SaveDeletedGamesData)
-            {
-                FilesDeleter.DeletePlayersGameData(SelectedGame);
-            }
-            _gamesListForm.TextBoxGameNameText = string.Empty;
-            _gamesListForm.SetNumericUpDownsStandartValues();
-        }
-
         private void DeletePlayerLimits()
         {
-            FilesDeleter.DeletePlayersLimitsFile(SelectedGame);
+            DeletePlayersGameData(SelectedGame);
             _gamesListForm.SetNumericUpDownsStandartValues();
+        }
+
+        private void DeletePlayersGameData(string gameToDelete)
+        {
+            _mainForm.Model.Directories.Players.DeleteGameFromPlayersFiles(gameToDelete);
+            _mainForm.Model.Directories.PlayersLimits.DeletePlayersLimitsFile(gameName: gameToDelete);
         }
 
         private void DeleteGameFromGameListFile()
         {
-            foreach (string game in FilesReader.GamesListFromFile)
+            foreach (string game in CurrentGamesList)
             {
                 if (game == SelectedGame)
                 {
-                    FilesDeleter.DeleteGameFromGameList(SelectedGame);
+                    _mainForm.Model.Files.GamesList.DeleteFromFile(SelectedGame);
                     break;
                 }
             }
@@ -102,7 +94,7 @@ namespace WhatGameToPlay
         public void RefreshListBoxGames()
         {
             _gamesListForm.ListBoxGames.Items.Clear();
-            foreach (string game in FilesReader.GamesListFromFile)
+            foreach (string game in CurrentGamesList)
             {
                 _gamesListForm.ListBoxGames.Items.Add(game);
             }
@@ -137,16 +129,16 @@ namespace WhatGameToPlay
 
         public void AddGame()
         {
-            FilesWriter.AddGameToGameListFile(SelectedGame);
+            _mainForm.Model.Files.GamesList.WriteToFile(SelectedGame);
             RefreshListBoxGames();
 
-            if (!PlayerLimitsExist)
-            {
-                FilesWriter.AppendGameToPlayersFiles(SelectedGame);
-            }
+            //if (!PlayerLimitsExist)
+            //{
+            //    _mainForm.Model.Files.GamesList.WriteToFile(SelectedGame);
+            //}
 
             _mainForm.MessageDisplayer.ShowGameAddedToListMessage(SelectedGame);
-            _gamesListForm.SwitchGameButtonsEnables();
+            SelectGameInListBox(selectedGameInList: true);
             _gamesListForm.SetGameRelatedControlsEnables(enable: false);
         }
 
@@ -155,8 +147,10 @@ namespace WhatGameToPlay
             bool limitsFit = _gamesListForm.NumericUpDownMaxValue > _gamesListForm.NumericUpDownMinValue;
             if (limitsFit)
             {
-                FilesWriter.WritePlayersLimitsToFile(_currentSelectedGame,
-                _gamesListForm.NumericUpDownMinValue, _gamesListForm.NumericUpDownMaxValue);
+                _mainForm.Model.Directories.PlayersLimits.WriteToFiles(
+                    _currentSelectedGame,
+                    _gamesListForm.NumericUpDownMinValue,
+                    _gamesListForm.NumericUpDownMaxValue);
             }
             else if (_mainForm.ShowMessages)
             {
@@ -165,10 +159,32 @@ namespace WhatGameToPlay
             return limitsFit;
         }
 
+        private void DeleteGameFromGameList()
+        {
+            DeleteGameFromGameListFile();
+            RefreshListBoxGames();
+            _gamesListForm.SwitchGameButtonsEnables();
+
+            if (!_mainForm.SaveDeletedGamesData)
+            {
+                DeletePlayersGameData(SelectedGame);
+            }
+
+            _gamesListForm.CheckBoxPlayersNumberLimitChecked = false;
+            _gamesListForm.SetNumericUpDownsStandartValues();
+            _gamesListForm.TextBoxGameNameText = string.Empty;
+        }
+
         public void DeleteGameFromListBox()
         {
             if (SelectedGame == string.Empty) return;
             DeleteGameConfirmation();
+        }
+
+        public void DeleteGameConfirmation()
+        {
+            if (_mainForm.ShowConfirmationMessages && !_mainForm.DialogDisplayer.ShowDeleteGameDialog(SelectedGame)) return;
+            DeleteGameFromGameList();
         }
 
         public void DeletePlayerLimitsDialog()
