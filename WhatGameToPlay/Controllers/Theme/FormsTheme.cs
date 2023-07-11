@@ -4,11 +4,14 @@ using System.Windows.Forms;
 
 namespace WhatGameToPlay
 {
-    public static class FormsTheme
+    public class FormsTheme
     {
         private static Theme _theme = Theme.Standart;
+        private readonly ThemeFile _themeFile;
 
-        private static string CurrentThemeName => FilesReader.CurrentThemeFromFile;
+        public FormsTheme(MainFormModel mainFormModel) => _themeFile = mainFormModel.Files.Theme;
+
+        private string CurrentThemeName => _themeFile.CurrentTheme;
 
         private static HashSet<Theme> Themes { get; } = new HashSet<Theme>()
         {
@@ -41,7 +44,7 @@ namespace WhatGameToPlay
         public static void ColorToolStripMenuItemDropDowns(ToolStripMenuItem toolStripMenuItem)
            => toolStripMenuItem.ForeColor = _theme.TextColor;
 
-        public static void SetChosenThemeColors() 
+        public void SetChosenThemeColors() 
         {
             foreach (Theme theme in Themes)
             {
@@ -50,7 +53,7 @@ namespace WhatGameToPlay
             }
         }
 
-        public static void ColorToolStripMenuItem(ToolStripMenuItem toolStripMenuItem)
+        public void ColorToolStripMenuItem(ToolStripMenuItem toolStripMenuItem)
         {
             if (CurrentThemeName != Theme.Standart.Name)
             {

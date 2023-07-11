@@ -34,9 +34,9 @@ namespace WhatGameToPlay
             => ShowDeleteDialog(gameName, listName: FilesNames.GamesListName);
 
         public bool ShowDeletePlayersLimitsFileDialog(string gameName)
-            => ShowDeleteDialog(gameName, listName: FilesNames.LimitsDirectoryName);
+            => ShowDeleteDialog(gameName, listName: _mainForm.Model.Directories.PlayersLimits.Name);
 
         public bool ShowDeletePlayerFromListDialog(string selectedPlayer)
-            => ShowDeleteDialog(selectedPlayer, listName: FilesNames.PlayersDirectoryName);
+            => ShowDeleteDialog(selectedPlayer, listName: _mainForm.Model.Directories.Players.Name);
     }
 }

@@ -36,7 +36,6 @@
             this.buttonRandomAvailableGame = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.textBox = new System.Windows.Forms.TextBox();
-            this.pictureBoxSmile = new System.Windows.Forms.PictureBox();
             this.pictureBoxFireworks = new System.Windows.Forms.PictureBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,9 +58,10 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.playersPanel = new System.Windows.Forms.Panel();
             this.playersGroupBox = new System.Windows.Forms.GroupBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSmile)).BeginInit();
+            this.pictureBoxSmile = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFireworks)).BeginInit();
             this.menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSmile)).BeginInit();
             this.SuspendLayout();
             // 
             // listBoxAvailableGames
@@ -116,17 +116,6 @@
             this.textBox.Size = new System.Drawing.Size(168, 20);
             this.textBox.TabIndex = 13;
             this.textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // pictureBoxSmile
-            // 
-            this.pictureBoxSmile.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxSmile.Image")));
-            this.pictureBoxSmile.Location = new System.Drawing.Point(232, 233);
-            this.pictureBoxSmile.Name = "pictureBoxSmile";
-            this.pictureBoxSmile.Size = new System.Drawing.Size(298, 185);
-            this.pictureBoxSmile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxSmile.TabIndex = 14;
-            this.pictureBoxSmile.TabStop = false;
-            this.pictureBoxSmile.Visible = false;
             // 
             // pictureBoxFireworks
             // 
@@ -229,9 +218,9 @@
             this.CelebrateRandomGameToolStripMenuItem.Text = "Celebrate random game";
             this.CelebrateRandomGameToolStripMenuItem.Click += new System.EventHandler(this.CelebrateRandomGameToolStripMenuItem_Click);
             // 
-            // SaveDeletedGamesDataToolStripMenuItem
+            // saveDeletedGamesDataToolStripMenuItem
             // 
-            this.saveDeletedGamesDataToolStripMenuItem.Name = "SaveDeletedGamesDataToolStripMenuItem";
+            this.saveDeletedGamesDataToolStripMenuItem.Name = "saveDeletedGamesDataToolStripMenuItem";
             this.saveDeletedGamesDataToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.saveDeletedGamesDataToolStripMenuItem.Text = "Save deleted games data";
             this.saveDeletedGamesDataToolStripMenuItem.Click += new System.EventHandler(this.SaveDeletedGamesDataToolStripMenuItem_Click);
@@ -245,43 +234,43 @@
             this.discordToolStripMenuItem,
             this.youtubeToolStripMenuItem});
             this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            this.themeToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.themeToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.themeToolStripMenuItem.Text = "Theme";
             // 
             // whiteToolStripMenuItem
             // 
             this.whiteToolStripMenuItem.Name = "whiteToolStripMenuItem";
-            this.whiteToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.whiteToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.whiteToolStripMenuItem.Text = "White";
             // 
             // darkToolStripMenuItem
             // 
             this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
-            this.darkToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.darkToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.darkToolStripMenuItem.Text = "Dark";
             // 
             // telegramToolStripMenuItem
             // 
             this.telegramToolStripMenuItem.Name = "telegramToolStripMenuItem";
-            this.telegramToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.telegramToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.telegramToolStripMenuItem.Text = "Telegram";
             // 
             // discordToolStripMenuItem
             // 
             this.discordToolStripMenuItem.Name = "discordToolStripMenuItem";
-            this.discordToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.discordToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.discordToolStripMenuItem.Text = "Discord";
             // 
             // youtubeToolStripMenuItem
             // 
             this.youtubeToolStripMenuItem.Name = "youtubeToolStripMenuItem";
-            this.youtubeToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.youtubeToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.youtubeToolStripMenuItem.Text = "YouTube";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -309,6 +298,17 @@
             this.playersGroupBox.TabIndex = 20;
             this.playersGroupBox.TabStop = false;
             // 
+            // pictureBoxSmile
+            // 
+            this.pictureBoxSmile.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxSmile.Image")));
+            this.pictureBoxSmile.Location = new System.Drawing.Point(232, 233);
+            this.pictureBoxSmile.Name = "pictureBoxSmile";
+            this.pictureBoxSmile.Size = new System.Drawing.Size(298, 185);
+            this.pictureBoxSmile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxSmile.TabIndex = 21;
+            this.pictureBoxSmile.TabStop = false;
+            this.pictureBoxSmile.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -322,10 +322,10 @@
             this.Controls.Add(this.labelAvailableGames);
             this.Controls.Add(this.labelPresentPlayers);
             this.Controls.Add(this.listBoxAvailableGames);
-            this.Controls.Add(this.pictureBoxSmile);
             this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.playersGroupBox);
             this.Controls.Add(this.pictureBoxFireworks);
+            this.Controls.Add(this.pictureBoxSmile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
@@ -334,10 +334,10 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "What game to play?";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSmile)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFireworks)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSmile)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -350,7 +350,6 @@
         private System.Windows.Forms.Button buttonRandomAvailableGame;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.TextBox textBox;
-        private System.Windows.Forms.PictureBox pictureBoxSmile;
         private System.Windows.Forms.PictureBox pictureBoxFireworks;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -373,6 +372,7 @@
         private System.Windows.Forms.Panel playersPanel;
         private System.Windows.Forms.GroupBox playersGroupBox;
         private System.Windows.Forms.ToolStripMenuItem showMessagesToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pictureBoxSmile;
     }
 }
 

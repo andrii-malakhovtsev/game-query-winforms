@@ -64,11 +64,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Files\Controller\FilesDeleter.cs" />
-    <Compile Include="Controllers\Files\Reader\DirectoryReader.cs" />
-    <Compile Include="Controllers\Files\FilesNames.cs" />
-    <Compile Include="Controllers\Files\Reader\FilesReader.cs" />
-    <Compile Include="Controllers\Files\FilesWriter.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\Interfaces\TextFile.cs" />
+    <Compile Include="Controllers\Files\Initializations\Directories.cs" />
+    <Compile Include="Controllers\Files\Initializations\Files.cs" />
+    <Compile Include="Controllers\Files\Initializations\FileTypeObjects.cs" />
+    <Compile Include="Controllers\FilesBranch\Directories\Directory.cs" />
+    <Compile Include="Controllers\FilesBranch\Directories\PlayersLimitsDirectory.cs" />
+    <Compile Include="Controllers\FilesBranch\Directories\PlayersDirectory.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\Interfaces\StorageItem.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\GamesListFile.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\Interfaces\IFileCreator.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\Interfaces\IFileWriter.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\OptionsFile.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\Player\PlayerFile.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\ThemeFile.cs" />
+    <Compile Include="Controllers\Files\Controller\FilesNames.cs" />
+    <Compile Include="Controllers\Files\Controller\FilesReader.cs" />
     <Compile Include="Controllers\Messages\DialogDisplayer.cs" />
     <Compile Include="Controllers\Theme\Theme.cs" />
     <Compile Include="Controllers\Messages\MessageDisplayer.cs" />
@@ -101,7 +112,7 @@
     <Compile Include="Forms\AdvancedMessageBox\AdvancedMessageBox.Designer.cs">
       <DependentUpon>AdvancedMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Player.cs" />
+    <Compile Include="Controllers\FilesBranch\Files\Player\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\Theme\FormsTheme.cs" />
@@ -155,5 +166,6 @@
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -17,6 +17,7 @@ namespace WhatGameToPlay
         {
             InitializeComponent();
             _mainFormModel = new MainFormModel(this);
+            Model = _mainFormModel;
             InitializeToolStripMenuItems();
         }
 
@@ -30,6 +31,8 @@ namespace WhatGameToPlay
                 SetToolStripTheme(toolStripMenuItem);
             }
         }
+
+        public MainFormModel Model { get; }
 
         public List<ToolStripMenuItem> AllToolStripMenuItems
         {
@@ -83,7 +86,7 @@ namespace WhatGameToPlay
             _mainFormModel.Players.Clear();
             foreach (CheckBox checkbox in _checkBoxesCopy) checkbox.Dispose();
 
-            _mainFormModel.Players = DirectoryReader.PlayersFromDirectory;
+            _mainFormModel.Players = _mainFormModel.Directories.Players.PlayersList;
             _checkBoxesCopy.Clear();
 
             playersPanel.Visible = _mainFormModel.FormHasExtraCheckBoxes;
@@ -115,7 +118,7 @@ namespace WhatGameToPlay
         }
 
         private void MenuToolStripItem_DropDownOpening(object sender, EventArgs e)
-            => FormsTheme.ColorToolStripMenuItem(sender as ToolStripMenuItem);
+            => _mainFormModel.FormsTheme.ColorToolStripMenuItem(sender as ToolStripMenuItem);
 
         private void MenuToolStripItem_DropDownClosed(object sender, EventArgs e)
             => FormsTheme.ColorToolStripMenuItemDropDowns(sender as ToolStripMenuItem);
@@ -123,7 +126,7 @@ namespace WhatGameToPlay
         public void SetSavedColors()
         {
             _colorThemeItems.OfType<ToolStripMenuItem>()
-                .Where(colorTheme => colorTheme.Text == FilesReader.CurrentThemeFromFile)
+                .Where(colorTheme => colorTheme.Text == _mainFormModel.Files.Theme.CurrentTheme)
                 .ToList()
                 .ForEach(colorTheme => colorTheme.Checked = true);
         }
@@ -133,7 +136,7 @@ namespace WhatGameToPlay
             _colorThemeItems.OfType<ToolStripMenuItem>()
                 .Where(colorTheme => colorTheme.Checked == true)
                 .ToList()
-                .ForEach(colorTheme => FilesWriter.WriteThemeToFile(colorTheme.Text));
+                .ForEach(colorTheme => _mainFormModel.Files.Theme.WriteToFile(colorTheme.Text));
         }
 
         private void AddPlayerCheckBox(Player player)
@@ -237,7 +240,7 @@ namespace WhatGameToPlay
             ((ToolStripMenuItem)sender).Checked = true;
 
             RefreshThemeToFile();
-            FormsTheme.SetChosenThemeColors();
+            _mainFormModel.FormsTheme.SetChosenThemeColors();
             _mainFormModel.RefreshTheme();
         }
 

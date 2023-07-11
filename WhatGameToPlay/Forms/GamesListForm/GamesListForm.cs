@@ -58,13 +58,6 @@ namespace WhatGameToPlay
         private void TextBoxGameName_TextChanged(object sender, EventArgs e)
             => _gamesListFormModel.TextBoxGameNameTextChanged();
 
-        private void SetGameButtonsEnables(bool enable)
-        {
-            buttonAddGame.Enabled = enable;
-            buttonDeleteGame.Enabled = !enable;
-            AcceptButton = enable ? buttonAddGame : buttonDeleteGame;
-        }
-
         public void SwitchGameButtonsEnables()
         {
             buttonAddGame.Enabled = !buttonAddGame.Enabled;
@@ -96,8 +89,7 @@ namespace WhatGameToPlay
         {
             SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
             _gamesListFormModel.StartedLimitsEntering = checkBoxPlayersNumberLimit.Checked;
-            if (checkBoxPlayersNumberLimit.Checked
-                || !FilesReader.PlayersLimitsFileExist(_gamesListFormModel.SelectedGame)) return;
+            if (checkBoxPlayersNumberLimit.Checked || !_gamesListFormModel.PlayerLimitsFileExists) return;
             _gamesListFormModel.DeletePlayerLimitsDialog();
         }
 
@@ -115,6 +107,13 @@ namespace WhatGameToPlay
         {
             SetGameButtonsEnables(enable: enable);
             CheckBoxPlayersNumberLimitEnabled = !enable;
+        }
+
+        private void SetGameButtonsEnables(bool enable)
+        {
+            buttonAddGame.Enabled = enable;
+            buttonDeleteGame.Enabled = !enable;
+            AcceptButton = enable ? buttonAddGame : buttonDeleteGame;
         }
 
         private void GamesListForm_FormClosing(object sender, FormClosingEventArgs e)
