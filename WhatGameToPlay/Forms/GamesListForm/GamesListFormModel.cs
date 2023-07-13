@@ -10,16 +10,16 @@ namespace WhatGameToPlay
         private string _currentSelectedGame;
         private bool _startedLimitsEntering;
 
-        public GamesListFormModel(GamesListForm gamesListForm, MainForm mainForm) 
+        public GamesListFormModel(GamesListForm gamesListForm, MainForm mainForm)
         {
             _gamesListForm = gamesListForm;
             _mainForm = mainForm;
         }
 
         private ListBox ListBoxGames
-        { 
-            get => _gamesListForm.ListBoxGames; 
-            set => _gamesListForm.ListBoxGames = value; 
+        {
+            get => _gamesListForm.ListBoxGames;
+            set => _gamesListForm.ListBoxGames = value;
         }
 
         public decimal[] PlayersLimits
@@ -39,11 +39,11 @@ namespace WhatGameToPlay
 
         public bool StartedLimitsEntering { set => _startedLimitsEntering = value; }
 
-        private List<string> CurrentGamesList => _mainForm.Model.Files.GamesList.CurrentGamesList;
+        private List<string> CurrentGames => _mainForm.Model.Files.GamesList.CurrentGamesList;
 
         private bool GameInList(string gameToCheck)
         {
-            foreach (string game in CurrentGamesList)
+            foreach (string game in CurrentGames)
             {
                 if (gameToCheck == game)
                 {
@@ -55,11 +55,16 @@ namespace WhatGameToPlay
 
         private void DeletePlayerLimits()
         {
-            DeletePlayersGameData(SelectedGame);
+            if (_gamesListForm.CheckBoxPlayersNumberLimitChecked && _mainForm.SaveDeletedGamesData)
+            {
+                SavePlayersLimits();
+            }
+
+            DeletePlayerGameLimits(SelectedGame);
             _gamesListForm.SetNumericUpDownsStandartValues();
         }
 
-        private void DeletePlayersGameData(string gameToDelete)
+        private void DeletePlayerGameLimits(string gameToDelete)
         {
             _mainForm.Model.Directories.Players.DeleteGameFromPlayersFiles(gameToDelete);
             _mainForm.Model.Directories.PlayersLimits.DeletePlayersLimitsFile(gameName: gameToDelete);
@@ -67,7 +72,7 @@ namespace WhatGameToPlay
 
         private void DeleteGameFromGameListFile()
         {
-            foreach (string game in CurrentGamesList)
+            foreach (string game in CurrentGames)
             {
                 if (game == SelectedGame)
                 {
@@ -94,7 +99,7 @@ namespace WhatGameToPlay
         public void RefreshListBoxGames()
         {
             _gamesListForm.ListBoxGames.Items.Clear();
-            foreach (string game in CurrentGamesList)
+            foreach (string game in CurrentGames)
             {
                 _gamesListForm.ListBoxGames.Items.Add(game);
             }
@@ -125,6 +130,8 @@ namespace WhatGameToPlay
                 _gamesListForm.UnableButtonAddgame();
             }
             _gamesListForm.SetPlayersLimitsToNumericUpDowns();
+
+            if (!selectedGameInList) _gamesListForm.SetNumericUpDownsEnables(enable: false);
         }
 
         public void AddGame()
@@ -132,14 +139,12 @@ namespace WhatGameToPlay
             _mainForm.Model.Files.GamesList.WriteToFile(SelectedGame);
             RefreshListBoxGames();
 
-            //if (!PlayerLimitsExist)
-            //{
-            //    _mainForm.Model.Files.GamesList.WriteToFile(SelectedGame);
-            //}
-
             _mainForm.MessageDisplayer.ShowGameAddedToListMessage(SelectedGame);
             SelectGameInListBox(selectedGameInList: true);
             _gamesListForm.SetGameRelatedControlsEnables(enable: false);
+
+            if (_gamesListForm.CheckBoxPlayersNumberLimitChecked)
+                _gamesListForm.SetNumericUpDownsEnables(enable: true);
         }
 
         private bool SavePlayersLimits()
@@ -165,14 +170,18 @@ namespace WhatGameToPlay
             RefreshListBoxGames();
             _gamesListForm.SwitchGameButtonsEnables();
 
+            _gamesListForm.TextBoxGameNameText = string.Empty;
+            _gamesListForm.SetNumericUpDownsStandartValues();
+
             if (!_mainForm.SaveDeletedGamesData)
             {
-                DeletePlayersGameData(SelectedGame);
+                DeletePlayerGameLimits(_currentSelectedGame);
+                _gamesListForm.CheckBoxPlayersNumberLimitChecked = false;
             }
-
-            _gamesListForm.CheckBoxPlayersNumberLimitChecked = false;
-            _gamesListForm.SetNumericUpDownsStandartValues();
-            _gamesListForm.TextBoxGameNameText = string.Empty;
+            else if (_startedLimitsEntering)
+            {
+                _gamesListForm.CheckBoxPlayersNumberLimitChecked = false;
+            }
         }
 
         public void DeleteGameFromListBox()
