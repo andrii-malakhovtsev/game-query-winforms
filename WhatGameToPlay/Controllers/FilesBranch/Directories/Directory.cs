@@ -8,19 +8,19 @@ namespace WhatGameToPlay
 
         public string Name => _name;
 
-        protected static string GetFullDirectoryFilePath(string directory, string fileName)  // mb change to non-static later
-                => GetFullDirectoryTextFilePath(directory, fileName + TextFileExtension);
+        protected string GetFullDirectoryFilePath(string fileName)
+            => GetFullDirectoryTextFilePath(_name, fileName + TextFileExtension);
 
         public string GetSelectedFilePath(string fileName) => GetFullDirectoryTextFilePath(_name, fileName);
 
-        protected static string GetFullDirectoryTextFilePath(string directory, string fileName)
-                => directory + "\\" + fileName;
+        private static string GetFullDirectoryTextFilePath(string directory, string fileName)
+            => directory + "\\" + fileName;
 
         public abstract void CreateDirectoryIfNotExists();
 
-        public abstract FileInfo[] TextFiles { get; }
+        protected FileInfo[] TextFiles => GetTextFiles(directoryName: _name);
 
-        protected static FileInfo[] GetTextFiles(string directoryName)
+        private static FileInfo[] GetTextFiles(string directoryName)
         {
             const string textFilesInDirectory = "*" + TextFileExtension;
             var directory = new DirectoryInfo(directoryName);

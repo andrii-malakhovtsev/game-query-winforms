@@ -8,11 +8,8 @@ namespace WhatGameToPlay
     {
         public PlayersLimitsDirectory(string name) : base(name) { }
 
-        public override FileInfo[] TextFiles
-            => GetTextFiles(directoryName: _name); // mb I can get rid of "Name" here and actually in many other places
-
-        private string GetSelectedGamePlayersLimitsFilePath(string gameName) // to interface
-            => GetFullDirectoryFilePath(_name, gameName);
+        private string GetSelectedGamePlayersLimitsFilePath(string gameName)
+            => GetFullDirectoryFilePath(gameName);
 
         public bool PlayersLimitsFileExist(string checkGame)
             => FilesReader.TextFileExist(TextFiles, checkGame);
@@ -82,7 +79,7 @@ namespace WhatGameToPlay
 
         public void DeletePlayersLimitsFile(string gameName)
         {
-            string path = GetFullDirectoryFilePath(directory: _name, gameName);
+            string path = GetFullDirectoryFilePath(gameName);
             if (File.Exists(path))
             {
                 File.Delete(path);

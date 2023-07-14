@@ -6,15 +6,15 @@ namespace WhatGameToPlay
 {
     public static class FilesCreator
     {
-        public static void CreateStartingFiles(HashSet<StorageItem> fileTypes)
+        public static void CreateStartingFiles(HashSet<StorageItem> storageItems)
         {
-            foreach (var file in fileTypes)
+            foreach (var storageItem in storageItems)
             {
-                if (file is IFileCreator fileCreator)
-                    fileCreator.CreateFileIfNotExists();
+                if (storageItem is IFileCreator file)
+                    file.CreateFileIfNotExists();
 
-                if (file is Directory directoryCreator)
-                    directoryCreator.CreateDirectoryIfNotExists();
+                if (storageItem is Directory directory)
+                    directory.CreateDirectoryIfNotExists();
             }
         }
 
@@ -32,7 +32,7 @@ namespace WhatGameToPlay
                 createFunction: path => System.IO.Directory.CreateDirectory(path));
         }
 
-        public static bool CreateFileTypeIfNotExists(string path,
+        private static bool CreateFileTypeIfNotExists(string path,
             Func<string, bool> existsCheckFunction,
             Action<string> createFunction)
         {

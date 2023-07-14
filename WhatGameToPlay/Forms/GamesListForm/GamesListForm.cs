@@ -30,12 +30,6 @@ namespace WhatGameToPlay
 
         public decimal NumericUpDownMinValue => numericUpDownMin.Value;
 
-        public bool CheckBoxPlayersNumberLimitEnabled
-        {
-            get => checkBoxPlayersNumberLimit.Enabled;
-            set => checkBoxPlayersNumberLimit.Enabled = value; 
-        }
-
         public bool CheckBoxPlayersNumberLimitChecked
         {
             get => checkBoxPlayersNumberLimit.Checked;
@@ -106,7 +100,7 @@ namespace WhatGameToPlay
         public void SetGameRelatedControlsEnables(bool enable)
         {
             SetGameButtonsEnables(enable: enable);
-            CheckBoxPlayersNumberLimitEnabled = !enable;
+            checkBoxPlayersNumberLimit.Enabled = !enable;
         }
 
         private void SetGameButtonsEnables(bool enable)

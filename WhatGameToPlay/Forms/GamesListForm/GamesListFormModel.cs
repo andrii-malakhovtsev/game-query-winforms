@@ -31,7 +31,7 @@ namespace WhatGameToPlay
             }
         }
 
-        public string SelectedGame => _gamesListForm.TextBoxGameNameText;
+        private string SelectedGame => _gamesListForm.TextBoxGameNameText;
 
         public bool PlayerLimitsExist => _mainForm.Model.Directories.PlayersLimits.GetPlayersLimits(SelectedGame, out _);
 
