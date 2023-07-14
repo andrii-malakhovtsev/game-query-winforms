@@ -4,43 +4,36 @@ using System.IO;
 
 namespace WhatGameToPlay
 {
-    public class PlayersLimitsDirectory : Directory
+    public class GamesLimitsDirectory : Directory
     {
-        public PlayersLimitsDirectory(string name) : base(name) { }
+        public GamesLimitsDirectory(string name) : base(name) { }
 
-        public override FileInfo[] TextFiles
-            => GetTextFiles(directoryName: _name); // mb I can get rid of "Name" here and actually in many other places
-
-        private string GetSelectedGamePlayersLimitsFilePath(string gameName) // to interface
-            => GetFullDirectoryFilePath(_name, gameName);
-
-        public bool PlayersLimitsFileExist(string checkGame)
-            => FilesReader.TextFileExist(TextFiles, checkGame);
-
-        public override void CreateDirectoryIfNotExists()
+        public override void CreateDirectoryIfNotExists() 
             => FilesCreator.CreateDirectoryIfNotExists(_name);
+
+        private string GetFilePath(string gameName) => GetFullDirectoryFilePath(gameName);
 
         public List<string> GetLimitedGamesList(int checkedPlayersCount)
         {
             var limitedGames = new List<string>();
-            foreach (FileInfo playerLimitsTextFileInfo in TextFiles)
+            foreach (FileInfo gamesLimitsTextFileInfo in TextFiles)
             {
-                AddLimitedGamesFromSpecificPlayer(limitedGames, playerLimitsTextFileInfo, checkedPlayersCount);
+                AddLimitedGamesFromLimitFile(limitedGames, gamesLimitsTextFileInfo, checkedPlayersCount);
             }
             return limitedGames;
         }
 
-        private static void AddLimitedGamesFromSpecificPlayer(List<string> limitedGames, FileInfo playerLimitsTextFileInfo,
+        private static void AddLimitedGamesFromLimitFile(List<string> limitedGames, FileInfo gameLimitFile,
             int checkedPlayersCount)
         {
-            string[] lines = File.ReadAllLines(playerLimitsTextFileInfo.FullName);
-            bool playerCountOutsideLimits =
+            string[] lines = File.ReadAllLines(gameLimitFile.FullName);
+            bool playersCountOutsideLimits =
                 checkedPlayersCount < Convert.ToInt32(lines[0]) ||
                 checkedPlayersCount > Convert.ToInt32(lines[1]);
 
-            if (playerCountOutsideLimits)
+            if (playersCountOutsideLimits)
             {
-                limitedGames.Add(Path.GetFileNameWithoutExtension(playerLimitsTextFileInfo.Name));
+                limitedGames.Add(Path.GetFileNameWithoutExtension(gameLimitFile.Name));
             }
         }
 
@@ -71,7 +64,7 @@ namespace WhatGameToPlay
 
         public void WriteToFiles(string gameName, decimal minValue, decimal maxValue)
         {
-            string path = GetSelectedGamePlayersLimitsFilePath(gameName);
+            string path = GetFilePath(gameName);
             FilesCreator.CreateFileIfNotExists(path);
             using (TextWriter textWriter = new StreamWriter(path))
             {
@@ -80,9 +73,9 @@ namespace WhatGameToPlay
             }
         }
 
-        public void DeletePlayersLimitsFile(string gameName)
+        public void DeleteFile(string gameName)
         {
-            string path = GetFullDirectoryFilePath(directory: _name, gameName);
+            string path = GetFullDirectoryFilePath(gameName);
             if (File.Exists(path))
             {
                 File.Delete(path);

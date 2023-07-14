@@ -69,7 +69,7 @@
     <Compile Include="Controllers\Files\Initializations\Files.cs" />
     <Compile Include="Controllers\Files\Initializations\FileTypeObjects.cs" />
     <Compile Include="Controllers\FilesBranch\Directories\Directory.cs" />
-    <Compile Include="Controllers\FilesBranch\Directories\PlayersLimitsDirectory.cs" />
+    <Compile Include="Controllers\FilesBranch\Directories\GamesLimitsDirectory.cs" />
     <Compile Include="Controllers\FilesBranch\Directories\PlayersDirectory.cs" />
     <Compile Include="Controllers\FilesBranch\Files\Interfaces\StorageItem.cs" />
     <Compile Include="Controllers\FilesBranch\Files\GamesListFile.cs" />
