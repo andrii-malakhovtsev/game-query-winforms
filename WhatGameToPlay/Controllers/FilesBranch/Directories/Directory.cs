@@ -7,7 +7,7 @@ namespace WhatGameToPlay
         protected Directory(string name) : base(name) {}
 
         public string Name => _name;
-
+        
         protected string GetFullDirectoryFilePath(string fileName)
             => GetFullDirectoryTextFilePath(_name, fileName + TextFileExtension);
 
@@ -17,6 +17,8 @@ namespace WhatGameToPlay
             => directory + "\\" + fileName;
 
         public abstract void CreateDirectoryIfNotExists();
+
+        public bool FileExists(string fileName) => FilesReader.TextFileExist(TextFiles, fileName);
 
         protected FileInfo[] TextFiles => GetTextFiles(directoryName: _name);
 

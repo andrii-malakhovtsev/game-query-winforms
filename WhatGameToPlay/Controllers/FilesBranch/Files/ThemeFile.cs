@@ -11,11 +11,11 @@ namespace WhatGameToPlay
         public void CreateFileIfNotExists()
         {
             if (FilesCreator.CreateFileIfNotExists(_name))
-                WriteToFile(Theme.Standart.Name); // mb change later after check to action?
+                WriteToFile(Theme.Standart.Name);
         }
 
-        public string CurrentTheme => File.ReadAllLines(_name)[0];
-
         public void WriteToFile(params string[] theme) => File.WriteAllText(_name, theme[0]);
+
+        public string CurrentThemeName => File.ReadAllLines(_name)[0];
     }
 }

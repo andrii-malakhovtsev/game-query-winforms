@@ -14,9 +14,9 @@ namespace WhatGameToPlay
             _gamesListFormModel.RefreshListBoxGames();
         }
 
-        public ListBox ListBoxGames 
+        public ListBox ListBoxGames
         { 
-            get => listBoxGames; 
+            get => listBoxGames;
             set => listBoxGames = value; 
         }
 
@@ -39,7 +39,7 @@ namespace WhatGameToPlay
         private void GamesListForm_Load(object sender, EventArgs e)
             => FormsTheme.ColorControls(form: this);
 
-        public void UnableButtonAddgame() => buttonAddGame.Enabled = false;
+        public void UnableButtonAddGame() => buttonAddGame.Enabled = false;
 
         private void ListBoxGames_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -52,12 +52,6 @@ namespace WhatGameToPlay
         private void TextBoxGameName_TextChanged(object sender, EventArgs e)
             => _gamesListFormModel.TextBoxGameNameTextChanged();
 
-        public void SwitchGameButtonsEnables()
-        {
-            buttonAddGame.Enabled = !buttonAddGame.Enabled;
-            buttonDeleteGame.Enabled = !buttonDeleteGame.Enabled;
-        }
-
         private void ButtonAddGame_Click(object sender, EventArgs e)
             => _gamesListFormModel.AddGame();
 
@@ -66,6 +60,20 @@ namespace WhatGameToPlay
 
         private void ListBoxGames_DoubleClick(object sender, EventArgs e)
             => _gamesListFormModel.DeleteGameFromListBox();
+
+        private void CheckBoxPlayersNumberLimit_CheckedChanged(object sender, EventArgs e)
+        {
+            SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
+            _gamesListFormModel.StartedLimitsEntering = checkBoxPlayersNumberLimit.Checked;
+            if (checkBoxPlayersNumberLimit.Checked || !_gamesListFormModel.GamesLimitsFileExists) return;
+            _gamesListFormModel.DeleteGameLimitsDialog();
+        }
+
+        public void SwitchGameButtonsEnables()
+        {
+            buttonAddGame.Enabled = !buttonAddGame.Enabled;
+            buttonDeleteGame.Enabled = !buttonDeleteGame.Enabled;
+        }
 
         public void SetNumericUpDownsEnables(bool enable)
         {
@@ -77,14 +85,6 @@ namespace WhatGameToPlay
         {
             numericUpDownMin.Value = numericUpDownMin.Minimum;
             numericUpDownMax.Value = numericUpDownMax.Maximum;
-        }
-
-        private void CheckBoxPlayersNumberLimit_CheckedChanged(object sender, EventArgs e)
-        {
-            SetNumericUpDownsEnables(enable: checkBoxPlayersNumberLimit.Checked);
-            _gamesListFormModel.StartedLimitsEntering = checkBoxPlayersNumberLimit.Checked;
-            if (checkBoxPlayersNumberLimit.Checked || !_gamesListFormModel.PlayerLimitsFileExists) return;
-            _gamesListFormModel.DeletePlayerLimitsDialog();
         }
 
         public void SetPlayersLimitsToNumericUpDowns()

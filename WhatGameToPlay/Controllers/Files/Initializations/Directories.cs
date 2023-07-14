@@ -7,12 +7,12 @@ namespace WhatGameToPlay
         public Directories()
         {
             Players = new PlayersDirectory(name: "Players");
-            PlayersLimits = new PlayersLimitsDirectory(name: "Limits");
-            _filesObjects = new HashSet<StorageItem> { Players, PlayersLimits };
+            GamesLimits = new GamesLimitsDirectory(name: "Limits");
+            _filesObjects = new HashSet<StorageItem> { Players, GamesLimits };
         }
 
         public PlayersDirectory Players { get; }
 
-        public PlayersLimitsDirectory PlayersLimits { get; }
+        public GamesLimitsDirectory GamesLimits { get; }
     }
 }

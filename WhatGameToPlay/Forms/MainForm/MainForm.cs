@@ -126,7 +126,7 @@ namespace WhatGameToPlay
         public void SetSavedColors()
         {
             _colorThemeItems.OfType<ToolStripMenuItem>()
-                .Where(colorTheme => colorTheme.Text == _mainFormModel.Files.Theme.CurrentTheme)
+                .Where(colorTheme => colorTheme.Text == _mainFormModel.Files.Theme.CurrentThemeName)
                 .ToList()
                 .ForEach(colorTheme => colorTheme.Checked = true);
         }

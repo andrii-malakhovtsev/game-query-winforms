@@ -27,9 +27,6 @@ namespace WhatGameToPlay
             }
         }
 
-        public bool PlayerFileExists(string checkPlayer)
-            => FilesReader.TextFileExist(TextFiles, checkPlayer);
-
         private static void AddPlayerFromTextFile(List<Player> players, FileInfo playerTextFile)
         {
             var gamesNotPlaying = File.ReadAllLines(playerTextFile.FullName).ToHashSet();
@@ -46,8 +43,7 @@ namespace WhatGameToPlay
             return null;
         }
 
-        public void WriteGamesNotPlayingToFile(string selectedPlayer,
-            List<string> gamesNotPlayingList)
+        public void WriteGamesNotPlayingToFile(string selectedPlayer, List<string> gamesNotPlayingList)
         {
             string path = GetFullDirectoryFilePath(selectedPlayer);
             new PlayerFile(selectedPlayer, directory: this); // change it later to getting player mb

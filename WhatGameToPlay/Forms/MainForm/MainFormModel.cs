@@ -23,7 +23,7 @@ namespace WhatGameToPlay
 
         public Directories Directories { get; }
 
-        private FilesReader FilesReader { get; } // change later
+        private FilesReader FilesReader { get; } // change later to separate class w initializations
 
         public FormsTheme FormsTheme { get; }
 
@@ -126,7 +126,7 @@ namespace WhatGameToPlay
         {
             if (_mainForm.ConsiderGamePlayersLimits)
             {
-                foreach (string limitedGame in Directories.PlayersLimits.GetLimitedGamesList(_mainForm.CheckedPlayersCount))
+                foreach (string limitedGame in Directories.GamesLimits.GetLimitedGamesList(_mainForm.CheckedPlayersCount))
                 {
                     gamesAvailable.Remove(limitedGame);
                 }

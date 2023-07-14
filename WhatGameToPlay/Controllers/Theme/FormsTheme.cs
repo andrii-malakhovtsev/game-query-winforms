@@ -11,7 +11,7 @@ namespace WhatGameToPlay
 
         public FormsTheme(MainFormModel mainFormModel) => _themeFile = mainFormModel.Files.Theme;
 
-        private string CurrentThemeName => _themeFile.CurrentTheme;
+        private string CurrentThemeName => _themeFile.CurrentThemeName;
 
         private static HashSet<Theme> Themes { get; } = new HashSet<Theme>()
         {
@@ -38,13 +38,7 @@ namespace WhatGameToPlay
               secondBackgroundColor: Color.FromArgb(24, 24, 24))
         };
 
-        public static void ColorTextBox(TextBox textbox, bool win)
-            => textbox.ForeColor = win ? Color.Green : _theme.TextColor;
-
-        public static void ColorToolStripMenuItemDropDowns(ToolStripMenuItem toolStripMenuItem)
-           => toolStripMenuItem.ForeColor = _theme.TextColor;
-
-        public void SetChosenThemeColors() 
+        public void SetChosenThemeColors()
         {
             foreach (Theme theme in Themes)
             {
@@ -52,6 +46,12 @@ namespace WhatGameToPlay
                     _theme = theme;
             }
         }
+
+        public static void ColorTextBox(TextBox textbox, bool win)
+            => textbox.ForeColor = win ? Color.Green : _theme.TextColor;
+
+        public static void ColorToolStripMenuItemDropDowns(ToolStripMenuItem toolStripMenuItem)
+           => toolStripMenuItem.ForeColor = _theme.TextColor;
 
         public void ColorToolStripMenuItem(ToolStripMenuItem toolStripMenuItem)
         {

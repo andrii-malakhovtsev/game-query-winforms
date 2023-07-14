@@ -19,6 +19,12 @@ namespace WhatGameToPlay
 
         public List<string> CurrentGamesList => File.ReadAllLines(_name).OrderBy(game => game).ToList();
 
+        public void WriteToFile(params string[] gameName)
+        {
+            foreach (string game in gameName)
+                File.AppendAllText(_name, game + Environment.NewLine);
+        }
+
         public void DeleteFromFile(string gameToDelete)
         {
             string[] gamesExceptGameToDelete = CurrentGames.Where(game => game != gameToDelete).ToArray();
@@ -27,12 +33,6 @@ namespace WhatGameToPlay
 
             foreach (string game in gamesExceptGameToDelete)
                 WriteToFile(game);
-        }
-
-        public void WriteToFile(params string[] gameName)
-        {
-            foreach (string game in gameName)
-                File.AppendAllText(_name, game + Environment.NewLine);
         }
     }
 }

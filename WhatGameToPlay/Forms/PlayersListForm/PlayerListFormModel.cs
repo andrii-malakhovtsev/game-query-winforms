@@ -18,6 +18,39 @@ namespace WhatGameToPlay
 
         private string SelectedPlayerName => _playerListForm.TextBoxSelectedPlayerText;
 
+        public void AddPlayer()
+        {
+            new PlayerFile(SelectedPlayerName, directory: _mainForm.Model.Directories.Players);
+            _playerListForm.ListBoxPlayers.Items.Clear();
+
+            RefreshPlayersFromFile();
+            SelectPlayer();
+
+            _mainForm.MessageDisplayer.ShowPlayerAddedToListMessage(SelectedPlayerName);
+            _playerListForm.SetPlayerButtonsEnables(enable: false);
+            _playerListForm.CheckBoxListGamesPlaying.Enabled = true;
+        }
+
+        public void DeletePlayer()
+        {
+            if (_mainForm.ShowConfirmationMessages
+                && !_mainForm.DialogDisplayer.ShowDeletePlayerFromListDialog(SelectedPlayerName)) return;
+
+            DeletePlayerFromList();
+        }
+
+        private void DeletePlayerFromList()
+        {
+            _playerSelected = false;
+            new PlayerFile(SelectedPlayerName, directory: _mainForm.Model.Directories.Players).Delete();
+            // mb change later to list of playerFiles from some model to not create PlayerFiles and search by name
+            _playerListForm.ListBoxPlayers.Items.Clear();
+            RefreshPlayersFromFile();
+            _playerListForm.CheckBoxListGamesPlaying.Items.Clear();
+            _playerListForm.SetPlayerButtonsEnables(enable: true);
+            _playerListForm.TextBoxSelectedPlayerText = string.Empty;
+        }
+
         public void RefreshPlayersFromFile()
         {
             foreach (Player player in _mainForm.Model.Directories.Players.PlayersList)
@@ -33,7 +66,7 @@ namespace WhatGameToPlay
                 SavePlayerGames(_currentSelectedPlayerName);
             }
 
-            bool playerExist = _mainForm.Model.Directories.Players.PlayerFileExists(SelectedPlayerName);
+            bool playerExist = _mainForm.Model.Directories.Players.FileExists(SelectedPlayerName);
             _playerSelected = playerExist;
             if (playerExist)
             {
@@ -108,42 +141,9 @@ namespace WhatGameToPlay
             }
         }
 
-        public void AddPlayer()
-        {
-            new PlayerFile(SelectedPlayerName, directory: _mainForm.Model.Directories.Players);
-            _playerListForm.ListBoxPlayers.Items.Clear();
-
-            RefreshPlayersFromFile();
-            SelectPlayer();
-
-            _mainForm.MessageDisplayer.ShowPlayerAddedToListMessage(SelectedPlayerName);
-            _playerListForm.SetPlayerButtonsEnables(enable: false);
-            _playerListForm.CheckBoxListGamesPlaying.Enabled = true;
-        }
-
-        public void DeletePlayer()
-        {
-            if (_mainForm.ShowConfirmationMessages
-                && !_mainForm.DialogDisplayer.ShowDeletePlayerFromListDialog(SelectedPlayerName)) return;
-
-            DeletePlayerFromList();
-        }
-
-        private void DeletePlayerFromList()
-        {
-            _playerSelected = false;
-            new PlayerFile(SelectedPlayerName, directory: _mainForm.Model.Directories.Players).Delete(); 
-            // mb change later to list of playerFiles from some model to not create PlayerFiles and search by name
-            _playerListForm.ListBoxPlayers.Items.Clear();
-            RefreshPlayersFromFile();
-            _playerListForm.CheckBoxListGamesPlaying.Items.Clear();
-            _playerListForm.SetPlayerButtonsEnables(enable: true);
-            _playerListForm.TextBoxSelectedPlayerText = string.Empty;
-        }
-
         public void PlayersListFormClosing()
         {
-            if (_mainForm.Model.Directories.Players.PlayerFileExists(SelectedPlayerName))
+            if (_mainForm.Model.Directories.Players.FileExists(SelectedPlayerName))
             {
                 SavePlayerGames(SelectedPlayerName);
             }

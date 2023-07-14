@@ -26,20 +26,20 @@ namespace WhatGameToPlay
         {
             get
             {
-                _mainForm.Model.Directories.PlayersLimits.GetPlayersLimits(SelectedGame, out decimal[] limits);
+                _mainForm.Model.Directories.GamesLimits.GetPlayersLimits(SelectedGame, out decimal[] limits);
                 return limits;
             }
         }
 
+        private List<string> CurrentGames => _mainForm.Model.Files.GamesList.CurrentGamesList;
+
         private string SelectedGame => _gamesListForm.TextBoxGameNameText;
 
-        public bool PlayerLimitsExist => _mainForm.Model.Directories.PlayersLimits.GetPlayersLimits(SelectedGame, out _);
+        public bool PlayerLimitsExist => _mainForm.Model.Directories.GamesLimits.GetPlayersLimits(SelectedGame, out _);
 
-        public bool PlayerLimitsFileExists => _mainForm.Model.Directories.PlayersLimits.PlayersLimitsFileExist(SelectedGame);
+        public bool GamesLimitsFileExists => _mainForm.Model.Directories.GamesLimits.FileExists(SelectedGame);
 
         public bool StartedLimitsEntering { set => _startedLimitsEntering = value; }
-
-        private List<string> CurrentGames => _mainForm.Model.Files.GamesList.CurrentGamesList;
 
         private bool GameInList(string gameToCheck)
         {
@@ -51,35 +51,6 @@ namespace WhatGameToPlay
                 }
             }
             return false;
-        }
-
-        private void DeletePlayerLimits()
-        {
-            if (_gamesListForm.CheckBoxPlayersNumberLimitChecked && _mainForm.SaveDeletedGamesData)
-            {
-                SavePlayersLimits();
-            }
-
-            DeletePlayerGameLimits(SelectedGame);
-            _gamesListForm.SetNumericUpDownsStandartValues();
-        }
-
-        private void DeletePlayerGameLimits(string gameToDelete)
-        {
-            _mainForm.Model.Directories.Players.DeleteGameFromPlayersFiles(gameToDelete);
-            _mainForm.Model.Directories.PlayersLimits.DeletePlayersLimitsFile(gameName: gameToDelete);
-        }
-
-        private void DeleteGameFromGameListFile()
-        {
-            foreach (string game in CurrentGames)
-            {
-                if (game == SelectedGame)
-                {
-                    _mainForm.Model.Files.GamesList.DeleteFromFile(SelectedGame);
-                    break;
-                }
-            }
         }
 
         private void SelectGameInListBox(bool selectedGameInList)
@@ -127,7 +98,7 @@ namespace WhatGameToPlay
 
             if (FilesReader.StringContainsBannedSymbols(SelectedGame))
             {
-                _gamesListForm.UnableButtonAddgame();
+                _gamesListForm.UnableButtonAddGame();
             }
             _gamesListForm.SetPlayersLimitsToNumericUpDowns();
 
@@ -145,23 +116,6 @@ namespace WhatGameToPlay
 
             if (_gamesListForm.CheckBoxPlayersNumberLimitChecked)
                 _gamesListForm.SetNumericUpDownsEnables(enable: true);
-        }
-
-        private bool SavePlayersLimits()
-        {
-            bool limitsFit = _gamesListForm.NumericUpDownMaxValue > _gamesListForm.NumericUpDownMinValue;
-            if (limitsFit)
-            {
-                _mainForm.Model.Directories.PlayersLimits.WriteToFiles(
-                    _currentSelectedGame,
-                    _gamesListForm.NumericUpDownMinValue,
-                    _gamesListForm.NumericUpDownMaxValue);
-            }
-            else if (_mainForm.ShowMessages)
-            {
-                _mainForm.MessageDisplayer.ShowPlayersLimitsErrorMessage();
-            }
-            return limitsFit;
         }
 
         private void DeleteGameFromGameList()
@@ -184,6 +138,41 @@ namespace WhatGameToPlay
             }
         }
 
+        private void DeleteGameFromGameListFile()
+        {
+            foreach (string game in CurrentGames)
+            {
+                if (game == SelectedGame)
+                {
+                    _mainForm.Model.Files.GamesList.DeleteFromFile(SelectedGame);
+                    break;
+                }
+            }
+        }
+
+        private bool SavePlayersLimits()
+        {
+            bool limitsFit = _gamesListForm.NumericUpDownMaxValue > _gamesListForm.NumericUpDownMinValue;
+            if (limitsFit)
+            {
+                _mainForm.Model.Directories.GamesLimits.WriteToFiles(
+                    _currentSelectedGame,
+                    _gamesListForm.NumericUpDownMinValue,
+                    _gamesListForm.NumericUpDownMaxValue);
+            }
+            else if (_mainForm.ShowMessages)
+            {
+                _mainForm.MessageDisplayer.ShowPlayersLimitsErrorMessage();
+            }
+            return limitsFit;
+        }
+
+        private void DeletePlayerGameLimits(string gameToDeleteLimits)
+        {
+            _mainForm.Model.Directories.Players.DeleteGameFromPlayersFiles(gameToDeleteLimits);
+            _mainForm.Model.Directories.GamesLimits.DeleteFile(gameToDeleteLimits);
+        }
+
         public void DeleteGameFromListBox()
         {
             if (SelectedGame == string.Empty) return;
@@ -196,11 +185,11 @@ namespace WhatGameToPlay
             DeleteGameFromGameList();
         }
 
-        public void DeletePlayerLimitsDialog()
+        public void DeleteGameLimitsDialog()
         {
             if (_mainForm.ShowConfirmationMessages)
             {
-                if (_mainForm.DialogDisplayer.ShowDeletePlayersLimitsFileDialog(SelectedGame))
+                if (_mainForm.DialogDisplayer.ShowDeleteGameLimitsFileDialog(SelectedGame))
                 {
                     DeletePlayerLimits();
                 }
@@ -210,6 +199,17 @@ namespace WhatGameToPlay
                 }
             }
             else DeletePlayerLimits();
+        }
+
+        private void DeletePlayerLimits()
+        {
+            if (_gamesListForm.CheckBoxPlayersNumberLimitChecked && _mainForm.SaveDeletedGamesData)
+            {
+                SavePlayersLimits();
+            }
+
+            DeletePlayerGameLimits(SelectedGame);
+            _gamesListForm.SetNumericUpDownsStandartValues();
         }
 
         public void GamesListFormClosing()
