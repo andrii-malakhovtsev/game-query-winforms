@@ -1,6 +1,6 @@
 # "What game to play?" on Windows Forms 
-Having many friends playing some different games and some same?
-Now you can enter all the friends and games in the program and check what games you can play together!
+Having many friends who play different games, some of which might be the same? 
+Now you can input all your friends and the games they play into the program and check which games you can play together!
 
 ## Installation
 Go to <a href="https://github.com/malandrii/what-game-to-play-winforms/releases">Releases</a>, choose the latest release and click the "what-games-to-play.exe" or
