@@ -118,10 +118,14 @@ namespace WhatGameToPlay
         }
 
         private void MenuToolStripItem_DropDownOpening(object sender, EventArgs e)
-            => _mainFormModel.FormsTheme.ColorToolStripMenuItem(sender as ToolStripMenuItem);
+        {
+            _mainFormModel.FormsTheme.ColorToolStripMenuItem(sender as ToolStripMenuItem);
+        }
 
         private void MenuToolStripItem_DropDownClosed(object sender, EventArgs e)
-            => FormsTheme.ColorToolStripMenuItemDropDowns(sender as ToolStripMenuItem);
+        {
+            FormsTheme.ColorToolStripMenuItemDropDowns(sender as ToolStripMenuItem);
+        }
 
         public void SetSavedColors()
         {
@@ -169,10 +173,14 @@ namespace WhatGameToPlay
         }
 
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
-            => _mainFormModel.PlayerCheckBoxCheckedChange();
+        {
+            _mainFormModel.PlayerCheckBoxCheckedChange();
+        }
 
         private void ListBoxAvailableGames_DoubleClick(object sender, EventArgs e)
-            => _mainFormModel.ListBoxAvailableGamesDoubleClick();
+        {
+            _mainFormModel.ListBoxAvailableGamesDoubleClick();
+        }
 
         private void ShowConfirmationMessagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -197,7 +205,9 @@ namespace WhatGameToPlay
         }
 
         private void GamesListToolStripMenuItem_Click(object sender, EventArgs e)
-            => _mainFormModel.CreateNewGamesListForm();
+        {
+            _mainFormModel.CreateNewGamesListForm();
+        }
 
         private void RouletteInsteadProgressbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -207,7 +217,9 @@ namespace WhatGameToPlay
         }
 
         private void PlayersListToolStripMenuItem_Click(object sender, EventArgs e)
-            => _mainFormModel.CreateNewPlayersListForm();
+        {
+            _mainFormModel.CreateNewPlayersListForm();
+        }
 
         private void CelebrateRandomGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -245,7 +257,9 @@ namespace WhatGameToPlay
         }
 
         private void ButtonRandomAvailableGame_Click(object sender, EventArgs e)
-            => _mainFormModel.StartRandomGameRoulette(rouletteInsteadProgressbarToolStripMenuItem.Checked);
+        {
+            _mainFormModel.StartRandomGameRoulette(rouletteInsteadProgressbarToolStripMenuItem.Checked);
+        }
 
         public void SetActiveFormControlsEnables(bool enable)
         {

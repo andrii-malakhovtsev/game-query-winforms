@@ -28,11 +28,15 @@ namespace WhatGameToPlay
             buttonOK.Visible = !visible;
         }
 
-        public DialogResult Show(string text) 
-            => SetMessageBox(text, "", yesNoMessageBox: false);
+        public DialogResult Show(string text)
+        {
+            return SetMessageBox(text, "", yesNoMessageBox: false);
+        }
 
         public DialogResult Show(string text, string caption, MessageBoxButtons YesNo)
-            => SetMessageBox(text, caption, yesNoMessageBox: true);
+        {
+            return SetMessageBox(text, caption, yesNoMessageBox: true);
+        }
 
         private DialogResult SetMessageBox(string text, string caption, bool yesNoMessageBox)
         {
@@ -78,7 +82,9 @@ namespace WhatGameToPlay
         }
 
         private void SetButtonLocation(Button button)
-            => AdvancedMessageBoxModel.SetButtonLocation(ref button, buttonYes, panel.Height, Width);
+        {
+            AdvancedMessageBoxModel.SetButtonLocation(ref button, buttonYes, panel.Height, Width);
+        }
 
         private void SetFormDimensions()
         {
@@ -90,23 +96,23 @@ namespace WhatGameToPlay
         {
             FormsTheme.ColorControls(form: this);
 
-            var allButtons = new List<Button>();
+            var allButtons = new HashSet<Button>();
             GetAllButtons(Controls, allButtons);
             FormsTheme.ColorButtons(allButtons);
         }
 
-        private void GetAllButtons(Control.ControlCollection controls, List<Button> buttonList)
+        private void GetAllButtons(Control.ControlCollection controls, HashSet<Button> buttons)
         {
             foreach (Control control in controls)
             {
                 if (control is Button button)
                 {
-                    buttonList.Add(button);
+                    buttons.Add(button);
                 }
 
                 if (control.HasChildren)
                 {
-                    GetAllButtons(control.Controls, buttonList);
+                    GetAllButtons(control.Controls, buttons);
                 }
             }
         }

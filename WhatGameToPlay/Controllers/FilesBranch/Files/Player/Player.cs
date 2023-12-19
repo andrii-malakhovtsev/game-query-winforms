@@ -6,7 +6,9 @@ namespace WhatGameToPlay
     public class Player
     {
         public Player(string name, HashSet<string> gamesNotPlaying) : this(name)
-            => GamesNotPlaying = gamesNotPlaying;
+        { 
+            GamesNotPlaying = gamesNotPlaying;
+        }
 
         public Player(string name) => Name = name;
 

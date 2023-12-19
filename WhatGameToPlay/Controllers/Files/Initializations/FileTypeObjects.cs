@@ -6,6 +6,9 @@ namespace WhatGameToPlay
     {
         protected HashSet<StorageItem> _filesObjects;
 
-        public static explicit operator HashSet<StorageItem>(FileTypeObjects fileTypeObjects) => fileTypeObjects._filesObjects;
+        public static explicit operator HashSet<StorageItem>(FileTypeObjects fileTypeObjects)
+        {
+            return fileTypeObjects._filesObjects;
+        }
     }
 }

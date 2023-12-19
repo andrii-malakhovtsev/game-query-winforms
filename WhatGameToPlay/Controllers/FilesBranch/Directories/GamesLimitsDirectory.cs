@@ -8,14 +8,13 @@ namespace WhatGameToPlay
     {
         public GamesLimitsDirectory(string name) : base(name) { }
 
-        public override void CreateDirectoryIfNotExists() 
-            => FilesCreator.CreateDirectoryIfNotExists(_name);
+        public override void CreateDirectoryIfNotExists() => FilesCreator.CreateDirectoryIfNotExists(_name);
 
         private string GetFilePath(string gameName) => GetFullDirectoryFilePath(gameName);
 
-        public List<string> GetLimitedGamesList(int checkedPlayersCount)
+        public HashSet<string> GetLimitedGamesList(int checkedPlayersCount)
         {
-            var limitedGames = new List<string>();
+            var limitedGames = new HashSet<string>();
             foreach (FileInfo gamesLimitsTextFileInfo in TextFiles)
             {
                 AddLimitedGamesFromLimitFile(limitedGames, gamesLimitsTextFileInfo, checkedPlayersCount);
@@ -23,7 +22,7 @@ namespace WhatGameToPlay
             return limitedGames;
         }
 
-        private static void AddLimitedGamesFromLimitFile(List<string> limitedGames, FileInfo gameLimitFile,
+        private static void AddLimitedGamesFromLimitFile(HashSet<string> limitedGames, FileInfo gameLimitFile,
             int checkedPlayersCount)
         {
             string[] lines = File.ReadAllLines(gameLimitFile.FullName);

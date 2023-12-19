@@ -37,7 +37,9 @@ namespace WhatGameToPlay
         }
 
         private void GamesListForm_Load(object sender, EventArgs e)
-            => FormsTheme.ColorControls(form: this);
+        {
+            FormsTheme.ColorControls(form: this);
+        }
 
         public void UnableButtonAddGame() => buttonAddGame.Enabled = false;
 
@@ -50,16 +52,24 @@ namespace WhatGameToPlay
         }
 
         private void TextBoxGameName_TextChanged(object sender, EventArgs e)
-            => _gamesListFormModel.TextBoxGameNameTextChanged();
+        {
+            _gamesListFormModel.TextBoxGameNameTextChanged();
+        }
 
         private void ButtonAddGame_Click(object sender, EventArgs e)
-            => _gamesListFormModel.AddGame();
+        {
+            _gamesListFormModel.AddGame();
+        }
 
         private void ButtonDeleteGame_Click(object sender, EventArgs e)
-            => _gamesListFormModel.DeleteGameConfirmation();
+        {
+            _gamesListFormModel.DeleteGameConfirmation();
+        }
 
         private void ListBoxGames_DoubleClick(object sender, EventArgs e)
-            => _gamesListFormModel.DeleteGameFromListBox();
+        {
+            _gamesListFormModel.DeleteGameFromListBox();
+        }
 
         private void CheckBoxPlayersNumberLimit_CheckedChanged(object sender, EventArgs e)
         {
@@ -111,6 +121,8 @@ namespace WhatGameToPlay
         }
 
         private void GamesListForm_FormClosing(object sender, FormClosingEventArgs e)
-            => _gamesListFormModel.GamesListFormClosing();
+        {
+            _gamesListFormModel.GamesListFormClosing();
+        }
     }
 }

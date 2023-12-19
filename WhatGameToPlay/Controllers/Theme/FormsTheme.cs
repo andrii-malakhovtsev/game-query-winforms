@@ -48,10 +48,14 @@ namespace WhatGameToPlay
         }
 
         public static void ColorTextBox(TextBox textbox, bool win)
-            => textbox.ForeColor = win ? Color.Green : _theme.TextColor;
+        {
+            textbox.ForeColor = win ? Color.Green : _theme.TextColor;
+        }
 
         public static void ColorToolStripMenuItemDropDowns(ToolStripMenuItem toolStripMenuItem)
-           => toolStripMenuItem.ForeColor = _theme.TextColor;
+        {
+            toolStripMenuItem.ForeColor = _theme.TextColor;
+        }
 
         public void ColorToolStripMenuItem(ToolStripMenuItem toolStripMenuItem)
         {
@@ -89,10 +93,12 @@ namespace WhatGameToPlay
                 typeof(GroupBox),
                 typeof(CheckBox)
             };
+
             foreach (Control control in form.Controls)
             {
                 System.Type controlType = control.GetType();
                 control.ForeColor = _theme.TextColor;
+
                 // if add typeof(PictureBox) to backColorClearTypes - program detects as a virus
                 if (!backColorClearTypes.Contains(controlType) && controlType != typeof(PictureBox))
                 {
