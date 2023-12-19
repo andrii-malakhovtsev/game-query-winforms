@@ -27,7 +27,7 @@ namespace WhatGameToPlay
 
         public FormsTheme FormsTheme { get; }
 
-        public List<Player> Players { get; set; } = new List<Player>();
+        public HashSet<Player> Players { get; set; } = new HashSet<Player>();
 
         public MessageDisplayer MessageDisplayer { get; }
 

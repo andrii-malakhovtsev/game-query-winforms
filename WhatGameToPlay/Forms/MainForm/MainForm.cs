@@ -278,9 +278,7 @@ namespace WhatGameToPlay
         }
 
         private void Timer_Tick(object sender, EventArgs e)
-        {
-            _mainFormModel.TimerTick(rouletteInsteadProgressbar: rouletteInsteadProgressbarToolStripMenuItem.Checked);
-        }
+            => _mainFormModel.TimerTick(rouletteInsteadProgressbar: rouletteInsteadProgressbarToolStripMenuItem.Checked);
 
         public void SetPictureBoxesVisibility(bool visible)
         {

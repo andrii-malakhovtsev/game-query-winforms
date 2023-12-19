@@ -11,14 +11,16 @@ namespace WhatGameToPlay
         public override void CreateDirectoryIfNotExists()
         {
             if (FilesCreator.CreateDirectoryIfNotExists(_name))
+            {
                 new PlayerFile("example player", directory: this);
+            }
         }
 
-        public List<Player> PlayersList
+        public HashSet<Player> PlayersList
         {
             get
             {
-                var players = new List<Player>();
+                var players = new HashSet<Player>();
                 foreach (FileInfo playerTextFile in TextFiles)
                 {
                     AddPlayerFromTextFile(players, playerTextFile);
@@ -27,7 +29,7 @@ namespace WhatGameToPlay
             }
         }
 
-        private static void AddPlayerFromTextFile(List<Player> players, FileInfo playerTextFile)
+        private static void AddPlayerFromTextFile(HashSet<Player> players, FileInfo playerTextFile)
         {
             var gamesNotPlaying = File.ReadAllLines(playerTextFile.FullName).ToHashSet();
             players.Add(new Player(Path.GetFileNameWithoutExtension(playerTextFile.Name), gamesNotPlaying));

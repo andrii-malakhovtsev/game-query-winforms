@@ -96,23 +96,23 @@ namespace WhatGameToPlay
         {
             FormsTheme.ColorControls(form: this);
 
-            var allButtons = new List<Button>();
+            var allButtons = new HashSet<Button>();
             GetAllButtons(Controls, allButtons);
             FormsTheme.ColorButtons(allButtons);
         }
 
-        private void GetAllButtons(Control.ControlCollection controls, List<Button> buttonList)
+        private void GetAllButtons(Control.ControlCollection controls, HashSet<Button> buttons)
         {
             foreach (Control control in controls)
             {
                 if (control is Button button)
                 {
-                    buttonList.Add(button);
+                    buttons.Add(button);
                 }
 
                 if (control.HasChildren)
                 {
-                    GetAllButtons(control.Controls, buttonList);
+                    GetAllButtons(control.Controls, buttons);
                 }
             }
         }
