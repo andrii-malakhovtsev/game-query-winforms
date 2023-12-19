@@ -25,18 +25,28 @@ namespace WhatGameToPlay
         }
 
         private bool ShowDeleteDialog(string objectToDelete, string listName)
-            => ShowDialog($"Are you sure you want to delete {objectToDelete} from {listName.ToLower()} list?");
+        {
+            return ShowDialog($"Are you sure you want to delete {objectToDelete} from {listName.ToLower()} list?");
+        }
 
         public bool ShowDeleteAvailableGameDialog(string gameName)
-            => ShowDeleteDialog(gameName, listName: FilesNames.AvailableGamesListName);
+        {
+            return ShowDeleteDialog(gameName, listName: FilesNames.AvailableGamesListName);
+        }
 
         public bool ShowDeleteGameDialog(string gameName)
-            => ShowDeleteDialog(gameName, listName: FilesNames.GamesListName);
+        {
+            return ShowDeleteDialog(gameName, listName: FilesNames.GamesListName);
+        }
 
         public bool ShowDeleteGameLimitsFileDialog(string gameName)
-            => ShowDeleteDialog(gameName, listName: _mainForm.Model.Directories.GamesLimits.Name);
+        {
+            return ShowDeleteDialog(gameName, listName: _mainForm.Model.Directories.GamesLimits.Name);
+        }
 
         public bool ShowDeletePlayerFromListDialog(string selectedPlayer)
-            => ShowDeleteDialog(selectedPlayer, listName: _mainForm.Model.Directories.Players.Name);
+        {
+            return ShowDeleteDialog(selectedPlayer, listName: _mainForm.Model.Directories.Players.Name);
+        }
     }
 }

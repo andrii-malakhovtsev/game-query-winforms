@@ -8,8 +8,7 @@ namespace WhatGameToPlay
     {
         public GamesLimitsDirectory(string name) : base(name) { }
 
-        public override void CreateDirectoryIfNotExists() 
-            => FilesCreator.CreateDirectoryIfNotExists(_name);
+        public override void CreateDirectoryIfNotExists() => FilesCreator.CreateDirectoryIfNotExists(_name);
 
         private string GetFilePath(string gameName) => GetFullDirectoryFilePath(gameName);
 

@@ -17,11 +17,15 @@ namespace WhatGameToPlay
         }
 
         public void ShowTurningConfirmationMessagesError()
-            => ShowMainFormMessage("You can't turn showing confirmation messages off while showing " +
+        {
+            ShowMainFormMessage("You can't turn showing confirmation messages off while showing " +
                 "(all) messages are on");
+        }
 
         public void ShowNoGamesToPlayMessage()
-            => ShowMainFormMessage("You don't have games to play (Bad ending)");
+        {
+            ShowMainFormMessage("You don't have games to play (Bad ending)");
+        }
 
         private string GetRandomGameToPlayPhrase(string gameToPlay)
         {
@@ -38,15 +42,23 @@ namespace WhatGameToPlay
         }
 
         public void ShowGameToPlayMessage(string gameToPlay)
-            => ShowMainFormMessage(GetRandomGameToPlayPhrase(gameToPlay));
+        {
+            ShowMainFormMessage(GetRandomGameToPlayPhrase(gameToPlay));
+        }
 
         public void ShowPlayersLimitsErrorMessage()
-            => ShowMainFormMessage("The Min value must not exceed the Max value");
+        {
+            ShowMainFormMessage("The Min value must not exceed the Max value");
+        }
 
         public void ShowGameAddedToListMessage(string gameName)
-            => ShowOptionalMainFormMessage($"Game {gameName} is successfully added!");
+        {
+            ShowOptionalMainFormMessage($"Game {gameName} is successfully added!");
+        }
 
         public void ShowPlayerAddedToListMessage(string playerName)
-            => ShowOptionalMainFormMessage(playerName + " is added to the list!");
+        {
+            ShowOptionalMainFormMessage(playerName + " is added to the list!");
+        }
     }
 }

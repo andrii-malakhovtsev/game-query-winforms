@@ -7,14 +7,18 @@ namespace WhatGameToPlay
         protected Directory(string name) : base(name) {}
 
         public string Name => _name;
-        
+
         protected string GetFullDirectoryFilePath(string fileName)
-            => GetFullDirectoryTextFilePath(_name, fileName + TextFileExtension);
+        {
+            return GetFullDirectoryTextFilePath(_name, fileName + TextFileExtension);
+        }
 
         public string GetSelectedFilePath(string fileName) => GetFullDirectoryTextFilePath(_name, fileName);
 
         private static string GetFullDirectoryTextFilePath(string directory, string fileName)
-            => directory + "\\" + fileName;
+        {
+            return directory + "\\" + fileName;
+        }
 
         public abstract void CreateDirectoryIfNotExists();
 

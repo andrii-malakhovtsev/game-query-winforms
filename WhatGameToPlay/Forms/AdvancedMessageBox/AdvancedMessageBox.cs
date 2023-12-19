@@ -28,11 +28,15 @@ namespace WhatGameToPlay
             buttonOK.Visible = !visible;
         }
 
-        public DialogResult Show(string text) 
-            => SetMessageBox(text, "", yesNoMessageBox: false);
+        public DialogResult Show(string text)
+        {
+            return SetMessageBox(text, "", yesNoMessageBox: false);
+        }
 
         public DialogResult Show(string text, string caption, MessageBoxButtons YesNo)
-            => SetMessageBox(text, caption, yesNoMessageBox: true);
+        {
+            return SetMessageBox(text, caption, yesNoMessageBox: true);
+        }
 
         private DialogResult SetMessageBox(string text, string caption, bool yesNoMessageBox)
         {
@@ -78,7 +82,9 @@ namespace WhatGameToPlay
         }
 
         private void SetButtonLocation(Button button)
-            => AdvancedMessageBoxModel.SetButtonLocation(ref button, buttonYes, panel.Height, Width);
+        {
+            AdvancedMessageBoxModel.SetButtonLocation(ref button, buttonYes, panel.Height, Width);
+        }
 
         private void SetFormDimensions()
         {
