@@ -23,7 +23,7 @@ namespace WhatGameToPlay
 
         public Color SecondBackgroundColor { get; set; }
 
-        public static Theme Standart => new Theme(name: "White",
+        public static Theme Standard => new Theme(name: "White",
                                              textColor: Color.Black,
                                            buttonColor: Color.FromArgb(225, 225, 225),
                                        backgroundColor: Color.FromArgb(240, 240, 240),

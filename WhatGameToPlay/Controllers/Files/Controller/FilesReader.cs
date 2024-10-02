@@ -9,7 +9,7 @@ namespace WhatGameToPlay
 
         public FilesReader(MainFormModel mainFormModel) => _mainFormModel = mainFormModel;
 
-        public bool StandartFilesExist => File.Exists(_mainFormModel.Files.Theme.Name);
+        public bool StandardFilesExist => File.Exists(_mainFormModel.Files.Theme.Name);
 
         public static bool StringContainsBannedSymbols(string @string)
         {
