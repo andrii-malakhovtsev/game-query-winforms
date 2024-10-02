@@ -14,8 +14,8 @@ namespace WhatGameToPlay
                 string trueOption = true.ToString(),
                       falseOption = false.ToString();
 
-                string[] standartOptions = { trueOption, trueOption, trueOption, falseOption, trueOption, falseOption };
-                WriteToFile(standartOptions);
+                string[] standardOptions = { trueOption, trueOption, trueOption, falseOption, trueOption, falseOption };
+                WriteToFile(standardOptions);
             }
         }
 

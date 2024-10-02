@@ -11,7 +11,7 @@ namespace WhatGameToPlay
         public void CreateFileIfNotExists()
         {
             if (FilesCreator.CreateFileIfNotExists(_name))
-                WriteToFile(Theme.Standart.Name);
+                WriteToFile(Theme.Standard.Name);
         }
 
         public void WriteToFile(params string[] theme) => File.WriteAllText(_name, theme[0]);

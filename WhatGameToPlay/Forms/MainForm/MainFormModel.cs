@@ -50,7 +50,7 @@ namespace WhatGameToPlay
 
         public void MainFormLoad()
         {
-            if (!FilesReader.StandartFilesExist)
+            if (!FilesReader.StandardFilesExist)
             {
                 if (DialogDisplayer.ShowFirstMeetingDialog())
                 {

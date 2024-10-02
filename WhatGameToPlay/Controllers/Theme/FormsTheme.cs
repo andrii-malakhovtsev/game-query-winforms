@@ -6,7 +6,7 @@ namespace WhatGameToPlay
 {
     public class FormsTheme
     {
-        private static Theme _theme = Theme.Standart;
+        private static Theme _theme = Theme.Standard;
         private readonly ThemeFile _themeFile;
 
         public FormsTheme(MainFormModel mainFormModel) => _themeFile = mainFormModel.Files.Theme;
@@ -15,7 +15,7 @@ namespace WhatGameToPlay
 
         private static HashSet<Theme> Themes { get; } = new HashSet<Theme>()
         {
-            Theme.Standart,
+            Theme.Standard,
             new Theme(name: "Dark",
                           textColor: Color.White,
                         buttonColor: Color.FromArgb(56, 52, 57),
@@ -59,7 +59,7 @@ namespace WhatGameToPlay
 
         public void ColorToolStripMenuItem(ToolStripMenuItem toolStripMenuItem)
         {
-            if (CurrentThemeName != Theme.Standart.Name)
+            if (CurrentThemeName != Theme.Standard.Name)
             {
                 toolStripMenuItem.ForeColor = _theme.BackgroundColor;
             }
