@@ -8,9 +8,9 @@ namespace WhatGameToPlay
     {
         public GamesLimitsDirectory(string name) : base(name) { }
 
-        public override void CreateDirectoryIfNotExists() => FilesCreator.CreateDirectoryIfNotExists(_name);
+        public override void CreateDirectoryIfMissing() => FilesCreator.CreateDirectoryIfMissing(_name);
 
-        private string GetFilePath(string gameName) => GetFullDirectoryFilePath(gameName);
+        private string GetFilePath(string gameName) => base.GetFilePath(gameName);
 
         public HashSet<string> GetLimitedGamesList(int checkedPlayersCount)
         {
@@ -25,10 +25,11 @@ namespace WhatGameToPlay
         private static void AddLimitedGamesFromLimitFile(HashSet<string> limitedGames, FileInfo gameLimitFile,
             int checkedPlayersCount)
         {
-            string[] lines = File.ReadAllLines(gameLimitFile.FullName);
+            string[] limits = File.ReadAllLines(gameLimitFile.FullName);
+            
             bool playersCountOutsideLimits =
-                checkedPlayersCount < Convert.ToInt32(lines[0]) ||
-                checkedPlayersCount > Convert.ToInt32(lines[1]);
+                checkedPlayersCount < Convert.ToInt32(limits[0]) ||
+                checkedPlayersCount > Convert.ToInt32(limits[1]);
 
             if (playersCountOutsideLimits)
             {
@@ -38,21 +39,21 @@ namespace WhatGameToPlay
 
         public bool GetPlayersLimits(string gameName, out decimal[] limits)
         {
-            const int limitsCount = 2;
-            limits = new decimal[limitsCount];
+            const int LimitsCount = 2;
+            limits = new decimal[LimitsCount];
 
             foreach (FileInfo file in TextFiles)
             {
                 if (gameName == Path.GetFileNameWithoutExtension(file.Name))
                 {
-                    SetLimitsFromSpecificFile(limits, file);
+                    SetLimitsFromFile(limits, file);
                     return true;
                 }
             }
             return false;
         }
 
-        private static void SetLimitsFromSpecificFile(decimal[] limits, FileInfo file)
+        private static void SetLimitsFromFile(decimal[] limits, FileInfo file)
         {
             string[] fileRead = File.ReadAllLines(file.FullName);
             for (int i = 0; i < limits.Length; i++)
@@ -61,10 +62,11 @@ namespace WhatGameToPlay
             }
         }
 
-        public void WriteToFiles(string gameName, decimal minValue, decimal maxValue)
+        public void WriteLimitsToFile(string gameName, decimal minValue, decimal maxValue)
         {
             string path = GetFilePath(gameName);
-            FilesCreator.CreateFileIfNotExists(path);
+            FilesCreator.CreateFileIfMissing(path);
+
             using (TextWriter textWriter = new StreamWriter(path))
             {
                 textWriter.WriteLine(Convert.ToString(minValue));
@@ -72,9 +74,9 @@ namespace WhatGameToPlay
             }
         }
 
-        public void DeleteFile(string gameName)
+        public void DeleteFile(string gameName) // to another class
         {
-            string path = GetFullDirectoryFilePath(gameName);
+            string path = base.GetFilePath(gameName);
             if (File.Exists(path))
             {
                 File.Delete(path);

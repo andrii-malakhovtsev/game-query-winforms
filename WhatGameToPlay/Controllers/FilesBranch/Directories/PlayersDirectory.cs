@@ -8,9 +8,9 @@ namespace WhatGameToPlay
     {
         public PlayersDirectory(string name) : base(name) { }
 
-        public override void CreateDirectoryIfNotExists()
+        public override void CreateDirectoryIfMissing()
         {
-            if (FilesCreator.CreateDirectoryIfNotExists(_name))
+            if (FilesCreator.CreateDirectoryIfMissing(_name))
             {
                 new PlayerFile("example player", directory: this);
             }
@@ -31,8 +31,8 @@ namespace WhatGameToPlay
 
         private static void AddPlayerFromTextFile(HashSet<Player> players, FileInfo playerTextFile)
         {
-            var gamesNotPlaying = File.ReadAllLines(playerTextFile.FullName).ToHashSet();
-            players.Add(new Player(Path.GetFileNameWithoutExtension(playerTextFile.Name), gamesNotPlaying));
+            var unplayedGames = File.ReadAllLines(playerTextFile.FullName).ToHashSet();
+            players.Add(new Player(Path.GetFileNameWithoutExtension(playerTextFile.Name), unplayedGames));
         }
 
         public string[] GetGamesPlayerDoesNotPlay(string selectedPlayer)
@@ -47,9 +47,9 @@ namespace WhatGameToPlay
 
         public void WriteGamesNotPlayingToFile(string selectedPlayer, List<string> gamesNotPlayingList)
         {
-            string path = GetFullDirectoryFilePath(selectedPlayer);
             new PlayerFile(selectedPlayer, directory: this); // change it later to getting player mb
-            using (TextWriter textWriter = new StreamWriter(path))
+
+            using (TextWriter textWriter = new StreamWriter(GetFilePath(selectedPlayer)))
             {
                 foreach (string gameNotPlaying in gamesNotPlayingList)
                 {

@@ -9,10 +9,10 @@ namespace WhatGameToPlay
         public PlayerFile(string name, PlayersDirectory directory) : base(name)
         {
             _filePath = directory.GetSelectedFilePath(_name);
-            CreateFileIfNotExists();
+            CreateFileIfMissing();
         }
 
-        public void CreateFileIfNotExists() => FilesCreator.CreateFileIfNotExists(_filePath);
+        public void CreateFileIfMissing() => FilesCreator.CreateFileIfMissing(_filePath);
 
         public void Delete() => File.Delete(_filePath);
     }

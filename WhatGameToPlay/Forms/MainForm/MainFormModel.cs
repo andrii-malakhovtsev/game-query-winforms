@@ -140,7 +140,7 @@ namespace WhatGameToPlay
                 if (!player.CheckBox.Checked) continue;
                 for (int i = 0; i < gamesAvailable.Count; i++)
                 {
-                    foreach (string gameNotPlaying in player.GamesNotPlaying)
+                    foreach (string gameNotPlaying in player.UnplayedGames)
                     {
                         gamesAvailable.Remove(gameNotPlaying);
                     }

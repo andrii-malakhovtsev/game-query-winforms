@@ -2,6 +2,6 @@
 {
     public interface IFileCreator
     {
-        void CreateFileIfNotExists();
+        void CreateFileIfMissing();
     }
 }

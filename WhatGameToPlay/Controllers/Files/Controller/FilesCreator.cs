@@ -11,37 +11,38 @@ namespace WhatGameToPlay
             foreach (var storageItem in storageItems)
             {
                 if (storageItem is IFileCreator file)
-                    file.CreateFileIfNotExists();
+                    file.CreateFileIfMissing();
 
                 if (storageItem is Directory directory)
-                    directory.CreateDirectoryIfNotExists();
+                    directory.CreateDirectoryIfMissing();
             }
         }
 
-        public static bool CreateFileIfNotExists(string fileName)
+        public static bool CreateFileIfMissing(string fileName)
         {
-            return CreateFileTypeIfNotExists(fileName,
-                existsCheckFunction: path => !File.Exists(fileName),
-                createFunction: path => File.Create(fileName).Dispose());
+            return CreateFileTypeIfMissing(fileName,
+                fileTypeMissing: path => !File.Exists(fileName),
+                createFileType: path => File.Create(fileName).Dispose());
         }
 
-        public static bool CreateDirectoryIfNotExists(string directoryName)
+        public static bool CreateDirectoryIfMissing(string directoryName)
         {
-            return CreateFileTypeIfNotExists(directoryName,
-                existsCheckFunction: path => !System.IO.Directory.Exists(path),
-                createFunction: path => System.IO.Directory.CreateDirectory(path));
+            return CreateFileTypeIfMissing(directoryName,
+                fileTypeMissing: path => !System.IO.Directory.Exists(path),
+                createFileType: path => System.IO.Directory.CreateDirectory(path));
         }
 
-        private static bool CreateFileTypeIfNotExists(string path,
-            Func<string, bool> existsCheckFunction,
-            Action<string> createFunction)
+        private static bool CreateFileTypeIfMissing(string path,
+            Func<string, bool> fileTypeMissing,
+            Action<string> createFileType)
         {
-            bool doesNotExist = existsCheckFunction(path);
-            if (doesNotExist)
+            bool missing = fileTypeMissing(path);
+
+            if (missing)
             {
-                createFunction(path);
+                createFileType(path);
             }
-            return doesNotExist;
+            return missing;
         }
     }
 }

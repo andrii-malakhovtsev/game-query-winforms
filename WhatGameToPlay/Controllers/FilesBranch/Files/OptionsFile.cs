@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.IO;
+﻿using System.IO;
 
 namespace WhatGameToPlay
 {
@@ -7,11 +6,11 @@ namespace WhatGameToPlay
     {
         public OptionsFile(string name) : base(name) {}
 
-        public void CreateFileIfNotExists()
+        public void CreateFileIfMissing()
         {
-            if (FilesCreator.CreateFileIfNotExists(_name))
+            if (FilesCreator.CreateFileIfMissing(_name))
             {
-                string trueOption = true.ToString(),
+                string trueOption = true.ToString(), // change it to bool array
                       falseOption = false.ToString();
 
                 string[] standardOptions = { trueOption, trueOption, trueOption, falseOption, trueOption, falseOption };

@@ -8,9 +8,9 @@ namespace WhatGameToPlay
 
         public string Name => _name;
 
-        public void CreateFileIfNotExists()
+        public void CreateFileIfMissing()
         {
-            if (FilesCreator.CreateFileIfNotExists(_name))
+            if (FilesCreator.CreateFileIfMissing(_name))
                 WriteToFile(Theme.Standard.Name);
         }
 

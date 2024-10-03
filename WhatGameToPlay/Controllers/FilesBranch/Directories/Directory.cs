@@ -8,19 +8,19 @@ namespace WhatGameToPlay
 
         public string Name => _name;
 
-        protected string GetFullDirectoryFilePath(string fileName)
+        protected string GetFilePath(string fileName)
         {
-            return GetFullDirectoryTextFilePath(_name, fileName + TextFileExtension);
+            return GetRelativeTextFilePath(_name, fileName + TextFileExtension);
         }
 
-        public string GetSelectedFilePath(string fileName) => GetFullDirectoryTextFilePath(_name, fileName);
+        public string GetSelectedFilePath(string fileName) => GetRelativeTextFilePath(_name, fileName);
 
-        private static string GetFullDirectoryTextFilePath(string directory, string fileName)
+        private static string GetRelativeTextFilePath(string directory, string fileName)
         {
             return directory + "\\" + fileName;
         }
 
-        public abstract void CreateDirectoryIfNotExists();
+        public abstract void CreateDirectoryIfMissing();
 
         public bool FileExists(string fileName) => FilesReader.TextFileExist(TextFiles, fileName);
 
@@ -28,9 +28,9 @@ namespace WhatGameToPlay
 
         private static FileInfo[] GetTextFiles(string directoryName)
         {
-            const string textFilesInDirectory = "*" + TextFileExtension;
+            const string TextFilesInDirectory = "*" + TextFileExtension;
             var directory = new DirectoryInfo(directoryName);
-            return directory.GetFiles(textFilesInDirectory);
+            return directory.GetFiles(TextFilesInDirectory);
         }
     }
 }
