@@ -9,9 +9,9 @@ namespace WhatGameToPlay
     {
         public GamesListFile(string name) : base(name) {}
 
-        public void CreateFileIfNotExists()
+        public void CreateFileIfMissing()
         {
-            if (FilesCreator.CreateFileIfNotExists(_name))
+            if (FilesCreator.CreateFileIfMissing(_name))
                 WriteToFile("example game");
         }
 
@@ -27,11 +27,11 @@ namespace WhatGameToPlay
 
         public void DeleteFromFile(string gameToDelete)
         {
-            string[] gamesExceptGameToDelete = CurrentGames.Where(game => game != gameToDelete).ToArray();
+            string[] gamesExcludingDeleted = CurrentGames.Where(game => game != gameToDelete).ToArray();
 
             File.WriteAllText(_name, string.Empty);
 
-            foreach (string game in gamesExceptGameToDelete)
+            foreach (string game in gamesExcludingDeleted)
                 WriteToFile(game);
         }
     }

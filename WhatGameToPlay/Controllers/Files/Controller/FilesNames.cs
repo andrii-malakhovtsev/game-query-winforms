@@ -2,7 +2,7 @@
 {
     public static class FilesNames
     {
-        public const string GamesListName = "Games";
-        public const string AvailableGamesListName = "Available " + GamesListName;
+        public const string GamesList = "Games";
+        public const string AvailableGamesList = "Available " + GamesList;
     }
 }

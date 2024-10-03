@@ -31,12 +31,12 @@ namespace WhatGameToPlay
 
         public bool ShowDeleteAvailableGameDialog(string gameName)
         {
-            return ShowDeleteDialog(gameName, listName: FilesNames.AvailableGamesListName);
+            return ShowDeleteDialog(gameName, listName: FilesNames.AvailableGamesList);
         }
 
         public bool ShowDeleteGameDialog(string gameName)
         {
-            return ShowDeleteDialog(gameName, listName: FilesNames.GamesListName);
+            return ShowDeleteDialog(gameName, listName: FilesNames.GamesList);
         }
 
         public bool ShowDeleteGameLimitsFileDialog(string gameName)

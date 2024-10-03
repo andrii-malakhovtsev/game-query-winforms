@@ -11,14 +11,15 @@ namespace WhatGameToPlay
 
         public bool StandardFilesExist => File.Exists(_mainFormModel.Files.Theme.Name);
 
-        public static bool StringContainsBannedSymbols(string @string)
+        public static bool NameContainsBannedSymbols(string fileName)
         {
-            string WindowsFilesBannedCharacters = "\\/:*?\"<>|";
-            foreach (char @char in WindowsFilesBannedCharacters)
+            const string WindowsBannedChars = "\\/:*?\"<>|";
+            foreach (char bannedChar in WindowsBannedChars)
             {
-                if (@string.Contains(@char)) return true;
+                if (fileName.Contains(bannedChar)) return true;
             }
-            return !@string.Any(letter => char.IsLetterOrDigit(letter)) || string.IsNullOrEmpty(@string);
+            return !fileName.Any(letter => char.IsLetterOrDigit(letter)) || string.IsNullOrEmpty(fileName);
+            // double test this function
         }
 
         public static bool TextFileExist(FileInfo[] filesCollection, string fileName)

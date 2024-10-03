@@ -5,16 +5,16 @@ namespace WhatGameToPlay
 {
     public class Player
     {
-        public Player(string name, HashSet<string> gamesNotPlaying) : this(name)
+        public Player(string name, HashSet<string> unplayedGames) : this(name)
         { 
-            GamesNotPlaying = gamesNotPlaying;
+            UnplayedGames = unplayedGames;
         }
 
         public Player(string name) => Name = name;
 
         public string Name { get; }
 
-        public HashSet<string> GamesNotPlaying { get; }
+        public HashSet<string> UnplayedGames { get; }
 
         public CheckBox CheckBox { get; set; }
     }

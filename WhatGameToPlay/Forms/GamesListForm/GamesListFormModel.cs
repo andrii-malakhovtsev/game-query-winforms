@@ -96,7 +96,7 @@ namespace WhatGameToPlay
             SelectGameInListBox(selectedGameInList);
             _gamesListForm.SetGameRelatedControlsEnables(enable: !selectedGameInList);
 
-            if (FilesReader.StringContainsBannedSymbols(SelectedGame))
+            if (FilesReader.NameContainsBannedSymbols(SelectedGame))
             {
                 _gamesListForm.UnableButtonAddGame();
             }
@@ -155,7 +155,7 @@ namespace WhatGameToPlay
             bool limitsFit = _gamesListForm.NumericUpDownMaxValue > _gamesListForm.NumericUpDownMinValue;
             if (limitsFit)
             {
-                _mainForm.Model.Directories.GamesLimits.WriteToFiles(
+                _mainForm.Model.Directories.GamesLimits.WriteLimitsToFile(
                     _currentSelectedGame,
                     _gamesListForm.NumericUpDownMinValue,
                     _gamesListForm.NumericUpDownMaxValue);
