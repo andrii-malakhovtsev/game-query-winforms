@@ -16,7 +16,7 @@ just click <a href="https://github.com/malandrii/what-game-to-play-winforms/rele
 
 ![image](https://github.com/user-attachments/assets/78ef34d5-e7ff-403a-8bb7-0b5810c83995)
 
-### 3. Set up player's games
+### 3. Set up games per player
 > *Edit* => *Player List*
 
 ![image](https://github.com/user-attachments/assets/5f5db6e6-e104-4419-99f1-ad9efd611110)
@@ -25,6 +25,7 @@ just click <a href="https://github.com/malandrii/what-game-to-play-winforms/rele
 
 ![image](https://github.com/user-attachments/assets/1003d595-708e-453a-829d-619c0c99db8a)
 
-### 5. If you still can't decide what game you want to play together - press the "Random available game" button!
+### 5. Still can't decide?
+> press the "Random available game" button!
 
 ![image](https://github.com/user-attachments/assets/5b26e95f-a914-4e60-8330-29f8ac69b600)
