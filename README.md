@@ -10,24 +10,22 @@ just click <a href="https://github.com/malandrii/what-game-to-play-winforms/rele
 ### 1. Add games to games list
 > *Edit* => *Games List*
 
-
-![1](https://user-images.githubusercontent.com/111363234/204443654-4c00c1a8-dac0-47c5-a5a7-65097c5e4dde.png)
+![image](https://github.com/user-attachments/assets/0a3efbb7-5b3d-4ae2-8135-b7625ac81ad0)
 
 ### 2. Add players limits to specific games
 
+![image](https://github.com/user-attachments/assets/78ef34d5-e7ff-403a-8bb7-0b5810c83995)
 
-![11](https://user-images.githubusercontent.com/111363234/204443840-8a1a4b0b-20ab-48fa-afe1-62cff1b33b67.png)
-
-### 3. Set up player's games
+### 3. Set up games per player
 > *Edit* => *Player List*
 
-
-![2](https://user-images.githubusercontent.com/111363234/204443696-4505e554-81c2-4bbc-a191-912ddb11207e.png)
+![image](https://github.com/user-attachments/assets/5f5db6e6-e104-4419-99f1-ad9efd611110)
 
 ### 4. Check the available games among the ones you can play together
 
-![3](https://user-images.githubusercontent.com/111363234/204443969-185d4b7f-e9e5-423b-a34b-736c43e47843.png)
+![image](https://github.com/user-attachments/assets/1003d595-708e-453a-829d-619c0c99db8a)
 
-### 5. If you still can't decide what game you want to play together - press the "Random available game" button!
+### 5. Still can't decide?
+> press the "Random available game" button!
 
-![4](https://user-images.githubusercontent.com/111363234/204444025-e57c32ff-599e-479f-8a0b-883dde0c48e9.png)
+![image](https://github.com/user-attachments/assets/5b26e95f-a914-4e60-8330-29f8ac69b600)
