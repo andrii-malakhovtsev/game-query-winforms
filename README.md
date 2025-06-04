@@ -1,10 +1,10 @@
-# "What game to play?" on Windows Forms 
+# "Game Query" on Windows Forms 
 Having many friends who play different games, some of which might be the same? <br>
 Now you can input all of your friends and the games they play into the program and check which games you can play together!
 
 ## Installation
-Go to <a href="https://github.com/malandrii/what-game-to-play-winforms/releases">Releases</a>, choose the latest release and click the `what-games-to-play.exe` or
-just click <a href="https://github.com/malandrii/what-game-to-play-winforms/releases/download/1.0/what-game-to-play.exe">here</a>.
+Go to <a href="https://github.com/andrii-malakhovtsev/game-query-winforms/releases">Releases</a>, choose the latest release and click the `game-query.exe` or
+just click <a href="https://github.com/andrii-malakhovtsev/game-query-winforms/releases/download/1.0/game-query.exe">here</a>.
 
 ## Usage
 ### 1. Add games to games list
