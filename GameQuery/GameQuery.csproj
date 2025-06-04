@@ -7,7 +7,7 @@
     <ProjectGuid>{68AFA78C-61DB-4F34-8817-DE3AB6018426}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>WhatGameToPlay</RootNamespace>
-    <AssemblyName>WhatGameToPlay</AssemblyName>
+    <AssemblyName>GameQuery</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
