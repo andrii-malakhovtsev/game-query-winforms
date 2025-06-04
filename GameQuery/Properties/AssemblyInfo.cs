@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General information about this assembly is provided by the following set
 // set of attributes. Change the values of these attributes to change the information
 // assembly related.
-[assembly: AssemblyTitle("WhatGameToPlay")]
+[assembly: AssemblyTitle("GameQuery")]
 [assembly: AssemblyDescription("Having different friends playing some different games and some same? Now you can know what game you can go to.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("malandrii")]
-[assembly: AssemblyProduct("WhatGameToPlay")]
+[assembly: AssemblyProduct("GameQuery")]
 [assembly: AssemblyCopyright("Copyright © malandrii")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
