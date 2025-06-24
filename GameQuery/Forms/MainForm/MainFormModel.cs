@@ -9,7 +9,7 @@ namespace WhatGameToPlay
 
         public MainFormModel(MainForm mainForm)
         {
-            _mainForm = mainForm; // mb all of those initializations to separate class
+            _mainForm = mainForm;
             Files = new Files();
             Directories = new Directories();
             FilesReader = new FilesReader(this);
@@ -23,7 +23,7 @@ namespace WhatGameToPlay
 
         public Directories Directories { get; }
 
-        private FilesReader FilesReader { get; } // change later to separate class w initializations
+        private FilesReader FilesReader { get; }
 
         public FormsTheme FormsTheme { get; }
 

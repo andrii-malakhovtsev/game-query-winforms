@@ -43,7 +43,7 @@ namespace WhatGameToPlay
         {
             _playerSelected = false;
             new PlayerFile(SelectedPlayerName, directory: _mainForm.Model.Directories.Players).Delete();
-            // mb change later to list of playerFiles from some model to not create PlayerFiles and search by name
+            // change later to list of playerFiles from some model to not create PlayerFiles and search by name
             _playerListForm.ListBoxPlayers.Items.Clear();
             RefreshPlayersFromFile();
             _playerListForm.CheckBoxListGamesPlaying.Items.Clear();

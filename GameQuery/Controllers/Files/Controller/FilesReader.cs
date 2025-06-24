@@ -19,7 +19,6 @@ namespace WhatGameToPlay
                 if (fileName.Contains(bannedChar)) return true;
             }
             return !fileName.Any(letter => char.IsLetterOrDigit(letter)) || string.IsNullOrEmpty(fileName);
-            // double test this function
         }
 
         public static bool TextFileExist(FileInfo[] filesCollection, string fileName)
